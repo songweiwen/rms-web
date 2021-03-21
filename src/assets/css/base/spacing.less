@@ -1,0 +1,101 @@
+// 定义一个数组
+@sizeList:xs,sm,md,lg,xlg,xxlg;
+
+@list: t, r, b, l;
+
+/* 间距 n的倍数 */
+@base-spacing: 10px;
+
+.base-spacing-margin-t (@spacing: 1) {
+  margin-top: @base-spacing * @spacing;
+}
+
+.base-spacing-margin-r (@spacing: 1) {
+  margin-right: @base-spacing* @spacing;
+}
+
+.base-spacing-margin-b (@spacing: 1) {
+  margin-bottom: @base-spacing* @spacing;
+}
+
+.base-spacing-margin-l (@spacing: 1) {
+  margin-left: @base-spacing* @spacing;
+}
+
+.base-spacing-padding-t (@spacing: 1) {
+  padding-top: @base-spacing* @spacing;
+}
+
+.base-spacing-padding-r (@spacing: 1) {
+  padding-right: @base-spacing* @spacing;
+}
+
+.base-spacing-padding-b (@spacing: 1) {
+  padding-bottom: @base-spacing* @spacing;
+}
+
+.base-spacing-padding-l (@spacing: 1) {
+  padding-left: @base-spacing* @spacing;
+}
+
+// 条件
+.padding-mixin(@a, @i) when (@a = t) {
+  .base-spacing-padding-t(@i);
+}
+
+.padding-mixin(@a, @i) when (@a = r) {
+  .base-spacing-padding-r(@i);
+}
+
+.padding-mixin(@a, @i) when (@a = b) {
+  .base-spacing-padding-b(@i);
+}
+
+.padding-mixin(@a, @i) when (@a = l) {
+  .base-spacing-padding-l(@i);
+}
+
+.margin-mixin(@a, @i) when (@a = t) {
+  .base-spacing-margin-t(@i);
+}
+
+.margin-mixin(@a, @i) when (@a = r) {
+  .base-spacing-margin-r(@i);
+}
+
+.margin-mixin(@a, @i) when (@a = b) {
+  .base-spacing-margin-b(@i);
+}
+
+.margin-mixin(@a, @i) when (@a = l) {
+  .base-spacing-margin-l(@i);
+}
+
+// class
+.test (@className, @i ,@name) {
+  .p-@{name}-@{className} {
+    .padding-mixin(@name, @i / 2);
+  }
+
+  .m-@{name}-@{className} {
+    .margin-mixin(@name, @i / 2);
+  }
+  //.p-@{name}-@{className} {
+  //  .base-spacing-padding-t(@i);
+  //}
+}
+
+// 循环
+.loop(@i) when (@i < (length(@sizeList)+1)) {
+
+  .s-loop(@j) when (@j < (length(@list)+1)) {
+    //.sss(extract(@list, @i));
+    .test(extract(@sizeList, @i), @i, extract(@list, @j));
+    .s-loop(@j+1);
+  }
+
+  .s-loop(1);
+  .loop(@i+1);
+}
+
+.loop(1);

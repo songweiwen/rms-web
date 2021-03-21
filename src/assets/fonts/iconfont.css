@@ -1,0 +1,85 @@
+@font-face {font-family: "icon";
+  src: url('iconfont.eot?t=1601185152971'); /* IE9 */
+  src: url('iconfont.eot?t=1601185152971#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2'),
+  url('iconfont.woff?t=1601185152971') format('woff'),
+  url('iconfont.ttf?t=1601185152971') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1601185152971#icon') format('svg'); /* iOS 4.1- */
+}
+
+.icon {
+  font-family: "icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-warn:before {
+  content: "\e625";
+}
+
+.icon-help:before {
+  content: "\e61f";
+}
+
+.icon-arrow-down-s:before {
+  content: "\eb6d";
+}
+
+.icon-arrow-left:before {
+  content: "\eb6e";
+}
+
+.icon-stars:before {
+  content: "\e642";
+}
+
+.icon-correct-2:before {
+  content: "\e660";
+}
+
+.icon-correct:before {
+  content: "\e664";
+}
+
+.icon-lock:before {
+  content: "\e657";
+}
+
+.icon-add:before {
+  content: "\e661";
+}
+
+.icon-sort:before {
+  content: "\e665";
+}
+
+.icon-pen:before {
+  content: "\e768";
+}
+
+.icon-medal:before {
+  content: "\e629";
+}
+
+.icon-error:before {
+  content: "\e867";
+}
+
+.icon-edit:before {
+  content: "\e8ac";
+}
+
+.icon-arrow-up:before {
+  content: "\e666";
+}
+
+.icon-arrow-right:before {
+  content: "\eb6f";
+}
+
+.icon-arrow-down:before {
+  content: "\eb70";
+}
+
