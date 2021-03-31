@@ -36,8 +36,10 @@ import {
   Tag,
   TabPane,
   Tree,
+  Tabs,
   // msgbox
-  Pagination
+  Pagination,
+  Notification
 } from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 
@@ -72,9 +74,11 @@ const components = [
   Tag,
   TabPane,
   Tree,
+  Tabs,
   // Message
   // MessageBox
   Pagination
+  // Notification
 ]
 
 const Element = {
@@ -89,6 +93,8 @@ const Element = {
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$message = Message
 Vue.prototype.$messageBox = MessageBox
+// Vue.use(Notification)
+Vue.prototype.$notify = Notification
 Vue.use(Loading.directive)
 Vue.prototype.$loading = Loading.service
 // if (process.BROWSER_BUILD) {

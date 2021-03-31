@@ -101,9 +101,16 @@ export default {
     console.log(this.$store.getters.userInfo)
 
     console.log(this.$route)
-    this.$websocket.Init()
-
-    this.$websocket.Send(1, 2, 3, 4)
+    this.$nextTick(() => {
+      this.$websocket.Init()
+      this.$websocket.getWebSocket().onmessage = this.websocketonmessage
+    })
+    // this.$websocket.getWebSocket().onopen = () => {
+    //   console.log(1231412)
+    //   this.$websocket.Send({ commandString: 'LG', userName: 'admin' })
+    // }
+    // this.$websocket.Onopen(
+    // )
     // for (const key in this.menuUrl) {
     //   console.log(key)
     //   for (let i = 0; i < this.menuData.length; i++) {
@@ -138,6 +145,44 @@ export default {
     }
   },
   methods: {
+    websocketonmessage (e) {
+      const redata = JSON.parse(e.data)
+      if (redata.code === 500) {
+        this.$message.error('连接发生了错误，请联系管理员')
+      }
+      // 近端机报警  全局提示
+      if (redata.commandString === 'WN') {
+        this.$notify.error({
+          title: `${redata.nearDevice.deviceName}报警！`,
+          message: `报警时间：${redata.nearDevice.deviceTime}`,
+          duration: 0
+        })
+      } else if (redata.commandString === 'WF') {
+      // 远端机报警  全局提示
+        this.$notify.error({
+          title: `${redata.farDevice.deviceName}报警！`,
+          message: `报警时间：${redata.farDevice.deviceTime}`,
+          duration: 0
+        })
+      } else if (redata.commandString === 'TRN') {
+      // 近端机修复故障  全局提示
+        this.$notify.error({
+          title: `${redata.nearDevice.deviceName}修复故障！`,
+          message: `修复时间：${redata.nearDevice.deviceTime}`,
+          duration: 0,
+          type: 'success'
+        })
+      } else if (redata.commandString === 'TRF') {
+      // 远端机修复故障  全局提示
+        this.$notify.error({
+          title: `${redata.farDevice.deviceName}修复故障！`,
+          message: `修复时间：${redata.farDevice.deviceTime}`,
+          duration: 0,
+          type: 'success'
+        })
+      }
+      console.log(redata.commandString, 88888)
+    },
     onMenu (index, indexPath) {
       this.$router.push({ path: this.menuUrl[this.menuData[index].webTitle] })
       console.log(index, indexPath)
@@ -191,6 +236,7 @@ export default {
 
   .el-main {
     padding: 14px;
+    background-color: #f1f2f5;
   }
 
   &.el-container {
@@ -223,10 +269,6 @@ export default {
 
   .el-submenu__title {
     color: #fff;
-  }
-
-  .el-main {
-    background-color: #f1f2f5;
   }
 }
 </style>

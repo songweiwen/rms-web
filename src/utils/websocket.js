@@ -1,16 +1,21 @@
 /* eslint-disable */
-// import store from '@/store'
+import store from '@/store'
 import { Message } from 'element-ui'
 
-var url = 'ws://220.249.21.130:60155/websocket/20411/55'
-// var url ='ws://123.207.136.134:9010/ajaxchattest'
+var url = 'ws://songweiwenceshi.oicp.io:50726/ws'
 var ws
 var tt
 var lockReconnect = false// 避免重复连接
-var clientId = localStorage.getItem('clientId')// 缓存中取出客户端id
-
+var clientId = localStorage.getItem('userInfo')// 缓存中取出客户端id
+// var userInfo = localStorage.getItem('vuex')?JSON.parse(localStorage.getItem('vuex')).userInfo.userInfo.userInfo : null
+var userInfo = store.getters.userInfo.userInfo
+// console.log(store.getters.userInfo,1111);/
+// console.log(store.getters.userInfo.userInfo,2222);
 var websocket = {
   Init: function (clientId) {
+    var userInfo = store.getters.userInfo.userInfo.userInfo
+    // console.log(store.getters.userInfo,1111);
+    // console.log(store.getters.userInfo.userInfo,2222);
     if ('WebSocket' in window) {
       if (clientId) {
         ws = new WebSocket(url + clientId)
@@ -29,12 +34,14 @@ var websocket = {
     }
 
     ws.onmessage = function (e) {
+      const redata = JSON.parse(e.data);
       console.log('接收消息:' + e.data)
       heartCheck.start()
-      if (e.data == 'ok') { // 心跳消息不做处理
+      // if (redata.code == 200) { // 心跳消息不做处理
+      // // messageHandle(redata)
+      // } else if (redata.code == 200){
 
-      }
-      // messageHandle(e.data)
+      // }
     }
 
     ws.onclose = function () {
@@ -48,10 +55,11 @@ var websocket = {
 
     ws.onopen = function () {
       console.log('连接成功')
-      Message({
-        message: '连接成功',
-        type: 'success'
-      })
+      // Message({
+      //   message: '连接成功',
+      //   type: 'success'
+      // })
+      ws.send( JSON.stringify({ commandString: 'LG', userName: userInfo.userName }))
       heartCheck.start()
     }
 
@@ -64,13 +72,7 @@ var websocket = {
       // reconnect(clientId)
     }
   },
-  Send: function (sender, reception, body, flag) {
-    const data = {
-      sender: sender,
-      reception: reception,
-      body: body,
-      flag: flag
-    }
+  Send: function (data) {
     const msg = JSON.stringify(data)
     console.log('发送消息：' + msg)
     ws.send(msg)
@@ -94,18 +96,20 @@ var websocket = {
 export default websocket
 
 // 根据消息标识做不同的处理
-function messageHandle (message) {
-  const msg = JSON.parse(message)
-  switch (msg.flag) {
-    case 'command':
-      console.log('指令消息类型')
-      break
-    case 'inform':
-      console.log('通知')
-      break
-    default:
-      console.log('未知消息类型')
-  }
+function messageHandle (data) {
+  // const msg = JSON.parse(message)
+  // const data =data
+  return data
+  // switch (msg.flag) {
+  //   case 'command':
+  //     console.log('指令消息类型')
+  //     break
+  //   case 'inform':
+  //     console.log('通知')
+  //     break
+  //   default:
+  //     console.log('未知消息类型')
+  // }
 }
 
 function reconnect (sname) {
@@ -124,7 +128,7 @@ function reconnect (sname) {
 
 // 心跳检测
 var heartCheck = {
-  timeout: 1000 * 60 * 3,
+  timeout: 1000 * 60 * 10,
   timeoutObj: null,
   serverTimeoutObj: null,
   start: function () {
@@ -136,7 +140,7 @@ var heartCheck = {
       // 这里发送一个心跳，后端收到后，返回一个心跳消息，
       // onmessage拿到返回的心跳就说明连接正常
       console.log('心跳检测...')
-      ws.send('HeartBeat:' + clientId)
+      ws.send(JSON.stringify({"HeartBeat": 0, "username": userInfo.userName }))
       self.serverTimeoutObj = setTimeout(function () {
         if (ws.readyState !== 1) {
           ws.close()

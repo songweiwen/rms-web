@@ -11,10 +11,6 @@
           <el-input
             v-model="form.username"
             placeholder="用户名"
-            v-decorator="[
-              'captcha',
-              { rules: [{ required: true, message: '请输入用户名' }] },
-            ]"
             allow-clear
           >
           </el-input>
@@ -23,10 +19,6 @@
           <el-input type="password"
             v-model="form.password"
             placeholder="密码"
-            v-decorator="[
-              'password',
-              { rules: [{ required: true, message: '请输入密码' }] },
-            ]"
             autocomplete="off"></el-input>
         </el-form-item>
         <!-- <el-form-item  prop="vercode">

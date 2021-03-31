@@ -1,6 +1,11 @@
 <template>
   <div class="page">
-    <div class="page-container">
+    <div class="page-container"
+      v-loading="WSloading"
+      :element-loading-text="WSloadingText"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
       <div class="home">
         <div class="home-left">
 
@@ -10,7 +15,27 @@
           :default-expand-all="true"
           :data="treeData"
           :props="defaultProps"
-          @node-click="handleNodeClick"></el-tree>
+          @node-click="handleNodeClick">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>{{ node.label }}</span>
+              <!-- {{data.online}} -->
+              <span>
+                <!-- {{node}} -->
+                <!-- <el-button
+                  type="text"
+                  size="mini"
+                  @click="() => append(data)">
+                  Append
+                </el-button> -->
+                <span v-if="data.online===1" class="el-tag el-tag--danger el-tag--dark"></span>
+                <!-- 1 -->
+                <!-- <el-tag v-if="data.online===1" type="danger" effect="dark"></el-tag>  -->
+                <!-- <el-tag v-if="node.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
+                <el-tag v-else-if="node.device.faguanggonglv===1"  type="info" effect="dark"></el-tag>
+                <el-tag v-else type="danger" effect="dark"></el-tag> -->
+              </span>
+            </span>
+          </el-tree>
         </div>
         <div class="home-right" style="width: 800px;" v-show="!deviceId">
           <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset="">
@@ -26,7 +51,7 @@
               <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag>
             </div>
             <div class="flex-item text-right">
-              <el-button type="primary" size="small">
+              <el-button type="primary" size="small" @click="onQueryNear">
                 手动检测
               </el-button>
               <el-button type="danger" size="small">
@@ -44,7 +69,7 @@
               <el-tag v-else-if="dataFar.online==='故障'" type="danger" effect="dark">故障</el-tag>
             </div>
             <div class="flex-item text-right">
-              <el-button type="primary" size="small">
+              <el-button type="primary" size="small" @click="onQueryFar">
                 手动检测
               </el-button>
               <el-button type="danger" size="small">
@@ -77,8 +102,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataNear.device.shouguanggonglv===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataNear.device.shouguanggonglv===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataNear.device.shouguanggonglv===1"  type="danger" effect="dark"></el-tag>
+                  <el-tag v-else type="info" effect="dark"></el-tag>
 
                 </el-col>
               </el-row>
@@ -88,8 +113,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataNear.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataNear.device.faguanggonglv===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataNear.device.faguanggonglv===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
 
                 </el-col>
               </el-row>
@@ -99,8 +124,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataNear.device.upsgaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataNear.device.upsgaojing===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataNear.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -148,8 +173,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataFar.device.faguanggaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.faguanggaojing===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataFar.device.faguanggaojing===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
 
                 </el-col>
               </el-row>
@@ -159,8 +184,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataFar.device.shouguanggaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.shouguanggaojing===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataFar.device.shouguanggaojing===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -169,8 +194,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataFar.device.guzhanggaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.guzhanggaojing===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataFar.device.guzhanggaojing===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -179,8 +204,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataFar.device.zhubobigaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.zhubobigaojing===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataFar.device.zhubobigaojing===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -189,8 +214,8 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataFar.device.guowengaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.guowengaojing===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataFar.device.guowengaojing===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -199,8 +224,28 @@
                 </el-col>
                 <el-col :span="12">
                   <el-tag v-if="dataFar.device.guogonglvgaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.guogonglvgaojing===1"  type="info" effect="dark"></el-tag>
-                  <el-tag v-else type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else-if="dataFar.device.guogonglvgaojing===2"  type="info" effect="dark"></el-tag> -->
+                  <el-tag v-else-if="dataFar.device.guogonglvgaojing===1" type="danger" effect="dark"></el-tag>
+                </el-col>
+              </el-row>
+              <el-row type="flex" class="home-item" align="middle">
+                <el-col :span="12">
+                  上行故障
+                </el-col>
+                <el-col :span="12">
+                  <el-tag v-if="dataFar.device.shangxingguzhang===0" type="success" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataFar.device.shangxingguzhang===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                </el-col>
+              </el-row>
+              <el-row type="flex" class="home-item" align="middle">
+                <el-col :span="12">
+                  UPS警告
+                </el-col>
+                <el-col :span="12">
+                  <el-tag v-if="dataFar.device.upsgaojing===0" type="success" effect="dark"></el-tag>
+                  <el-tag v-else-if="dataFar.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
+                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -231,11 +276,14 @@
 </template>
 
 <script>
+import { getTree } from '@/api/get'
 import { getDetailFar, getDetailNear } from '@/api/home'
 export default {
   name: 'home',
   data () {
     return {
+      WSloading: false,
+      WSloadingText: '',
       treeData: [],
       defaultProps: {
         children: 'children',
@@ -244,6 +292,7 @@ export default {
       loading: false,
       homeType: 1,
       deviceId: '',
+      deviceIdNear: null,
       dataFar: {
         device: {}
       },
@@ -253,27 +302,139 @@ export default {
     }
   },
   created () {
-    const treeData = this.$store.getters.userInfo.userInfo.device
-    treeData.forEach(e => {
-      this.treeData.push({
-        deviceName: e.near.deviceName,
-        deviceId: e.near.deviceId,
-        id: e.near.id,
-        deviceAddress: e.near.deviceAddress,
-        level: 1,
-        children: e.far
-      })
+    // this.$notify({
+    //   title: '提示',
+    //   message: '这是一条不会自动关闭的消息',
+    //   duration: 0
+    // })
+    // const treeData = this.$store.getters.userInfo.userInfo.device
+    // treeData.forEach(e => {
+    //   this.treeData.push({
+    //     deviceName: e.near.deviceName,
+    //     deviceId: e.near.deviceId,
+    //     id: e.near.id,
+    //     deviceAddress: e.near.deviceAddress,
+    //     level: 1,
+    //     children: e.far
+    //   })
+    // })
+    this.$nextTick(() => {
+      this.$websocket.getWebSocket().onmessage = this.websocketonmessage
+      this.getTree()
     })
-
-    this.$websockt.Init()
   },
   methods: {
+    getTree () {
+      getTree().then(res => {
+        console.log(res)
+        const treeData = res.data
+        treeData.forEach(e => {
+          this.treeData.push({
+            deviceName: e.near.deviceName,
+            deviceId: e.near.deviceId,
+            id: e.near.id,
+            deviceAddress: e.near.deviceAddress,
+            level: 1,
+            children: e.far
+          })
+        })
+      })
+    },
+    onQueryNear () { // 近端机查询
+      this.WSloading = true
+      this.WSloadingText = '检测中...'
+      this.$websocket.Send({
+        commandString: 'CN',
+        nearDevice: {
+          deviceId: this.deviceId
+        }
+      })
+    },
+    onQueryFar () { // 远端机查询
+      this.WSloading = true
+      this.WSloadingText = '检测中...'
+      this.$websocket.Send({
+        commandString: 'CF',
+        farDevice: {
+          deviceId: this.deviceId,
+          deviceNearId: this.deviceIdNear // 父级近端机
+        }
+      })
+    },
+    websocketonmessage (e) {
+      const redata = JSON.parse(e.data)
+      console.log(redata, 9999)
+      if (redata.code === 500) {
+        this.$message.error('连接发生了错误，请联系管理员')
+      }
+      // 近端机报警  更新树状图的报警灯泡
+      if (redata.commandString === 'WN') {
+        this.treeData.forEach(e => {
+          if (e.deviceId === redata.nearDevice.deviceId) {
+            e.online = 1
+            this.treeData = [...this.treeData]
+          }
+        })
+        if (this.dataNear.device.deviceId === redata.deviceId) {
+          this.dataNear.device = redata.nearDevice
+        }
+      } else if (redata.commandString === 'WF') {
+        // 远端机报警  更新树状图的报警灯泡
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            if (o.deviceId === redata.farDevice.deviceId) {
+              o.online = 1
+              this.treeData = [...this.treeData]
+            }
+          })
+        })
+        if (this.dataFar.device.deviceId === redata.deviceId) {
+          this.dataFar.device = redata.farDevice
+        }
+      } else if (redata.commandString === 'TRN') {
+        // 近端机修复故障  更新树状图的报警灯泡
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            if (o.deviceId === redata.nearDevice.deviceId) {
+              o.online = 0
+              this.treeData = [...this.treeData]
+            }
+          })
+        })
+        if (this.dataNear.device.deviceId === redata.deviceId) {
+          this.dataNear.device = redata.nearDevice
+        }
+      } else if (redata.commandString === 'TRF') {
+        // 远端机修复故障  更新树状图的报警灯泡
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            if (o.deviceId === redata.farDevice.deviceId) {
+              o.online = 0
+              this.treeData = [...this.treeData]
+            }
+          })
+        })
+        if (this.dataFar.device.deviceId === redata.deviceId) {
+          this.dataFar.device = redata.farDevice
+        }
+      } else if (redata.commandString === 'CN') {
+        if (this.dataNear.device.deviceId === redata.deviceId) {
+          this.dataNear.device = redata.dataNear
+        }
+      } else if (redata.commandString === 'CF') {
+        if (this.dataFar.device.deviceId === redata.deviceId) {
+          this.dataFar.device = redata.dataFar
+        }
+      }
+      this.WSloading = false
+    },
     handleNodeClick (data) {
       this.homeType = data.level || 2
       console.log(data)
       this.deviceId = data.id
       this.loading = true
       if (this.homeType === 1) {
+        this.deviceIdNear = null
         getDetailNear({
           id: this.deviceId
         }).then(res => {
@@ -283,6 +444,7 @@ export default {
           this.loading = false
         })
       } else if (this.homeType === 2) {
+        this.deviceIdNear = data.deviceNearId
         getDetailFar({
           id: this.deviceId
         }).then(res => {
@@ -296,3 +458,22 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 8px;
+    font-size: 14px;
+
+    .el-tag {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border-radius: 50%;
+    }
+  }
+</style>

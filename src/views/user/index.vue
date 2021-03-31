@@ -99,7 +99,7 @@
     </el-dialog>
 
     <el-dialog title="修改用户名" :visible.sync="editVisible">
-      <el-form :model="editForm" :rules="editRules" ref="addRuleForm">
+      <el-form :model="editForm" :rules="editRules" ref="editRuleForm">
         <el-form-item label="用户名" prop="userName" label-width="120px">
           <el-input v-model="editForm.userName" placeholder="请输入用户名" disabled></el-input>
         </el-form-item>
@@ -112,7 +112,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="resetForm('editRuleForm')">取 消</el-button>
-        <el-button size="small" type="primary" @click="editSubmitForm('addRuleForm')">确 定</el-button>
+        <el-button size="small" type="primary" @click="editSubmitForm('editRuleForm')">确 定</el-button>
       </div>
     </el-dialog>
   </div>

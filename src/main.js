@@ -22,7 +22,7 @@ import './router/intercept.js'
 import '@/assets/css/style.less'
 
 // 手机号格式验证
-import '@/utils/validatePhone.js'
+// import '@/utils/validatePhone.js'
 
 import websocket from '@/utils/websocket'
 

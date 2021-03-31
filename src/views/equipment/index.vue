@@ -1,103 +1,173 @@
 <template>
   <div class="page">
-    <div class="page-container">
+    <div class="page-container page-tabs" ref="pageHeight">
       <el-tabs type="border-card">
         <el-tab-pane label="近端机设备">
+          <div class="table">
+            <div class="table-hd">
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisible=true">增加</el-button>
+            </div>
+            <div class="table-bd">
+              <el-table
+                :height="tableHeight"
+                size="small"
+                :data="tableData"
+                >
+                <el-table-column
+                  prop="deviceId"
+                  label="设备ID"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceName"
+                  label="设备名称"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceAddress"
+                  label="地址"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceIp"
+                  label="IP地址"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="devicePort"
+                  label="端口"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceTime"
+                  label="更新时间"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  label="操作"
+                  width="200"
+                  align="right">
+                  <template slot-scope="scope">
+                    <el-button
+                      size="mini"
+                      type="primary"
+                      icon="el-icon-edit"
+                      @click="handleEdit(scope.row)"
+                      >修改</el-button>
+                    <el-button
+                      size="mini"
+                      type="danger"
+                      icon="el-icon-delete"
+                      @click="handleDelete(scope.row.id)"
+                      >删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="table-pagination">
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page="currentPage"
+                  :page-size="pageSize"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="total">
+                </el-pagination>
+              </div>
+            </div>
+          </div>
 
         </el-tab-pane>
-        <el-tab-pane label="">
-
+        <el-tab-pane label="远端机设备">
+          <div class="table">
+            <div class="table-hd">
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisibleFar=true">增加</el-button>
+            </div>
+            <div class="table-bd">
+              <el-table
+                :height="tableHeight"
+                size="small"
+                :data="tableDataFar"
+                >
+                <el-table-column
+                  prop="deviceId"
+                  label="设备ID"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceName"
+                  label="设备名称"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceAddress"
+                  label="地址"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceIp"
+                  label="IP地址"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="devicePort"
+                  label="端口"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  prop="deviceTime"
+                  label="更新时间"
+                  align="center">
+                </el-table-column>
+                <el-table-column
+                  label="操作"
+                  width="200"
+                  align="right">
+                  <template slot-scope="scope">
+                    <el-button
+                      size="mini"
+                      type="primary"
+                      icon="el-icon-edit"
+                      @click="handleEditFar(scope.row)"
+                      >修改</el-button>
+                    <el-button
+                      size="mini"
+                      type="danger"
+                      icon="el-icon-delete"
+                      @click="handleDeleteFar(scope.row.id)"
+                      >删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="table-pagination">
+                <el-pagination
+                  @size-change="handleSizeChangeFar"
+                  @current-change="handleCurrentChangeFar"
+                  :current-page="currentPageFar"
+                  :page-size="pageSizeFar"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="total">
+                </el-pagination>
+              </div>
+            </div>
+          </div>
         </el-tab-pane>
       </el-tabs>
-      <div class="table">
-        <div class="table-hd">
-          <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisible=true">增加</el-button>
-          <!-- <el-button type="danger" size="mini">删除</el-button> -->
-          <!-- <el-button type="warning" size="mini">角色详情</el-button> -->
-          <el-button type="danger" icon="el-icon-setting" size="mini">线路权限</el-button>
-          <!-- <el-button type="danger" size="mini">快速续期（30天）</el-button> -->
-        </div>
-        <div class="table-bd">
-          <el-table
-            :height="tableHeight"
-            size="small"
-            :data="tableData"
-            >
-            <!-- <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column> -->
-            <el-table-column
-              prop="userName"
-              label="用户名"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="userTime"
-              label="有效期"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="userAdmin"
-              label="巡检管理权限"
-              align="center">
-              <template slot-scope="scope">
-                <template>
-                  <el-tag size="medium">{{ scope.row.userAdmin }}</el-tag>
-                </template>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="userRole"
-              label="角色"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="userTime"
-              label="更新时间"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              label="操作"
-              width="200"
-              align="right">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="primary"
-                  icon="el-icon-edit"
-                  @click="handleEdit(scope.row)"
-                  >修改</el-button>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  icon="el-icon-delete"
-                  @click="handleDelete(scope.row.id)"
-                  >删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="table-pagination">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="total">
-            </el-pagination>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <el-dialog title="新增用户名" :visible.sync="addVisible">
+    <!-- id   名字   地址   描述   -->
+    <el-dialog title="新增近端机" :visible.sync="addVisible">
       <el-form :model="addForm" :rules="addRules" ref="addRuleForm">
-        <el-form-item label="用户名" prop="username" label-width="120px">
-          <el-input v-model="addForm.username" placeholder="请输入用户名"></el-input>
+        <el-form-item label="设备ID" prop="deviceId" label-width="120px">
+          <el-input v-model.number="addForm.deviceId" placeholder="请输入设备ID"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password" label-width="120px">
-          <el-input v-model="addForm.password" placeholder="请输入密码"></el-input>
+        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
+          <el-input v-model="addForm.deviceName" placeholder="请输入设备名称"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
+          <el-input v-model="addForm.deviceAddress" placeholder="请输入地址"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
+          <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -106,21 +176,67 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="修改用户名" :visible.sync="editVisible">
-      <el-form :model="editForm" :rules="editRules" ref="addRuleForm">
-        <el-form-item label="用户名" prop="userName" label-width="120px">
-          <el-input v-model="editForm.userName" placeholder="请输入用户名" disabled></el-input>
+    <!-- 名称（数据库）、地址（数据库）、收光功率（数据库+ws) -->
+    <el-dialog title="修改近端机" :visible.sync="editVisible">
+      <el-form :model="editForm" :rules="editRules" ref="editRuleForm">
+        <el-form-item label="设备ID" prop="deviceId" label-width="120px">
+          <el-input v-model="editForm.deviceId" placeholder="请输入设备ID" disabled></el-input>
         </el-form-item>
-        <el-form-item label="当前密码" prop="userPassword" label-width="120px">
-          <el-input v-model="editForm.userPassword" placeholder="请输入当前密码" disabled></el-input>
+        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
+          <el-input v-model="editForm.deviceName" placeholder="请输入设备名字" disabled></el-input>
         </el-form-item>
-        <el-form-item label="新密码" prop="newpassword" label-width="120px">
-          <el-input v-model="editForm.newpassword" placeholder="请输入新密码"></el-input>
+        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
+          <el-input v-model="editForm.deviceAddress" placeholder="请输入地址"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
+          <el-input v-model="editForm.deviceDescribe" placeholder="请输入描述"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="resetForm('editRuleForm')">取 消</el-button>
-        <el-button size="small" type="primary" @click="editSubmitForm('addRuleForm')">确 定</el-button>
+        <el-button size="small" type="primary" @click="editSubmitForm('editRuleForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="新增远端机" :visible.sync="addVisibleFar">
+      <el-form :model="addForm" :rules="addRules" ref="addRuleFormFar">
+        <el-form-item label="设备ID" prop="deviceId" label-width="120px">
+          <el-input v-model.number="addFormFar.deviceId" placeholder="请输入设备ID"></el-input>
+        </el-form-item>
+        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
+          <el-input v-model="addFormFar.deviceName" placeholder="请输入设备名称"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
+          <el-input v-model="addFormFar.deviceAddress" placeholder="请输入地址"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
+          <el-input v-model="addFormFar.deviceDescribe" placeholder="请输入描述"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="resetForm('addRuleFormFar')">取 消</el-button>
+        <el-button size="small" type="primary" @click="addSubmitFormFar('addRuleFormFar')">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="修改远端机" :visible.sync="editVisibleFar">
+      <el-form :model="editForm" :rules="editRules" ref="editRuleFormFar">
+        <el-form-item label="设备ID" prop="deviceId" label-width="120px">
+          <el-input v-model="editFormFar.deviceId" placeholder="请输入设备ID" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
+          <el-input v-model="editFormFar.deviceName" placeholder="请输入设备名字" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
+          <el-input v-model="editFormFar.deviceAddress" placeholder="请输入地址"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
+          <el-input v-model="editFormFar.deviceDescribe" placeholder="请输入描述"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="resetForm('editRuleFormFar')">取 消</el-button>
+        <el-button size="small" type="primary" @click="editSubmitFormFar('editRuleFormFar')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -128,63 +244,86 @@
 
 <script>
 import { tableHeight } from '@/mixins/tableHeight'
-import { userList, userAdd, userUpdate, userDelete } from '@/api/user'
+import { listNear, listFar, addNear, delNear, userAdd, userUpdate, userDelete } from '@/api/equipment'
 export default {
   name: 'user',
   mixins: [tableHeight],
   data () {
-    var validateNewpassword = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value === this.editForm.userPassword) {
-        callback(new Error('输入新密码不能相同!'))
-      } else {
-        callback()
-      }
-    }
     return {
       pageSize: 10,
       currentPage: 1,
       total: 0,
       tableData: [],
-      addVisible: false,
+      pageSizeFar: 10,
+      currentPageFar: 1,
+      totalFar: 0,
+      tableDataFar: [],
       addRules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
+        deviceId: [
+          { required: true, message: '请输入设备ID', trigger: 'blur' },
+          { type: 'number', message: '设备ID必须为数字值', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+        deviceName: [
+          { required: true, message: '请输入设备名称', trigger: 'blur' }
         ]
       },
+      editRules: {
+        deviceId: [
+          { required: true, message: '请输入设备ID', trigger: 'blur' },
+          { type: 'number', message: '设备ID必须为数字值', trigger: 'blur' }
+        ],
+        deviceName: [
+          { required: true, message: '请输入设备名称', trigger: 'blur' }
+        ]
+      },
+      addVisible: false,
+      addVisibleFar: false,
       addForm: {
-        username: '',
-        password: ''
+        deviceId: '',
+        deviceName: '',
+        deviceAddress: '',
+        deviceDescribe: ''
+      },
+      addFormFar: {
+        deviceId: '',
+        deviceName: '',
+        deviceAddress: '',
+        deviceDescribe: ''
       },
       editVisible: false,
-      editRules: {
-        userName: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
-        ],
-        userPassword: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
-        ],
-        newpassword: [
-          { required: true, validator: validateNewpassword, trigger: 'blur' }
-        ]
-      },
+      editVisibleFar: false,
       editForm: {
-        username: '',
-        password: '',
-        newpassword: ''
+        deviceId: '',
+        deviceName: '',
+        deviceAddress: '',
+        deviceDescribe: ''
+      },
+      editFormFar: {
+        deviceId: '',
+        deviceName: '',
+        deviceAddress: '',
+        deviceDescribe: ''
       }
     }
   },
   created () {
+    this.$nextTick(() => {
+      this.setTableHeight(163, 'pageHeight')
+    })
     this.getTable()
+    this.getTableFar()
+    this.$nextTick(() => {
+      this.$websocket.getWebSocket().onmessage = this.websocketonmessage
+    })
   },
   methods: {
+    websocketonmessage (e) {
+      const redata = JSON.parse(e.data)
+      console.log(redata, 9999)
+    },
+    // ========== 近
     getTable () {
-      userList({
+      listNear({
         page: this.currentPage,
         size: this.pageSize
       }).then(res => {
@@ -199,14 +338,14 @@ export default {
       this.editForm = item
     },
     handleDelete (id) {
-      this.$confirm('是否要删除此用户名？', '提示', {
+      this.$confirm('是否要删除此近端机？', '提示', {
         type: 'error'
       }).then(() => {
         // this.$message({
         //   type: 'success',
         //   message: '删除成功!'
         // })
-        userDelete({
+        delNear({
           id: id
         }).then(res => {
           const data = res.data
@@ -234,7 +373,7 @@ export default {
     addSubmitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          userAdd(this.addForm)
+          addNear(this.addForm)
             .then(res => {
               const data = res.data
               console.log(data)
@@ -274,9 +413,104 @@ export default {
         }
       })
     },
+    // ========== 远
+    getTableFar () {
+      listFar({
+        page: this.currentPageFar,
+        size: this.pageSizeFar
+      }).then(res => {
+        const data = res.data
+        console.log(data)
+        this.tableDataFar = data.list
+        this.totalFar = data.total
+      })
+    },
+    handleEditFar (item) {
+      this.editVisible = true
+      this.editForm = item
+    },
+    handleDeleteFar (id) {
+      this.$confirm('是否要删除此用户名？', '提示', {
+        type: 'error'
+      }).then(() => {
+        // this.$message({
+        //   type: 'success',
+        //   message: '删除成功!'
+        // })
+        userDelete({
+          id: id
+        }).then(res => {
+          const data = res.data
+          console.log(data)
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.getTableFar()
+        })
+      }).catch(() => {
+        // 点击确定的操作(调用接口)
+      })
+    },
+    handleSizeChangeFar (val) {
+      this.pageSizeFar = val
+      this.getTableFar()
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChangeFar (val) {
+      this.currentPageFar = val
+      this.getTableFar()
+      console.log(`当前页: ${val}`)
+    },
+    addSubmitFormFar (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          userAdd(this.addForm)
+            .then(res => {
+              const data = res.data
+              console.log(data)
+              this.$message({
+                message: res.message,
+                type: 'success'
+              })
+              this.resetForm('addRuleFormFar')
+              this.getTable()
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    editSubmitFormFar (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          userUpdate({
+            username: this.editForm.userName,
+            password: this.editForm.userPassword,
+            newpassword: this.editForm.newpassword
+          }).then(res => {
+            const data = res.data
+            console.log(data)
+            this.$message({
+              message: res.message,
+              type: 'success'
+            })
+            this.resetForm('editRuleFormFar')
+            this.getTableFar()
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    // ==========
     resetForm (formName) {
       this.addVisible = false
       this.editVisible = false
+      this.addVisibleFar = false
+      this.editVisibleFar = false
       this.$refs[formName].resetFields()
     }
   }
