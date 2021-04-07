@@ -22,6 +22,10 @@ export const ws = {
         this.notifyList = []
       }
     },
+    websocketonmessage (e) {
+      const redata = JSON.parse(e.data)
+      this.websocketonMessageAll(redata)
+    },
     websocketonMessageAll (redata) {
       if (redata.code === 500) {
         this.$message.error(redata.msg)

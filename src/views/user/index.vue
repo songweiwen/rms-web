@@ -184,10 +184,6 @@ export default {
     this.getTable()
   },
   methods: {
-    websocketonmessage (e) {
-      const redata = JSON.parse(e.data)
-      this.websocketonMessageAll(redata)
-    },
     getTable () {
       userList({
         page: this.currentPage,

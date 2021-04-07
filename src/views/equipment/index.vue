@@ -266,12 +266,13 @@
 </template>
 
 <script>
+import { ws } from '@/mixins/webSocket'
 import { tableHeight } from '@/mixins/tableHeight'
 import { getTree } from '@/api/get'
 import { listNear, listFar, addNear, editNear, delNear, addFar, editFar, delFar } from '@/api/equipment'
 export default {
   name: 'user',
-  mixins: [tableHeight],
+  mixins: [tableHeight, ws],
   data () {
     return {
       pageHeight: 500,
@@ -364,10 +365,6 @@ export default {
           })
         })
       })
-    },
-    websocketonmessage (e) {
-      const redata = JSON.parse(e.data)
-      this.websocketonMessageAll(redata)
     },
     // ========== 近
     getTable () {
