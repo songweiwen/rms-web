@@ -461,13 +461,13 @@ export default {
       })
     },
     onQueryNear (bool) { // 近端机读取
-      this.settingBool = bool || true
-      if (!this.settingBool) {
-        this.WSloadingType = '读取'
-        this.WSloadingState = 0
-        this.WSloading = true
-        this.WSloadingText = '读取中'
-      }
+      // this.settingBool = bool || true
+      // if (!this.settingBool) {
+      this.WSloadingType = '读取'
+      this.WSloadingState = 0
+      this.WSloading = true
+      this.WSloadingText = '读取中'
+      // }
       this.$webSocket.Send({
         commandString: 'RN',
         nearDevice: {
@@ -476,13 +476,13 @@ export default {
       })
     },
     onQueryFar (bool) { // 远端机读取
-      this.settingBool = bool || true
-      if (!this.settingBool) {
-        this.WSloadingType = '读取'
-        this.WSloadingState = 0
-        this.WSloading = true
-        this.WSloadingText = '读取中'
-      }
+      // this.settingBool = bool || true
+      // if (!this.settingBool) {
+      this.WSloadingType = '读取'
+      this.WSloadingState = 0
+      this.WSloading = true
+      this.WSloadingText = '读取中'
+      // }
       this.$webSocket.Send({
         commandString: 'RF',
         farDevice: {
@@ -522,7 +522,7 @@ export default {
       } else if (this.dataNear.device.shuaijianzhi > 32 || this.dataNear.device.shuaijianzhi < 0) {
         this.showShuaijianzhi = true
       } else {
-        this.settingBool = bool
+        // this.settingBool = bool
         this.WSloadingType = '设置'
         this.WSloadingState = 0
         this.WSloading = true
@@ -544,7 +544,7 @@ export default {
       } else if (this.dataFar.device.shangxingshuajianzhi === '') {
         this.showShangxingshuajianzhi = true
       } else {
-        this.settingBool = bool
+        // this.settingBool = bool
         this.WSloadingType = '设置'
         this.WSloadingState = 0
         this.WSloading = true
@@ -571,24 +571,24 @@ export default {
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
-        if (!this.settingBool) {
-          this.$message({
-            message: '读取成功',
-            type: 'success'
-          })
-          this.WSloadingText = '读取完毕'
-        }
+        // if (!this.settingBool) {
+        this.$message({
+          message: '读取成功',
+          type: 'success'
+        })
+        this.WSloadingText = '读取完毕'
+        // }
       } else if (redata.commandString === 'SRF') { // 读取远端机
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
         }
-        if (!this.settingBool) {
-          this.$message({
-            message: '读取成功',
-            type: 'success'
-          })
-          this.WSloadingText = '读取完毕'
-        }
+        // if (!this.settingBool) {
+        this.$message({
+          message: '读取成功',
+          type: 'success'
+        })
+        this.WSloadingText = '读取完毕'
+        // }
       } else if (redata.commandString === 'SRNV') { // 近端机 版本
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
@@ -616,7 +616,7 @@ export default {
           type: 'success'
         })
         this.WSloadingText = '设置完毕'
-        this.onQueryNear()// 近端机读取
+        // this.onQueryNear()// 近端机读取
       } else if (redata.commandString === 'SSF') { // 远端机 设置
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
@@ -626,7 +626,7 @@ export default {
           type: 'success'
         })
         this.WSloadingText = '设置完毕'
-        this.onQueryFar()// 远端机读取
+        // this.onQueryFar()// 远端机读取
       }
     },
     handleNodeClick (data) {
