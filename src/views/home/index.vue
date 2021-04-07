@@ -1,11 +1,6 @@
 <template>
   <div class="page">
-    <div class="page-container"
-      v-loading="WSloading"
-      :element-loading-text="WSloadingText"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)"
-    >
+    <div class="page-container">
       <div class="home">
         <div class="home-left">
 
@@ -17,7 +12,11 @@
           :props="defaultProps"
           @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
-              <span>{{ node.label }}</span>
+              <span>
+                <i v-if="data.level===1" class="el-icon-s-help"></i>
+                <i v-else class="el-icon-s-platform"></i>
+                {{ node.label }}
+              </span>
               <!-- {{data.online}} -->
               <span>
                 <!-- {{node}} -->
@@ -27,7 +26,7 @@
                   @click="() => append(data)">
                   Append
                 </el-button> -->
-                <span v-if="data.online===1" class="el-tag el-tag--danger el-tag--dark"></span>
+                <span v-if="data.alert===1" class="el-tag el-tag--danger el-tag--dark"></span>
                 <!-- 1 -->
                 <!-- <el-tag v-if="data.online===1" type="danger" effect="dark"></el-tag>  -->
                 <!-- <el-tag v-if="node.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
@@ -37,21 +36,26 @@
             </span>
           </el-tree>
         </div>
-        <div class="home-right" style="width: 800px;" v-show="!deviceId">
-          <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset="">
+        <div class="home-right" style="width: 100%;" v-show="!deviceId">
+          <!-- <img style="width: 100%;" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset=""> -->
+          <div class="viewimg-left" @mousewheel.prevent="rollImg">
+            <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
+          </div>
+
         </div>
         <div class="home-right" style="width: 800px;" v-show="deviceId">
           <div class="flex-container" v-show="homeType===1">
             <div class="flex-item m-r-md">
               在线状态：
-              <el-tag v-if="dataNear.online==='在线'" type="success" effect="dark">
+              <el-tag v-if="dataNear.device.online===1" type="success" effect="dark">
                 在线
               </el-tag>
-              <el-tag v-else-if="dataNear.online==='不在线'" type="info" effect="dark"> 离线</el-tag>
-              <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag>
+              <el-tag v-else-if="dataNear.device.online===0" type="info" effect="dark"> 离线</el-tag>
+              <!-- <el-tag v-else type="info" effect="dark"> 未知</el-tag> -->
+              <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
-              <el-button type="primary" size="small" @click="onQueryNear">
+              <el-button :loading="WSloading" type="primary" size="small" @click="onQueryNear">
                 手动检测
               </el-button>
               <el-button type="danger" size="small">
@@ -62,14 +66,14 @@
           <div class="flex-container" v-show="homeType===2">
             <div class="flex-item m-r-md">
               在线状态：
-              <el-tag v-if="dataFar.online==='在线'" type="success" effect="dark">
+              <el-tag v-if="dataFar.device.online===1" type="success" effect="dark">
                 在线
               </el-tag>
-              <el-tag v-else-if="dataFar.online==='不在线'" type="info" effect="dark"> 离线</el-tag>
-              <el-tag v-else-if="dataFar.online==='故障'" type="danger" effect="dark">故障</el-tag>
+              <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
+              <!-- <el-tag v-else-if="dataFar.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
-              <el-button type="primary" size="small" @click="onQueryFar">
+              <el-button :loading="WSloading" type="primary" size="small" @click="onQueryFar">
                 手动检测
               </el-button>
               <el-button type="danger" size="small">
@@ -85,6 +89,26 @@
                 <span>
                   {{dataNear.device.deviceAddress}}
                 </span>
+                <div v-show="testing" class="page-title__state">
+                  <el-tag
+                    v-if="WSloadingState===0"
+                    type="warning">
+                    <i class="el-icon-loading"></i>
+                    {{WSloadingText}}
+                  </el-tag>
+                  <el-tag
+                    v-else-if="WSloadingState===1"
+                    type="success">
+                    <i class="el-icon-check"></i>
+                    {{WSloadingText}}
+                  </el-tag>
+                  <el-tag
+                    v-else-if="WSloadingState===2"
+                    type="danger">
+                    <i class="el-icon-warning-outline"></i>
+                    {{WSloadingText}}
+                  </el-tag>
+                </div>
               </div>
             </div>
             <div class="home-main">
@@ -101,10 +125,14 @@
                   收光功率状态
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataNear.device.shouguanggonglv===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataNear.device.shouguanggonglv===1"  type="danger" effect="dark"></el-tag>
-                  <el-tag v-else type="info" effect="dark"></el-tag>
-
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataNear.device.shouguanggonglv===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataNear.device.shouguanggonglv===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -112,10 +140,14 @@
                   发光功率状态
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataNear.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataNear.device.faguanggonglv===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
-
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataNear.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataNear.device.faguanggonglv===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -123,9 +155,14 @@
                   UPS警告
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataNear.device.upsgaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataNear.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataNear.device.upsgaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataNear.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -156,6 +193,26 @@
                 <span>
                   {{dataFar.device.deviceAddress}}
                 </span>
+                <div v-show="testing" class="page-title__state">
+                  <el-tag
+                    v-if="WSloadingState===0"
+                    type="warning">
+                    <i class="el-icon-loading"></i>
+                    {{WSloadingText}}
+                  </el-tag>
+                  <el-tag
+                    v-else-if="WSloadingState===1"
+                    type="success">
+                    <i class="el-icon-check"></i>
+                    {{WSloadingText}}
+                  </el-tag>
+                  <el-tag
+                    v-else-if="WSloadingState===2"
+                    type="danger">
+                    <i class="el-icon-warning-outline"></i>
+                    {{WSloadingText}}
+                  </el-tag>
+                </div>
               </div>
             </div>
             <div class="home-main" v-show="homeType===2">
@@ -172,10 +229,14 @@
                   发光警告
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.faguanggaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.faguanggaojing===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
-
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.faguanggaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.faguanggaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -183,9 +244,14 @@
                   收光警告
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.shouguanggaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.shouguanggaojing===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.shouguanggaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.shouguanggaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -193,9 +259,14 @@
                   功放状态-故障告警
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.guzhanggaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.guzhanggaojing===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.guzhanggaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.guzhanggaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -203,9 +274,14 @@
                   功放状态-驻波比告警
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.zhubobigaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.zhubobigaojing===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.zhubobigaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.zhubobigaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -213,9 +289,14 @@
                   功放状态-过温告警
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.guowengaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.guowengaojing===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.guowengaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.guowengaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -223,9 +304,14 @@
                   功放状态-过功率告警
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.guogonglvgaojing===0" type="success" effect="dark"></el-tag>
-                  <!-- <el-tag v-else-if="dataFar.device.guogonglvgaojing===2"  type="info" effect="dark"></el-tag> -->
-                  <el-tag v-else-if="dataFar.device.guogonglvgaojing===1" type="danger" effect="dark"></el-tag>
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.guogonglvgaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.guogonglvgaojing===1" type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -233,9 +319,14 @@
                   上行故障
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.shangxingguzhang===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.shangxingguzhang===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.shangxingguzhang===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.shangxingguzhang===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -243,9 +334,14 @@
                   UPS警告
                 </el-col>
                 <el-col :span="12">
-                  <el-tag v-if="dataFar.device.upsgaojing===0" type="success" effect="dark"></el-tag>
-                  <el-tag v-else-if="dataFar.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
-                  <!-- <el-tag v-else type="danger" effect="dark"></el-tag> -->
+                  <div v-show="WSloading">
+                    <el-tag type="warning" effect="dark"></el-tag>
+                  </div>
+                  <div v-show="!WSloading">
+                    <el-tag v-if="dataFar.device.upsgaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag v-else-if="dataFar.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag v-else type="info" effect="dark"></el-tag>
+                  </div>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -276,12 +372,17 @@
 </template>
 
 <script>
+import { ws } from '@/mixins/webSocket'
 import { getTree } from '@/api/get'
 import { getDetailFar, getDetailNear } from '@/api/home'
 export default {
   name: 'home',
+  // overTimeInit
+  mixins: [ws],
   data () {
     return {
+      overTime: null,
+      WSloadingState: 0,
       WSloading: false,
       WSloadingText: '',
       treeData: [],
@@ -319,9 +420,14 @@ export default {
     //   })
     // })
     this.$nextTick(() => {
-      this.$websocket.getWebSocket().onmessage = this.websocketonmessage
       this.getTree()
+      // this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
     })
+  },
+  computed: {
+    testing () {
+      return this.WSloading || this.WSloadingText
+    }
   },
   methods: {
     getTree () {
@@ -341,9 +447,10 @@ export default {
       })
     },
     onQueryNear () { // 近端机查询
+      // this.overTimeRun()
       this.WSloading = true
-      this.WSloadingText = '检测中...'
-      this.$websocket.Send({
+      this.WSloadingText = '检测中'
+      this.$webSocket.Send({
         commandString: 'CN',
         nearDevice: {
           deviceId: this.deviceId
@@ -351,9 +458,10 @@ export default {
       })
     },
     onQueryFar () { // 远端机查询
+      // this.overTimeRun()
       this.WSloading = true
-      this.WSloadingText = '检测中...'
-      this.$websocket.Send({
+      this.WSloadingText = '检测中'
+      this.$webSocket.Send({
         commandString: 'CF',
         farDevice: {
           deviceId: this.deviceId,
@@ -361,34 +469,37 @@ export default {
         }
       })
     },
-    websocketonmessage (e) {
+    websocketonMessage (e) {
+      this.WSloading = false
+      this.clearOverTime()
+      // this.overTimeClear()
+      // this.$webSocket.getStatus()
       const redata = JSON.parse(e.data)
       console.log(redata, 9999)
-      if (redata.code === 500) {
-        this.$message.error('连接发生了错误，请联系管理员')
-      }
+      this.websocketonMessageAll(redata)
+
       // 近端机报警  更新树状图的报警灯泡
       if (redata.commandString === 'WN') {
         this.treeData.forEach(e => {
           if (e.deviceId === redata.nearDevice.deviceId) {
-            e.online = 1
+            e.alert = 1
             this.treeData = [...this.treeData]
           }
         })
-        if (this.dataNear.device.deviceId === redata.deviceId) {
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
       } else if (redata.commandString === 'WF') {
         // 远端机报警  更新树状图的报警灯泡
         this.treeData.forEach(e => {
-          e.children.forEach(o => {
-            if (o.deviceId === redata.farDevice.deviceId) {
-              o.online = 1
-              this.treeData = [...this.treeData]
-            }
-          })
+          // e.children.forEach(o => {
+          if (e.deviceId === redata.farDevice.deviceId) {
+            e.alert = 1
+            this.treeData = [...this.treeData]
+          }
+          // })
         })
-        if (this.dataFar.device.deviceId === redata.deviceId) {
+        if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
         }
       } else if (redata.commandString === 'TRN') {
@@ -396,12 +507,12 @@ export default {
         this.treeData.forEach(e => {
           e.children.forEach(o => {
             if (o.deviceId === redata.nearDevice.deviceId) {
-              o.online = 0
+              o.alert = 0
               this.treeData = [...this.treeData]
             }
           })
         })
-        if (this.dataNear.device.deviceId === redata.deviceId) {
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
       } else if (redata.commandString === 'TRF') {
@@ -409,24 +520,35 @@ export default {
         this.treeData.forEach(e => {
           e.children.forEach(o => {
             if (o.deviceId === redata.farDevice.deviceId) {
-              o.online = 0
+              o.alert = 0
               this.treeData = [...this.treeData]
             }
           })
         })
-        if (this.dataFar.device.deviceId === redata.deviceId) {
+        if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
         }
-      } else if (redata.commandString === 'CN') {
-        if (this.dataNear.device.deviceId === redata.deviceId) {
-          this.dataNear.device = redata.dataNear
+      } else if (redata.commandString === 'SCN') {
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
+          this.dataNear.device = redata.nearDevice
         }
-      } else if (redata.commandString === 'CF') {
-        if (this.dataFar.device.deviceId === redata.deviceId) {
-          this.dataFar.device = redata.dataFar
+        this.$message({
+          message: '检测成功',
+          type: 'success'
+        })
+        this.WSloadingState = 1
+        this.WSloadingText = '检测完毕'
+      } else if (redata.commandString === 'SCF') {
+        if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
+          this.dataFar.device = redata.farDevice
         }
+        this.$message({
+          message: '检测成功',
+          type: 'success'
+        })
+        this.WSloadingState = 1
+        this.WSloadingText = '检测完毕'
       }
-      this.WSloading = false
     },
     handleNodeClick (data) {
       this.homeType = data.level || 2
@@ -454,6 +576,76 @@ export default {
           this.loading = false
         })
       }
+    },
+    clearOverTime () {
+      clearTimeout(this.overTime)
+      this.overTime = null
+    },
+    move (e) {
+      e.preventDefault()
+      // 获取元素
+      var left = document.querySelector('.viewimg-left')
+      var img = document.querySelector('.viewimg-img')
+      var x = e.pageX - img.offsetLeft
+      var y = e.pageY - img.offsetTop
+      // 添加鼠标移动事件
+      left.addEventListener('mousemove', move)
+      function move (e) {
+        img.style.left = e.pageX - x + 'px'
+        img.style.top = e.pageY - y + 'px'
+      }
+      // 添加鼠标抬起事件，鼠标抬起，将事件移除
+      img.addEventListener('mouseup', function () {
+        left.removeEventListener('mousemove', move)
+      })
+      // 鼠标离开父级元素，把事件移除
+      left.addEventListener('mouseout', function () {
+        left.removeEventListener('mousemove', move)
+      })
+    },
+    // 缩放图片
+    rollImg () {
+      /* 获取当前页面的缩放比 若未设置zoom缩放比，则为默认100%，即1，原图大小 */
+
+      var zoom = parseInt(this.$refs.imgDiv.style.zoom) || 100
+      /* event.wheelDelta 获取滚轮滚动值并将滚动值叠加给缩放比zoom wheelDelta统一为±120，其中正数表示为向上滚动，负数表示向下滚动 */
+
+      zoom += event.wheelDelta / 12
+      /* 最小范围 和 最大范围 的图片缩放尺度 */
+
+      if (zoom >= 80 && zoom < 500) {
+        this.$refs.imgDiv.style.zoom = zoom + '%'
+      }
+      return false
+    }
+
+  },
+  watch: {
+    WSloading (val) {
+      if (val) {
+        this.overTime = setTimeout(() => {
+          this.WSloading = false
+          this.WSloadingState = 2
+          this.WSloadingText = '检测超时'
+          this.$message.error('检测超时')
+          // 近端机
+          this.dataNear.device.online = 0
+          this.dataNear.device.shouguanggonglv = 99
+          this.dataNear.device.faguanggonglv = 99
+          this.dataNear.device.upsgaojing = 99
+
+          // 远端机
+          this.dataFar.device.online = 0
+          this.dataFar.device.faguanggaojing = 99
+          this.dataFar.device.shouguanggaojing = 99
+          this.dataFar.device.guzhanggaojing = 99
+          this.dataFar.device.zhubobigaojing = 99
+          this.dataFar.device.guowengaojing = 99
+          this.dataFar.device.guogonglvgaojing = 99
+          this.dataFar.device.shangxingguzhang = 99
+          this.dataFar.device.upsgaojing = 99
+        }, 1000 * 2)
+      }
     }
   }
 }
@@ -476,4 +668,28 @@ export default {
       border-radius: 50%;
     }
   }
+
+  .home-right {
+    height: 100%;
+  }
+
+  .viewimg-left {
+    position: relative;
+    float: left;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    overflow: hidden;
+    background-color: #fff;
+  }
+
+  .viewimg-img {
+    position: absolute;
+    top: 5px;
+    left: 7px;
+    max-width: 923px;
+    max-height: 460px;
+    cursor: move;
+  }
+
 </style>

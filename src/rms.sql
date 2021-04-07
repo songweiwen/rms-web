@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 20/03/2021 23:41:06
+ Date: 31/03/2021 17:02:59
 */
 
 SET NAMES utf8mb4;
@@ -53,6 +53,17 @@ CREATE TABLE `rms_far_device` (
   `guogonglvgaojing` int NOT NULL DEFAULT '0' COMMENT '过功率告警',
   `shangxingguzhang` int NOT NULL DEFAULT '0' COMMENT '上行故障',
   `upsgaojing` int NOT NULL DEFAULT '0' COMMENT 'UPS告警',
+  `shuaijianzhi` int NOT NULL DEFAULT '0' COMMENT '光模块衰减值',
+  `shouguangzhi` int NOT NULL DEFAULT '0' COMMENT '收光功率值',
+  `gongfangshuaijianzhi` int NOT NULL DEFAULT '0' COMMENT '功放衰减值',
+  `xiaxingfanxiangzhi` int NOT NULL DEFAULT '0' COMMENT '下行反向功率',
+  `gongfangwenduzhi` int NOT NULL DEFAULT '0' COMMENT '功放温度',
+  `gongfangALCzhi` int NOT NULL DEFAULT '0' COMMENT '功放ALC值',
+  `zhubobizhi` int NOT NULL DEFAULT '0' COMMENT '驻波比',
+  `xiaxingqianxiangzhi` int NOT NULL DEFAULT '0' COMMENT '下行前向功率',
+  `shangxingshuajianzhi` int NOT NULL DEFAULT '0' COMMENT '上行衰减值',
+  `LNAzuidazhi` int NOT NULL DEFAULT '0' COMMENT 'LNA最大增益',
+  `online` int NOT NULL DEFAULT '0' COMMENT '在线状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
@@ -60,11 +71,11 @@ CREATE TABLE `rms_far_device` (
 -- Records of rms_far_device
 -- ----------------------------
 BEGIN;
-INSERT INTO `rms_far_device` VALUES (1, 1, '远端机01号', 10, 1, '达因瑞康公司', NULL, NULL, NULL, NULL, '2021-03-20 22:49:56', 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `rms_far_device` VALUES (2, 2, '远端机02号', 11, 1, '希电公司', NULL, NULL, NULL, NULL, '2021-03-20 22:49:57', 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `rms_far_device` VALUES (3, 3, '远端机03号', 12, 1, '物业公司', NULL, NULL, NULL, NULL, '2021-03-20 22:50:00', 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `rms_far_device` VALUES (4, 70, '远端机70号', 70, 2, '航天三院', NULL, NULL, NULL, NULL, '2021-03-20 22:50:01', 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `rms_far_device` VALUES (5, 71, '远端机71号', 71, 2, '装甲兵工程学院', NULL, NULL, NULL, NULL, '2021-03-20 22:50:02', 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_far_device` VALUES (1, 1, '远端机01号', 10, 1, '达因瑞康公司', '127.0.0.1', '127.0.0.1:59335', NULL, NULL, '2021-03-31 15:07:09', 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_far_device` VALUES (2, 2, '远端机02号', 11, 1, '希电公司', NULL, NULL, NULL, NULL, '2021-03-26 09:42:34', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_far_device` VALUES (3, 3, '远端机03号', 12, 1, '物业公司', NULL, NULL, NULL, NULL, '2021-03-26 09:42:37', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_far_device` VALUES (4, 70, '远端机70号', 70, 2, '航天三院', NULL, NULL, NULL, NULL, '2021-03-20 22:50:01', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_far_device` VALUES (5, 71, '远端机71号', 71, 2, '装甲兵工程学院', NULL, NULL, NULL, NULL, '2021-03-20 22:50:02', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 COMMIT;
 
 -- ----------------------------
@@ -85,16 +96,20 @@ CREATE TABLE `rms_near_device` (
   `shouguanggonglv` int NOT NULL DEFAULT '0' COMMENT '收光功率状态',
   `faguanggonglv` int NOT NULL DEFAULT '0' COMMENT '发光功率状态',
   `upsgaojing` int NOT NULL DEFAULT '0' COMMENT 'UPS告警',
+  `shuaijianzhi` int NOT NULL DEFAULT '0' COMMENT '光模块衰减值',
+  `shouguangzhi` int NOT NULL DEFAULT '0' COMMENT '收光功率值',
+  `online` int DEFAULT '0' COMMENT '在线状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of rms_near_device
 -- ----------------------------
 BEGIN;
-INSERT INTO `rms_near_device` VALUES (1, 1, '近端机01号', 1, '北京丰台区中核路', NULL, NULL, NULL, NULL, '2021-03-20 22:57:08', 0, 0, 0);
-INSERT INTO `rms_near_device` VALUES (2, 2, '近端机02号', 2, '北京市丰台区长辛店', NULL, NULL, NULL, NULL, '2021-03-20 22:57:08', 0, 0, 0);
-INSERT INTO `rms_near_device` VALUES (3, 3, '近端机03号', 3, '北京市东城区和平里', NULL, NULL, NULL, NULL, '2021-03-20 22:57:10', 0, 0, 0);
+INSERT INTO `rms_near_device` VALUES (1, 1, '近端机01号', 1, '北京丰台区中核路', '127.0.0.1', '127.0.0.1:61113', NULL, NULL, '2021-03-31 15:46:06', 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_near_device` VALUES (2, 2, '近端机02号', 2, '北京市丰台区长辛店', NULL, NULL, NULL, NULL, '2021-03-20 22:57:08', 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_near_device` VALUES (3, 3, '近端机03号', 3, '北京市东城区和平里', NULL, NULL, NULL, NULL, '2021-03-20 22:57:10', 0, 0, 0, 0, 0, 0);
+INSERT INTO `rms_near_device` VALUES (4, 123, '123', NULL, '', NULL, NULL, NULL, '', NULL, 0, 0, 0, 0, 0, 0);
 COMMIT;
 
 -- ----------------------------

@@ -6,7 +6,7 @@
           <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisible=true">增加</el-button>
           <!-- <el-button type="danger" size="mini">删除</el-button> -->
           <!-- <el-button type="warning" size="mini">角色详情</el-button> -->
-          <el-button type="danger" icon="el-icon-setting" size="mini">线路权限</el-button>
+          <!-- <el-button type="danger" icon="el-icon-setting" size="mini">线路权限</el-button> -->
           <!-- <el-button type="danger" size="mini">快速续期（30天）</el-button> -->
         </div>
         <div class="table-bd">
@@ -24,26 +24,28 @@
               label="用户名"
               align="center">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="userTime"
               label="有效期"
               align="center">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="userAdmin"
               label="巡检管理权限"
               align="center">
               <template slot-scope="scope">
                 <template>
-                  <el-tag size="medium">{{ scope.row.userAdmin }}</el-tag>
+                  <el-tag v-if="scope.row.userAdmin==='1'" size="medium">
+                    全部
+                  </el-tag>
                 </template>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="userRole"
               label="角色"
               align="center">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="userTime"
               label="更新时间"

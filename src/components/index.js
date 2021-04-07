@@ -1,9 +1,9 @@
-import card from './card'
+// import card from './card'
 // import wangeditor from './wangeditorAntd'
 // import jumpType from './jumpType'
 
 const components = [
-  card
+  // card
   // wangeditor,
   // jumpType
 ]

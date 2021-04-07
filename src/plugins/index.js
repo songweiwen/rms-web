@@ -4,5 +4,3 @@
 import './element-ui.js'
 
 import './js-cookie.js' // cookie
-
-import './sortablejs.js'

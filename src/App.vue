@@ -28,7 +28,6 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      this.$jsbridge.showView()
     })
     // const that = this
     // 禁止双指放大

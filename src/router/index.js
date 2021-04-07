@@ -46,6 +46,10 @@ const routes = [
       name: 'stateLog',
       component: () => import('@/views/stateLog/index.vue')
     }, {
+      path: 'settingParams',
+      name: 'settingParams',
+      component: () => import('@/views/settingParams/index.vue')
+    }, {
       path: 'settingLog',
       name: 'settingLog',
       component: () => import('@/views/settingLog/index.vue')
@@ -53,10 +57,6 @@ const routes = [
       path: 'site',
       name: 'site',
       component: () => import('@/views/site/index.vue')
-    }, {
-      path: 'line',
-      name: 'line',
-      component: () => import('@/views/line/index.vue')
     }, {
       path: 'address',
       name: 'address',

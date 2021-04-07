@@ -1,7 +1,7 @@
 /* eslint-disable */
 import store from '@/store'
-import { Message } from 'element-ui'
-
+import { Message, MessageBox } from 'element-ui'
+import Vue from 'vue'
 var url = 'ws://songweiwenceshi.oicp.io:50726/ws'
 var ws
 var tt
@@ -59,8 +59,10 @@ var websocket = {
       //   message: '连接成功',
       //   type: 'success'
       // })
-      ws.send( JSON.stringify({ commandString: 'LG', userName: userInfo.userName }))
+      ws.send( JSON.stringify({ commandString: 'LG', userName: userInfo.userName, type: 'prod' }))
       heartCheck.start()
+      // let vm = new Vue();
+      // console.log(vm);
     }
 
     ws.onerror = function (e) {
@@ -73,14 +75,49 @@ var websocket = {
     }
   },
   Send: function (data) {
-    const msg = JSON.stringify(data)
+    var userInfo = store.getters.userInfo.userInfo.userInfo
+    const params = {
+      userName: userInfo.userName
+    }
+    if (process.env.NODE_ENV === "development") {
+      // alert("开发环境");
+      params.type= 'test' 
+    }else {
+      // alert("生产环境");
+      params.type= 'prod' 
+    }
+    const msg = JSON.stringify(Object.assign(params, data))
     console.log('发送消息：' + msg)
+    // window.overTime = window.setTimeout(() => {
+    //   MessageBox.alert('请求超时了！', '连接警告', {
+    //     confirmButtonText: '确定',
+    //     type: 'error',
+    //     callback: action => {
+    //       location.reload();
+    //     }
+    //   })
+    // }, 1000 * 10)
+    // overTime = setTimeout(() => {
+    //   MessageBox.alert('请求超时了！', '连接警告', {
+    //     confirmButtonText: '确定',
+    //     type: 'error',
+    //     callback: action => {
+    //       overTime = null
+    //       clearTimeout(overTime)
+    //       location.reload();
+    //     }
+    //   });
+    //   overTime = null
+    //   clearTimeout(overTime)
+    // }, 1000*10);
     ws.send(msg)
   },
   getWebSocket () {
     return ws
   },
   getStatus () {
+    // window.clearTimeout(window.overTime)
+    // window.overTime = null
     if (ws.readyState === 0) {
       return '未连接'
     } else if (ws.readyState === 1) {
@@ -140,7 +177,8 @@ var heartCheck = {
       // 这里发送一个心跳，后端收到后，返回一个心跳消息，
       // onmessage拿到返回的心跳就说明连接正常
       console.log('心跳检测...')
-      ws.send(JSON.stringify({"HeartBeat": 0, "username": userInfo.userName }))
+      // "HeartBeat": 0,
+      ws.send(JSON.stringify({"username": userInfo.userName }))
       self.serverTimeoutObj = setTimeout(function () {
         if (ws.readyState !== 1) {
           ws.close()

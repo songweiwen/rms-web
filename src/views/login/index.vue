@@ -12,6 +12,7 @@
             v-model="form.username"
             placeholder="用户名"
             allow-clear
+            prefix-icon="el-icon-user"
           >
           </el-input>
         </el-form-item>
@@ -19,7 +20,8 @@
           <el-input type="password"
             v-model="form.password"
             placeholder="密码"
-            autocomplete="off"></el-input>
+            autocomplete="off"
+            prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
         <!-- <el-form-item  prop="vercode">
           <el-row :gutter="8">

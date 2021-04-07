@@ -88,7 +88,7 @@ export default {
         数据管理: '/data',
         // 线路: '/line',
         // 地址: '/address',
-        设置参数: '/setting',
+        设置参数: '/settingParams',
         用户管理: '/user'
       }
     }
@@ -102,29 +102,8 @@ export default {
 
     console.log(this.$route)
     this.$nextTick(() => {
-      this.$websocket.Init()
-      this.$websocket.getWebSocket().onmessage = this.websocketonmessage
+      this.$webSocket.Init()
     })
-    // this.$websocket.getWebSocket().onopen = () => {
-    //   console.log(1231412)
-    //   this.$websocket.Send({ commandString: 'LG', userName: 'admin' })
-    // }
-    // this.$websocket.Onopen(
-    // )
-    // for (const key in this.menuUrl) {
-    //   console.log(key)
-    //   for (let i = 0; i < this.menuData.length; i++) {
-    //     const e = this.menuData[i]
-    //     if (condition) {
-
-    //     }
-    //     // if (e.webTitle === key) {
-    //     //   console.log(i)
-    //     //   this.menuDefault = String(i)
-    //     //   break
-    //     // }
-    //   }
-    // }
     for (const key in this.menuUrl) {
       if (this.menuUrl[key] === this.$route.path) {
         for (let i = 0; i < this.menuData.length; i++) {
@@ -145,44 +124,6 @@ export default {
     }
   },
   methods: {
-    websocketonmessage (e) {
-      const redata = JSON.parse(e.data)
-      if (redata.code === 500) {
-        this.$message.error('连接发生了错误，请联系管理员')
-      }
-      // 近端机报警  全局提示
-      if (redata.commandString === 'WN') {
-        this.$notify.error({
-          title: `${redata.nearDevice.deviceName}报警！`,
-          message: `报警时间：${redata.nearDevice.deviceTime}`,
-          duration: 0
-        })
-      } else if (redata.commandString === 'WF') {
-      // 远端机报警  全局提示
-        this.$notify.error({
-          title: `${redata.farDevice.deviceName}报警！`,
-          message: `报警时间：${redata.farDevice.deviceTime}`,
-          duration: 0
-        })
-      } else if (redata.commandString === 'TRN') {
-      // 近端机修复故障  全局提示
-        this.$notify.error({
-          title: `${redata.nearDevice.deviceName}修复故障！`,
-          message: `修复时间：${redata.nearDevice.deviceTime}`,
-          duration: 0,
-          type: 'success'
-        })
-      } else if (redata.commandString === 'TRF') {
-      // 远端机修复故障  全局提示
-        this.$notify.error({
-          title: `${redata.farDevice.deviceName}修复故障！`,
-          message: `修复时间：${redata.farDevice.deviceTime}`,
-          duration: 0,
-          type: 'success'
-        })
-      }
-      console.log(redata.commandString, 88888)
-    },
     onMenu (index, indexPath) {
       this.$router.push({ path: this.menuUrl[this.menuData[index].webTitle] })
       console.log(index, indexPath)
@@ -219,15 +160,15 @@ export default {
 
   .el-menu {
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
     width: 84%;
     height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
     background-color: #001529;
     border-bottom: none !important;
   }
 
-  .el-menu--horizontal>.el-menu-item {
+  .el-menu--horizontal > .el-menu-item {
     flex: 1;
     float: none;
     max-width: 140px;
@@ -235,7 +176,8 @@ export default {
   }
 
   .el-main {
-    padding: 14px;
+    height: 100%;
+    padding: 16px;
     background-color: #f1f2f5;
   }
 

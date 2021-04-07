@@ -3,6 +3,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 // import { Loading } from 'element-ui'
 import Vue from 'vue'
 import {
+  Alert,
   Aside,
   Header,
   MenuItemGroup,
@@ -44,6 +45,7 @@ import {
 import locale from 'element-ui/lib/locale/lang/en'
 
 const components = [
+  Alert,
   Aside,
   Header,
   MenuItemGroup,

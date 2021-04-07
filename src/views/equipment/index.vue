@@ -28,14 +28,14 @@
                   label="地址"
                   align="center">
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                   prop="deviceIp"
                   label="IP地址"
                   align="center">
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                   prop="devicePort"
-                  label="端口"
+                  label="IP信息"
                   align="center">
                 </el-table-column>
                 <el-table-column
@@ -103,14 +103,14 @@
                   label="地址"
                   align="center">
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                   prop="deviceIp"
                   label="IP地址"
                   align="center">
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                   prop="devicePort"
-                  label="端口"
+                  label="IP信息"
                   align="center">
                 </el-table-column>
                 <el-table-column
@@ -183,7 +183,7 @@
           <el-input v-model="editForm.deviceId" placeholder="请输入设备ID" disabled></el-input>
         </el-form-item>
         <el-form-item label="设备名字" prop="deviceName" label-width="120px">
-          <el-input v-model="editForm.deviceName" placeholder="请输入设备名字" disabled></el-input>
+          <el-input v-model="editForm.deviceName" placeholder="请输入设备名字"></el-input>
         </el-form-item>
         <el-form-item label="地址" prop="deviceAddress" label-width="120px">
           <el-input v-model="editForm.deviceAddress" placeholder="请输入地址"></el-input>
@@ -199,12 +199,22 @@
     </el-dialog>
 
     <el-dialog title="新增远端机" :visible.sync="addVisibleFar">
-      <el-form :model="addForm" :rules="addRules" ref="addRuleFormFar">
+      <el-form :model="addFormFar" :rules="addRules" ref="addRuleFormFar">
         <el-form-item label="设备ID" prop="deviceId" label-width="120px">
           <el-input v-model.number="addFormFar.deviceId" placeholder="请输入设备ID"></el-input>
         </el-form-item>
         <el-form-item label="设备名字" prop="deviceName" label-width="120px">
           <el-input v-model="addFormFar.deviceName" placeholder="请输入设备名称"></el-input>
+        </el-form-item>
+        <el-form-item label="归属于近端机" prop="deviceNearId" label-width="120px">
+          <el-select v-model="addFormFar.deviceNearId" placeholder="请选择近端机">
+            <el-option
+              v-for="item in treeData"
+              :key="item.id"
+              :label="item.deviceName"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="地址" prop="deviceAddress" label-width="120px">
           <el-input v-model="addFormFar.deviceAddress" placeholder="请输入地址"></el-input>
@@ -220,12 +230,22 @@
     </el-dialog>
 
     <el-dialog title="修改远端机" :visible.sync="editVisibleFar">
-      <el-form :model="editForm" :rules="editRules" ref="editRuleFormFar">
+      <el-form :model="editFormFar" :rules="editRules" ref="editRuleFormFar">
         <el-form-item label="设备ID" prop="deviceId" label-width="120px">
           <el-input v-model="editFormFar.deviceId" placeholder="请输入设备ID" disabled></el-input>
         </el-form-item>
         <el-form-item label="设备名字" prop="deviceName" label-width="120px">
-          <el-input v-model="editFormFar.deviceName" placeholder="请输入设备名字" disabled></el-input>
+          <el-input v-model="editFormFar.deviceName" placeholder="请输入设备名字"></el-input>
+        </el-form-item>
+        <el-form-item label="归属于近端机" prop="deviceNearId" label-width="120px">
+          <el-select v-model="editFormFar.deviceNearId" placeholder="请选择近端机">
+            <el-option
+              v-for="item in treeData"
+              :key="item.id"
+              :label="item.deviceName"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="地址" prop="deviceAddress" label-width="120px">
           <el-input v-model="editFormFar.deviceAddress" placeholder="请输入地址"></el-input>
@@ -244,12 +264,15 @@
 
 <script>
 import { tableHeight } from '@/mixins/tableHeight'
-import { listNear, listFar, addNear, delNear, userAdd, userUpdate, userDelete } from '@/api/equipment'
+import { getTree } from '@/api/get'
+import { listNear, listFar, addNear, editNear, delNear, addFar, editFar, delFar } from '@/api/equipment'
 export default {
   name: 'user',
   mixins: [tableHeight],
   data () {
     return {
+      pageHeight: 500,
+      treeData: [],
       pageSize: 10,
       currentPage: 1,
       total: 0,
@@ -265,6 +288,9 @@ export default {
         ],
         deviceName: [
           { required: true, message: '请输入设备名称', trigger: 'blur' }
+        ],
+        deviceNearId: [
+          { required: true, message: '请选择近端机', trigger: 'change' }
         ]
       },
       editRules: {
@@ -274,6 +300,9 @@ export default {
         ],
         deviceName: [
           { required: true, message: '请输入设备名称', trigger: 'blur' }
+        ],
+        deviceNearId: [
+          { required: true, message: '请选择近端机', trigger: 'change' }
         ]
       },
       addVisible: false,
@@ -287,6 +316,7 @@ export default {
       addFormFar: {
         deviceId: '',
         deviceName: '',
+        deviceNearId: '',
         deviceAddress: '',
         deviceDescribe: ''
       },
@@ -301,6 +331,7 @@ export default {
       editFormFar: {
         deviceId: '',
         deviceName: '',
+        deviceNearId: '',
         deviceAddress: '',
         deviceDescribe: ''
       }
@@ -312,14 +343,28 @@ export default {
     })
     this.getTable()
     this.getTableFar()
-    this.$nextTick(() => {
-      this.$websocket.getWebSocket().onmessage = this.websocketonmessage
-    })
+    this.getTree()
   },
   methods: {
+    getTree () {
+      getTree().then(res => {
+        console.log(res)
+        const treeData = res.data
+        treeData.forEach(e => {
+          this.treeData.push({
+            deviceName: e.near.deviceName,
+            deviceId: e.near.deviceId,
+            id: e.near.id,
+            deviceAddress: e.near.deviceAddress,
+            level: 1,
+            children: e.far
+          })
+        })
+      })
+    },
     websocketonmessage (e) {
       const redata = JSON.parse(e.data)
-      console.log(redata, 9999)
+      this.websocketonMessageAll(redata)
     },
     // ========== 近
     getTable () {
@@ -341,10 +386,6 @@ export default {
       this.$confirm('是否要删除此近端机？', '提示', {
         type: 'error'
       }).then(() => {
-        // this.$message({
-        //   type: 'success',
-        //   message: '删除成功!'
-        // })
         delNear({
           id: id
         }).then(res => {
@@ -378,7 +419,7 @@ export default {
               const data = res.data
               console.log(data)
               this.$message({
-                message: res.message,
+                message: '添加成功', // res.message
                 type: 'success'
               })
               this.resetForm('addRuleForm')
@@ -393,15 +434,21 @@ export default {
     editSubmitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          userUpdate({
-            username: this.editForm.userName,
-            password: this.editForm.userPassword,
-            newpassword: this.editForm.newpassword
+          editNear({
+            // 添加近端机 参数 deviceId  i       nt
+            // deviceName  string
+            // deviceAddress  string  可以为空
+            // deviceDescribe  string 可以为空
+            id: this.editForm.id,
+            deviceId: this.editForm.deviceId,
+            deviceName: this.editForm.deviceName,
+            deviceAddress: this.editForm.deviceAddress,
+            deviceDescribe: this.editForm.deviceDescribe
           }).then(res => {
             const data = res.data
             console.log(data)
             this.$message({
-              message: res.message,
+              message: '修改成功', // res.message
               type: 'success'
             })
             this.resetForm('editRuleForm')
@@ -426,18 +473,14 @@ export default {
       })
     },
     handleEditFar (item) {
-      this.editVisible = true
-      this.editForm = item
+      this.editVisibleFar = true
+      this.editFormFar = item
     },
     handleDeleteFar (id) {
-      this.$confirm('是否要删除此用户名？', '提示', {
+      this.$confirm('是否要删除此远端机？', '提示', {
         type: 'error'
       }).then(() => {
-        // this.$message({
-        //   type: 'success',
-        //   message: '删除成功!'
-        // })
-        userDelete({
+        delFar({
           id: id
         }).then(res => {
           const data = res.data
@@ -465,16 +508,16 @@ export default {
     addSubmitFormFar (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          userAdd(this.addForm)
+          addFar(this.addFormFar)
             .then(res => {
               const data = res.data
               console.log(data)
               this.$message({
-                message: res.message,
+                message: '添加成功', // res.message
                 type: 'success'
               })
               this.resetForm('addRuleFormFar')
-              this.getTable()
+              this.getTableFar()
             })
         } else {
           console.log('error submit!!')
@@ -485,15 +528,18 @@ export default {
     editSubmitFormFar (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          userUpdate({
-            username: this.editForm.userName,
-            password: this.editForm.userPassword,
-            newpassword: this.editForm.newpassword
+          editFar({
+            id: this.editFormFar.id,
+            deviceId: this.editFormFar.deviceId,
+            deviceName: this.editFormFar.deviceName,
+            deviceNearId: this.editFormFar.deviceNearId,
+            deviceAddress: this.editFormFar.deviceAddress,
+            deviceDescribe: this.editFormFar.deviceDescribe
           }).then(res => {
             const data = res.data
             console.log(data)
             this.$message({
-              message: res.message,
+              message: '修改成功', // res.message
               type: 'success'
             })
             this.resetForm('editRuleFormFar')
