@@ -1,9 +1,11 @@
 <template>
   <div class="page">
+    <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
+      一键关闭
+    </el-button>
     <div class="page-container">
       <div class="home">
         <div class="home-left">
-
           <el-tree
           :expand-on-click-node="false"
           :highlight-current="true"

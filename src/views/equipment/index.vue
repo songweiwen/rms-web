@@ -1,5 +1,8 @@
 <template>
   <div class="page">
+    <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
+      一键关闭
+    </el-button>
     <div class="page-container page-tabs" ref="pageHeight">
       <el-tabs type="border-card">
         <el-tab-pane label="近端机设备">

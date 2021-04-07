@@ -1,5 +1,8 @@
 <template>
   <div class="page">
+    <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
+      一键关闭
+    </el-button>
     <div class="page-container" ref="pageHeight">
       <div class="table">
         <div class="table-hd">
@@ -121,11 +124,12 @@
 </template>
 
 <script>
+import { ws } from '@/mixins/webSocket'
 import { tableHeight } from '@/mixins/tableHeight'
 import { userList, userAdd, userUpdate, userDelete } from '@/api/user'
 export default {
   name: 'user',
-  mixins: [tableHeight],
+  mixins: [tableHeight, ws],
   data () {
     var validateNewpassword = (rule, value, callback) => {
       if (value === '') {
@@ -180,6 +184,10 @@ export default {
     this.getTable()
   },
   methods: {
+    websocketonmessage (e) {
+      const redata = JSON.parse(e.data)
+      this.websocketonMessageAll(redata)
+    },
     getTable () {
       userList({
         page: this.currentPage,
