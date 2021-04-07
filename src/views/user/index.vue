@@ -1,8 +1,8 @@
 <template>
   <div class="page">
-    <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
+    <!-- <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
       一键关闭
-    </el-button>
+    </el-button> -->
     <div class="page-container" ref="pageHeight">
       <div class="table">
         <div class="table-hd">
@@ -180,10 +180,18 @@ export default {
   created () {
     this.$nextTick(() => {
       this.setTableHeight(90, 'pageHeight')
+      setTimeout(() => {
+        this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
+      }, 1000)
     })
     this.getTable()
   },
   methods: {
+    websocketonMessage (e) {
+      // this.overTimeClear()
+      const redata = JSON.parse(e.data)
+      this.websocketonMessageAll(redata)
+    },
     getTable () {
       userList({
         page: this.currentPage,
@@ -281,5 +289,9 @@ export default {
       this.$refs[formName].resetFields()
     }
   }
+  // beforeRouteLeave (to, form, next) {
+  //   this.closeNotify()
+  //   next()
+  // }
 }
 </script>

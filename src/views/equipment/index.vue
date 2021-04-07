@@ -1,8 +1,8 @@
 <template>
   <div class="page">
-    <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
+    <!-- <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
       一键关闭
-    </el-button>
+    </el-button> -->
     <div class="page-container page-tabs" ref="pageHeight">
       <el-tabs type="border-card">
         <el-tab-pane label="近端机设备">
@@ -344,12 +344,20 @@ export default {
   created () {
     this.$nextTick(() => {
       this.setTableHeight(163, 'pageHeight')
+      setTimeout(() => {
+        this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
+      }, 1000)
     })
     this.getTable()
     this.getTableFar()
     this.getTree()
   },
   methods: {
+    websocketonMessage (e) {
+      // this.overTimeClear()
+      const redata = JSON.parse(e.data)
+      this.websocketonMessageAll(redata)
+    },
     getTree () {
       getTree().then(res => {
         console.log(res)
@@ -560,5 +568,9 @@ export default {
       this.$refs[formName].resetFields()
     }
   }
+  // beforeRouteLeave (to, form, next) {
+  //   this.closeNotify()
+  //   next()
+  // }
 }
 </script>

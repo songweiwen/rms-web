@@ -1,8 +1,8 @@
 <template>
   <div class="page">
-    <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
+    <!-- <el-button v-if="notifyList.length !== 0" type="primary" class="closeNotify" @click="closeNotify">
       一键关闭
-    </el-button>
+    </el-button> -->
     <div class="page-container">
       <div class="home">
         <div class="home-left">
@@ -701,6 +701,10 @@ export default {
       }
     }
   }
+  // beforeRouteLeave (to, form, next) {
+  //   this.closeNotify()
+  //   next()
+  // }
 }
 </script>
 
