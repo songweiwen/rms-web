@@ -657,13 +657,13 @@ export default {
           this.WSloadingText = '检测超时'
           this.$message.error('检测超时')
           // 近端机
-          this.dataNear.device.online = 0
+          // this.dataNear.device.online = 0
           this.dataNear.device.shouguanggonglv = 99
           this.dataNear.device.faguanggonglv = 99
           this.dataNear.device.upsgaojing = 99
 
           // 远端机
-          this.dataFar.device.online = 0
+          // this.dataFar.device.online = 0
           this.dataFar.device.faguanggaojing = 99
           this.dataFar.device.shouguanggaojing = 99
           this.dataFar.device.guzhanggaojing = 99

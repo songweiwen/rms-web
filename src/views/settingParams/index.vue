@@ -123,7 +123,8 @@
                   光模块衰减值
                 </el-col>
                 <el-col :span="8">
-                  <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small" v-model.number="dataNear.device.shuaijianzhi" placeholder=""></el-input>
+                  <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                  v-model.number="dataNear.device.shuaijianzhi" placeholder=""></el-input>
                 </el-col>
                 <el-col :span="8">
                   0-31（范围值）
@@ -217,7 +218,8 @@
                   光模块衰减值
                 </el-col>
                 <el-col :span="8">
-                  <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small" v-model.number="dataFar.device.shuaijianzhi" placeholder=""></el-input>
+                  <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                  v-model.number="dataFar.device.shuaijianzhi" placeholder=""></el-input>
                 </el-col>
                 <el-col :span="8">
                   0-31（范围值）
@@ -697,10 +699,10 @@ export default {
               break
           }
           // 近端机
-          this.dataNear.device.online = 0
+          // this.dataNear.device.online = 0
 
           // 远端机
-          this.dataFar.device.online = 0
+          // this.dataFar.device.online = 0
         }, 1000 * 10)
       }
     }
