@@ -1,4 +1,5 @@
 
+import { formatDate } from '@/utils/utils'
 export const ws = {
   data () {
     return {
@@ -34,6 +35,9 @@ export const ws = {
       }
       // 近端机报警  全局提示
       if (redata.commandString === 'WN') {
+        if (String(redata.nearDevice.deviceTime).length === 13) {
+          redata.nearDevice.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(redata.nearDevice.deviceTime))
+        }
         // this.notifyList.push(
         this.$notify.error({
           title: `${redata.nearDevice.deviceName}报警！`,
@@ -43,6 +47,9 @@ export const ws = {
         // )
       } else if (redata.commandString === 'WF') {
       // 远端机报警  全局提示
+        if (String(redata.farDevice.deviceTime).length === 13) {
+          redata.farDevice.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(redata.farDevice.deviceTime))
+        }
         // this.notifyList.push(
         this.$notify.error({
           title: `${redata.farDevice.deviceName}报警！`,
@@ -52,6 +59,9 @@ export const ws = {
         // )
       } else if (redata.commandString === 'TRN') {
       // 近端机修复故障  全局提示
+        if (String(redata.nearDevice.deviceTime).length === 13) {
+          redata.nearDevice.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(redata.nearDevice.deviceTime))
+        }
         // this.notifyList.push(
         this.$notify({
           title: `${redata.nearDevice.deviceName}修复故障！`,
@@ -62,6 +72,9 @@ export const ws = {
         // )
       } else if (redata.commandString === 'TRF') {
       // 远端机修复故障  全局提示
+        if (String(redata.farDevice.deviceTime).length === 13) {
+          redata.farDevice.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(redata.farDevice.deviceTime))
+        }
         // this.notifyList.push(
         this.$notify({
           title: `${redata.farDevice.deviceName}修复故障！`,

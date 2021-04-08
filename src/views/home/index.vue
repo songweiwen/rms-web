@@ -374,6 +374,7 @@
 </template>
 
 <script>
+import { formatDate } from '@/utils/utils'
 import { ws } from '@/mixins/webSocket'
 import { getTree } from '@/api/get'
 import { getDetailFar, getDetailNear } from '@/api/home'
@@ -492,6 +493,9 @@ export default {
         })
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
+          if (String(this.dataNear.device.deviceTime).length === 13) {
+            this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
+          }
         }
       } else if (redata.commandString === 'WF') {
         // 远端机报警  更新树状图的报警灯泡
@@ -505,6 +509,9 @@ export default {
         })
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
+          if (String(this.dataFar.device.deviceTime).length === 13) {
+            this.dataFar.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataFar.device.deviceTime))
+          }
         }
       } else if (redata.commandString === 'TRN') {
         // 近端机修复故障  更新树状图的报警灯泡
@@ -518,6 +525,9 @@ export default {
         })
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
+          if (String(this.dataNear.device.deviceTime).length === 13) {
+            this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
+          }
         }
       } else if (redata.commandString === 'TRF') {
         // 远端机修复故障  更新树状图的报警灯泡
@@ -531,10 +541,16 @@ export default {
         })
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
+          if (String(this.dataFar.device.deviceTime).length === 13) {
+            this.dataFar.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataFar.device.deviceTime))
+          }
         }
       } else if (redata.commandString === 'SCN') {
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
+          if (String(this.dataNear.device.deviceTime).length === 13) {
+            this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
+          }
         }
         this.$message({
           message: '检测成功',
@@ -545,6 +561,9 @@ export default {
       } else if (redata.commandString === 'SCF') {
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
+          if (String(this.dataFar.device.deviceTime).length === 13) {
+            this.dataFar.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataFar.device.deviceTime))
+          }
         }
         this.$message({
           message: '检测成功',
