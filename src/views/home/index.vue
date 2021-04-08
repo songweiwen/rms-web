@@ -559,6 +559,8 @@ export default {
       console.log(data)
       this.deviceId = data.id
       this.loading = true
+      this.WSloadingState = 0
+      this.WSloadingText = ''
       if (this.homeType === 1) {
         this.deviceIdNear = null
         getDetailNear({
@@ -648,7 +650,7 @@ export default {
           this.dataFar.device.guogonglvgaojing = 99
           this.dataFar.device.shangxingguzhang = 99
           this.dataFar.device.upsgaojing = 99
-        }, 1000 * 2)
+        }, 1000 * 10)
       }
     }
   }

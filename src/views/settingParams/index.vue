@@ -153,7 +153,7 @@
                   版本号
                 </el-col>
                 <el-col :span="8">
-                  {{dataNear.device.device_version}}
+                  {{dataNear.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
                   <el-button type="primary" size="small" @click="onVersionNear" :loading="WSloading">
@@ -355,7 +355,7 @@
                   版本号
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.device_version}}
+                  {{dataFar.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
                   <el-button type="primary" size="small" @click="onVersionFar" :loading="WSloading">
@@ -431,6 +431,9 @@ export default {
     // })
     this.$nextTick(() => {
       this.getTree()
+      setTimeout(() => {
+        this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
+      }, 1000)
     })
   },
   computed: {
@@ -570,6 +573,7 @@ export default {
       // this.overTimeClear()
       const redata = JSON.parse(e.data)
       this.websocketonMessageAll(redata)
+      // alert(1)
       if (redata.commandString === 'SRN') { // 读取近端机
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
@@ -697,7 +701,7 @@ export default {
 
           // 远端机
           this.dataFar.device.online = 0
-        }, 1000 * 2)
+        }, 1000 * 10)
       }
     }
   }
