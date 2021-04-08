@@ -161,9 +161,12 @@
                     <el-tag type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
+                    <!-- ups 告警 = 00  =   绿色正常 -->
                     <el-tag v-if="dataNear.device.upsgaojing===0" type="success" effect="dark"></el-tag>
+                    <!-- ups告警  = 01   =  告警红色。 -->
                     <el-tag v-else-if="dataNear.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                     <!-- 255 = FF =   超时 -->
+                    <el-tag v-else-if="dataNear.device.upsgaojing===255" type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
