@@ -323,13 +323,13 @@
                   功放温度
                 </el-col>
                 <el-col :span="8">
-                  <template v-if="dataFar.device.xiaxingfanxiangzhi===255">
+                  <template v-if="dataFar.device.gongfangwenduzhi===255">
                     <el-tag type="danger">
                       超时
                     </el-tag>
                   </template>
                   <template v-else>
-                    {{dataFar.device.xiaxingfanxiangzhi}}
+                    {{dataFar.device.gongfangwenduzhi}}
                   </template>
                 </el-col>
                 <el-col :span="8">
@@ -377,7 +377,14 @@
                   下行前向功率
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.xiaxingqianxiangzhi}}
+                  <template v-if="dataFar.device.xiaxingqianxiangzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataFar.device.xiaxingqianxiangzhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   有符号数：dBm
@@ -388,8 +395,15 @@
                   上行衰减值
                 </el-col>
                 <el-col :span="8">
-                  <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi"></el-input>
-                  <!-- {{dataFar.device.shangxingshuajianzhi}} -->
+                  <template v-if="dataFar.device.shangxingshuajianzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi"></el-input>
+                    <!-- {{dataFar.device.shangxingshuajianzhi}} -->
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   无符号数
@@ -408,7 +422,14 @@
                   LNA最大增益
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.lnazuidazhi}}
+                  <template v-if="dataFar.device.lnazuidazhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataFar.device.lnazuidazhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   有符号数：DB
