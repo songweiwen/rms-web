@@ -123,8 +123,15 @@
                   光模块衰减值
                 </el-col>
                 <el-col :span="8">
-                  <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
-                  v-model.number="dataNear.device.shuaijianzhi" placeholder=""></el-input>
+                  <template v-if="dataNear.device.shuaijianzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                    v-model.number="dataNear.device.shuaijianzhi" placeholder=""></el-input>
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   0-31（范围值）
@@ -143,7 +150,14 @@
                   收光功率
                 </el-col>
                 <el-col :span="8">
-                  {{dataNear.device.shouguangzhi}}
+                  <template v-if="dataNear.device.shouguangzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataNear.device.shouguangzhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   单位:dbm
@@ -218,8 +232,15 @@
                   光模块衰减值
                 </el-col>
                 <el-col :span="8">
-                  <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
-                  v-model.number="dataFar.device.shuaijianzhi" placeholder=""></el-input>
+                  <template v-if="dataFar.device.shuaijianzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                    v-model.number="dataFar.device.shuaijianzhi" placeholder=""></el-input>
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   0-31（范围值）
@@ -238,7 +259,14 @@
                   收光功率
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.shouguangzhi}}
+                  <template v-if="dataFar.device.shouguangzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataFar.device.shouguangzhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   单位:dbm
@@ -250,8 +278,15 @@
                   功放衰减值
                 </el-col>
                 <el-col :span="8">
-                  <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi"></el-input>
-                  <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
+                  <template v-if="dataFar.device.gongfangshuaijianzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi"></el-input>
+                    <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   无符号数
@@ -270,7 +305,14 @@
                   下行反向功率
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.xiaxingfanxiangzhi}}
+                  <template v-if="dataFar.device.xiaxingfanxiangzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataFar.device.xiaxingfanxiangzhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   单位dbm
@@ -281,7 +323,14 @@
                   功放温度
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.gongfangwenduzhi}}
+                  <template v-if="dataFar.device.xiaxingfanxiangzhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataFar.device.xiaxingfanxiangzhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   有符号数：℃
@@ -292,7 +341,14 @@
                   功放ALC值
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.gongfangalczhi}}
+                  <template v-if="dataFar.device.gongfangalczhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataFar.device.gongfangalczhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   有符号数：dBm
@@ -303,7 +359,14 @@
                   驻波比
                 </el-col>
                 <el-col :span="8">
-                  {{dataFar.device.zhubobizhi}}
+                  <template v-if="dataFar.device.zhubobizhi===255">
+                    <el-tag type="danger">
+                      超时
+                    </el-tag>
+                  </template>
+                  <template v-else>
+                    {{dataFar.device.zhubobizhi}}
+                  </template>
                 </el-col>
                 <el-col :span="8">
                   无符号数

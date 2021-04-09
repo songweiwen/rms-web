@@ -128,12 +128,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataNear.device.shouguanggonglv===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataNear.device.shouguanggonglv===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataNear.device.shouguanggonglv===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataNear.device.shouguanggonglv===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -143,12 +143,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataNear.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataNear.device.faguanggonglv===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataNear.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataNear.device.faguanggonglv===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -158,15 +158,15 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
                     <!-- ups 告警 = 00  =   绿色正常 -->
-                    <el-tag v-if="dataNear.device.upsgaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataNear.device.upsgaojing===0" type="success" effect="dark"></el-tag>
                     <!-- ups告警  = 01   =  告警红色。 -->
-                    <el-tag v-else-if="dataNear.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataNear.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
                      <!-- 255 = FF =   超时 -->
-                    <el-tag v-else-if="dataNear.device.upsgaojing===255" type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataNear.device.upsgaojing===255" type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -183,9 +183,9 @@
                   指示说明
                 </el-col>
                 <el-col :span="12">
-                  <el-tag type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>
-                  <el-tag type="danger" effect="dark"></el-tag>  <span class="home-tagtext">故障</span>
-                  <el-tag type="info" effect="dark"></el-tag>  <span class="home-tagtext">未响应</span>
+                  <el-tag class="home-item__tag" type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>
+                  <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag>  <span class="home-tagtext">故障</span>
+                  <el-tag class="home-item__tag" type="info" effect="dark"></el-tag>  <span class="home-tagtext">未响应</span>
 
                 </el-col>
               </el-row>
@@ -235,12 +235,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.faguanggaojing===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.faguanggaojing===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.faguanggaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.faguanggaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -250,12 +250,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.shouguanggaojing===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.shouguanggaojing===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.shouguanggaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.shouguanggaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -265,12 +265,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.guzhanggaojing===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.guzhanggaojing===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.guzhanggaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.guzhanggaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -280,12 +280,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.zhubobigaojing===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.zhubobigaojing===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.zhubobigaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.zhubobigaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -295,12 +295,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.guowengaojing===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.guowengaojing===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.guowengaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.guowengaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -310,12 +310,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.guogonglvgaojing===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.guogonglvgaojing===1" type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.guogonglvgaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.guogonglvgaojing===1" type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -325,12 +325,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.shangxingguzhang===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.shangxingguzhang===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.shangxingguzhang===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.shangxingguzhang===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -340,12 +340,12 @@
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
-                    <el-tag type="warning" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" type="warning" effect="dark"></el-tag>
                   </div>
                   <div v-show="!WSloading">
-                    <el-tag v-if="dataFar.device.upsgaojing===0" type="success" effect="dark"></el-tag>
-                    <el-tag v-else-if="dataFar.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
-                    <el-tag v-else type="info" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-if="dataFar.device.upsgaojing===0" type="success" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else-if="dataFar.device.upsgaojing===1"  type="danger" effect="dark"></el-tag>
+                    <el-tag class="home-item__tag" v-else type="info" effect="dark"></el-tag>
                   </div>
                 </el-col>
               </el-row>
@@ -362,9 +362,9 @@
                   指示说明
                 </el-col>
                 <el-col :span="12">
-                  <el-tag type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>
-                  <el-tag type="danger" effect="dark"></el-tag>  <span class="home-tagtext">故障</span>
-                  <el-tag type="info" effect="dark"></el-tag>  <span class="home-tagtext">未响应</span>
+                  <el-tag class="home-item__tag" type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>
+                  <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag>  <span class="home-tagtext">故障</span>
+                  <el-tag class="home-item__tag" type="info" effect="dark"></el-tag>  <span class="home-tagtext">未响应</span>
                 </el-col>
               </el-row>
             </div>
