@@ -141,7 +141,7 @@
               <el-alert
                 :closable="false"
                 v-show="showShuaijianzhi"
-                title="光模块衰减值不可空，范围值允许为0-32"
+                title="光模块衰减值不可空，范围值允许为0-31"
                 type="error"
                 effect="dark">
               </el-alert>
@@ -250,7 +250,7 @@
               <el-alert
                 :closable="false"
                 v-show="showShuaijianzhiFar"
-                title="光模块衰减值不可空，范围值允许为0-32"
+                title="光模块衰减值不可空，范围值允许为0-31"
                 type="error"
                 effect="dark">
               </el-alert>
@@ -611,7 +611,7 @@ export default {
     settingNear (bool) {
       if (this.dataNear.device.shuaijianzhi === '') {
         this.showShuaijianzhi = true
-      } else if (this.dataNear.device.shuaijianzhi > 32 || this.dataNear.device.shuaijianzhi < 0) {
+      } else if (this.dataNear.device.shuaijianzhi > 31 || this.dataNear.device.shuaijianzhi < 0) {
         this.showShuaijianzhi = true
       } else {
         // this.settingBool = bool
@@ -629,7 +629,7 @@ export default {
     settingFar (bool) {
       if (this.dataFar.device.shuaijianzhi === '') {
         this.showShuaijianzhiFar = true
-      } else if (this.dataFar.device.shuaijianzhi > 32 || this.dataFar.device.shuaijianzhi < 0) {
+      } else if (this.dataFar.device.shuaijianzhi > 31 || this.dataFar.device.shuaijianzhi < 0) {
         this.showShuaijianzhiFar = true
       } else if (this.dataFar.device.gongfangshuaijianzhi === '') {
         this.showGongfangshuaijianzhi = true
