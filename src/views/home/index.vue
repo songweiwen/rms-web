@@ -40,8 +40,32 @@
         </div>
         <div class="home-right" style="width: 100%;" v-show="!deviceId">
           <!-- <img style="width: 100%;" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset=""> -->
-          <div class="viewimg-left" @mousewheel.prevent="rollImg">
+          <!-- <div class="viewimg-left" @mousewheel.prevent="rollImg">
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
+          </div> -->
+          <div id="equipment">
+            <img :src="require('@/assets/imgs/demo_picture.png')" />
+            <vue-draggable-resizable
+              v-for="(item, index) in equipmentData"
+              :key="index"
+              :dragSelector="dragSelector"
+              :handles="dragActive"
+              :w="120"
+              :h="30"
+              :snap="true"
+              :y="item.locationY"
+              :x="item.locationX"
+              :is-conflict-check="true"
+              @dragging="onDragging(item)"
+              @dragstop="onDragstop">
+              <div class="equipmentBox"
+                :class="{'equipmentBox--near': item.level===1,
+                'equipmentBox--far': item.level===2,
+                'equipmentBox--dagder': item.alert===1 }"
+              >
+                {{item.deviceName}}
+              </div>
+            </vue-draggable-resizable>
           </div>
 
         </div>
@@ -380,7 +404,7 @@
 import { formatDate } from '@/utils/utils'
 import { ws } from '@/mixins/webSocket'
 import { getTree } from '@/api/get'
-import { getDetailFar, getDetailNear } from '@/api/home'
+import { getDetailFar, getDetailNear, updateMoveNear, updateMoveFar } from '@/api/home'
 export default {
   name: 'home',
   // overTimeInit
@@ -405,7 +429,10 @@ export default {
       },
       dataNear: {
         device: {}
-      }
+      },
+      dragActive: [],
+      equipmentData: [],
+      equipmentActive: {}
     }
   },
   created () {
@@ -451,6 +478,31 @@ export default {
             level: 1,
             children: e.far
           })
+          this.equipmentData.push({
+            deviceName: e.near.deviceName,
+            deviceId: e.near.deviceId,
+            id: e.near.id,
+            deviceAddress: e.near.deviceAddress,
+            level: 1,
+            locationX: e.near.locationX,
+            locationY: e.near.locationY,
+            alert: 0
+          })
+
+          e.far.forEach(o => {
+            console.log(o)
+            this.equipmentData.push({
+              deviceName: o.deviceName,
+              deviceId: o.deviceId,
+              id: o.id,
+              deviceAddress: o.deviceAddress,
+              level: 2,
+              deviceNearId: o.deviceNearId,
+              locationX: o.locationX,
+              locationY: o.locationY,
+              alert: 0
+            })
+          })
         })
       })
     },
@@ -494,6 +546,16 @@ export default {
             this.treeData = [...this.treeData]
           }
         })
+
+        this.equipmentData.forEach(e => {
+          if (e.level === 1) {
+            if (e.deviceId === redata.nearDevice.deviceId) {
+              e.alert = 1
+              this.equipmentData = [...this.treeData]
+            }
+          }
+        })
+
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
           if (String(this.dataNear.device.deviceTime).length === 13) {
@@ -510,6 +572,16 @@ export default {
           }
           // })
         })
+
+        this.equipmentData.forEach(e => {
+          if (e.level === 2) {
+            if (e.deviceId === redata.farDevice.deviceId) {
+              e.alert = 1
+              this.equipmentData = [...this.treeData]
+            }
+          }
+        })
+
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
           if (String(this.dataFar.device.deviceTime).length === 13) {
@@ -526,6 +598,16 @@ export default {
             }
           })
         })
+
+        this.equipmentData.forEach(e => {
+          if (e.level === 1) {
+            if (e.deviceId === redata.nearDevice.deviceId) {
+              e.alert = 0
+              this.equipmentData = [...this.treeData]
+            }
+          }
+        })
+
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
           if (String(this.dataNear.device.deviceTime).length === 13) {
@@ -542,6 +624,16 @@ export default {
             }
           })
         })
+
+        this.equipmentData.forEach(e => {
+          if (e.level === 2) {
+            if (e.deviceId === redata.farDevice.deviceId) {
+              e.alert = 0
+              this.equipmentData = [...this.treeData]
+            }
+          }
+        })
+
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
           if (String(this.dataFar.device.deviceTime).length === 13) {
@@ -645,8 +737,43 @@ export default {
         this.$refs.imgDiv.style.zoom = zoom + '%'
       }
       return false
+    },
+    onDragging (item) {
+      this.equipmentActive = item
+      console.log(item)
+    },
+    onDragstop (left, top) {
+      console.log(left, top)
+      if (this.equipmentActive.level === 1) {
+        updateMoveNear({
+          x: left,
+          y: top,
+          id: this.equipmentActive.id
+        }).then(res => {
+          console.log(res)
+          this.$message({
+            type: 'success',
+            message: '设置成功!'
+          })
+        })
+      } else if (this.equipmentActive.level === 2) {
+        updateMoveFar({
+          x: left,
+          y: top,
+          id: this.equipmentActive.id
+        }).then(res => {
+          console.log(res)
+          this.$message({
+            type: 'success',
+            message: '设置成功!'
+          })
+        })
+      }
+    },
+    getRefLineParams (params) {
+      console.log(111)
+      console.log(params)
     }
-
   },
   watch: {
     WSloading (val) {

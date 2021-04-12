@@ -22,7 +22,7 @@
   </el-aside> -->
 
   <el-container>
-    <el-header style="font-size: 12px; text-align: right;">
+    <!-- <el-header style="font-size: 12px; text-align: right;">
       <el-menu
         style="padding-right: 128px;"
         mode="horizontal"
@@ -48,13 +48,12 @@
           <i class="el-icon-setting" style="margin-left: 15px;"></i>
           <template #dropdown>
             <el-dropdown-menu>
-                <!-- <el-dropdown-item>修改密码</el-dropdown-item> -->
                 <el-dropdown-item @click.native="loginOut">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
-    </el-header>
+    </el-header> -->
 
     <el-main>
       <router-view />

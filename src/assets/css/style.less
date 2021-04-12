@@ -105,6 +105,7 @@ textarea {
   }
 
   &-container {
+    position: relative;
     height: 100%;
     padding: 24px;
     overflow: auto;
@@ -255,5 +256,81 @@ textarea {
     display: inline-block;
     margin-right: 14px;
     vertical-align: super;
+  }
+}
+
+#equipment {
+  width: 1000px;
+  height: 800px;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  // z-index: 9;
+  background: #fff;
+  border: 2px dashed #ccc;
+
+  img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .vdr {
+    z-index: 10 !important;
+  }
+}
+
+.equipmentBox {
+  width: 120px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  cursor: move;
+  // border-radius: 8px;
+
+  &--near {
+    background: #e9e9e9;
+    border: 1px solid #b7b7b7;
+  }
+
+  &--far {
+    color: #fff;
+    background: #8c8c8c;
+    border: 1px solid #8c8c8c;
+  }
+
+  &--dagder {
+    color: #fff;
+    background-color: #f56c6c;
+    -webkit-animation: fade 600ms infinite;
+    animation: fade 600ms infinite;
+  }
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 1;
   }
 }

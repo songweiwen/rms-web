@@ -9,3 +9,13 @@ export const getDetailFar = function (params) {
 export const getDetailNear = function (params) {
   return http.post('/rms/near/detail', params)
 }
+
+// 移动近端机    /rms/near/detail    参数id     x   y
+export const updateMoveNear = function (params) {
+  return http.postQs('/rms/move/near', params)
+}
+
+// 移动远端机    /rms/near/detail    参数id     x   y
+export const updateMoveFar = function (params) {
+  return http.postQs('/rms/move/far', params)
+}
