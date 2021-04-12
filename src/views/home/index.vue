@@ -48,7 +48,7 @@
             <vue-draggable-resizable
               v-for="(item, index) in equipmentData"
               :key="index"
-              :dragSelector="dragSelector"
+              :parent="true"
               :handles="dragActive"
               :w="120"
               :h="30"
