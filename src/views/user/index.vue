@@ -61,7 +61,7 @@
               <template slot-scope="scope">
                  <el-button
                   size="mini"
-                  icon="el-icon-mobile-phone"
+                  icon="el-icon--phone"
                   @click="handlePhone(scope.row)"
                   >配置手机号</el-button>
                 <el-button
@@ -107,7 +107,7 @@
          <!-- 开1关0 -->
         <el-form-item label="短信息接收" label-width="120px">
           <el-switch
-            v-model="addForm.isSms"
+            v-model="addForm.issms"
             active-value="1"
             inactive-value="0">
           </el-switch>
@@ -148,9 +148,9 @@
          <!-- 开1关0 -->
         <el-form-item label="短信息接收" label-width="120px">
           <el-switch
-            v-model="phoneForm.isSms"
-            active-value="1"
-            inactive-value="0">
+            v-model="phoneForm.issms"
+            :active-value="1"
+            :inactive-value="0">
           </el-switch>
         </el-form-item>
       </el-form>
@@ -215,7 +215,7 @@ export default {
         username: '',
         password: '',
         userphone: '',
-        isSms: '1'
+        issms: 1
       },
       editVisible: false,
       editRules: {
@@ -233,8 +233,7 @@ export default {
         username: '',
         password: '',
         newpassword: '',
-        userphone: '',
-        isSms: '1'
+        userphone: ''
       },
       phoneVisible: false,
       phoneRules: {
@@ -248,7 +247,7 @@ export default {
       phoneForm: {
         id: '',
         userphone: '',
-        isSms: '1'
+        issms: 1
       }
     }
   },
@@ -348,7 +347,7 @@ export default {
             password: this.editForm.userPassword,
             newpassword: this.editForm.newpassword,
             userphone: this.editForm.userphone,
-            isSms: this.editForm.isSms
+            issms: this.editForm.issms
           }).then(res => {
             const data = res.data
             console.log(data)
@@ -371,7 +370,7 @@ export default {
           userPhone({
             id: this.phoneForm.id,
             userphone: this.phoneForm.userphone,
-            isSms: this.phoneForm.isSms
+            issms: this.phoneForm.issms
           }).then(res => {
             const data = res.data
             console.log(data)
