@@ -96,6 +96,17 @@
         <el-form-item label="密码" prop="password" label-width="120px">
           <el-input v-model="addForm.password" placeholder="请输入密码"></el-input>
         </el-form-item>
+        <el-form-item label="手机号" prop="userphone" label-width="120px">
+          <el-input v-model="addForm.userphone" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+         <!-- 开1关0 -->
+        <el-form-item label="短信息接收" label-width="120px">
+          <el-switch
+            v-model="addForm.isSms"
+            active-value="1"
+            inactive-value="0">
+          </el-switch>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="resetForm('addRuleForm')">取 消</el-button>
@@ -113,6 +124,17 @@
         </el-form-item>
         <el-form-item label="新密码" prop="newpassword" label-width="120px">
           <el-input v-model="editForm.newpassword" placeholder="请输入新密码"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="userphone" label-width="120px">
+          <el-input v-model="editForm.userphone" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+         <!-- 开1关0 -->
+        <el-form-item label="短信息接收" label-width="120px">
+          <el-switch
+            v-model="editForm.isSms"
+            active-value="1"
+            inactive-value="0">
+          </el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -140,6 +162,21 @@ export default {
         callback()
       }
     }
+
+    var checkPhone = (rule, value, callback) => {
+      if (value) {
+        // return callback(new Error('手机号不能为空'))
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        console.log(reg.test(value))
+        if (reg.test(value)) {
+          callback()
+        } else {
+          return callback(new Error('请输入正确的手机号'))
+        }
+      } else {
+        callback()
+      }
+    }
     return {
       pageSize: 10,
       currentPage: 1,
@@ -152,11 +189,16 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        userphone: [
+          { required: false, validator: checkPhone, trigger: 'blur' }
         ]
       },
       addForm: {
         username: '',
-        password: ''
+        password: '',
+        userphone: '',
+        isSms: '1'
       },
       editVisible: false,
       editRules: {
@@ -168,12 +210,17 @@ export default {
         ],
         newpassword: [
           { required: true, validator: validateNewpassword, trigger: 'blur' }
+        ],
+        userphone: [
+          { required: false, validator: checkPhone, trigger: 'blur' }
         ]
       },
       editForm: {
         username: '',
         password: '',
-        newpassword: ''
+        newpassword: '',
+        userphone: '',
+        isSms: '1'
       }
     }
   },
@@ -266,7 +313,9 @@ export default {
           userUpdate({
             username: this.editForm.userName,
             password: this.editForm.userPassword,
-            newpassword: this.editForm.newpassword
+            newpassword: this.editForm.newpassword,
+            userphone: this.editForm.userphone,
+            isSms: this.editForm.isSms
           }).then(res => {
             const data = res.data
             console.log(data)
