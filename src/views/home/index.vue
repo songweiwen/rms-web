@@ -553,7 +553,7 @@ export default {
           if (e.level === 1) {
             if (e.deviceId === redata.nearDevice.deviceId) {
               e.alert = 1
-              this.equipmentData = [...this.treeData]
+              this.equipmentData = [...this.equipmentData]
             }
           }
         })
@@ -567,19 +567,20 @@ export default {
       } else if (redata.commandString === 'WF') {
         // 远端机报警  更新树状图的报警灯泡
         this.treeData.forEach(e => {
-          // e.children.forEach(o => {
-          if (e.deviceId === redata.farDevice.deviceId) {
-            e.alert = 1
-            this.treeData = [...this.treeData]
-          }
-          // })
+          e.children.forEach(o => {
+            if (o.deviceId === redata.farDevice.deviceId) {
+              o.alert = 1
+              this.treeData = [...this.treeData]
+            }
+          })
         })
 
         this.equipmentData.forEach(e => {
-          if (e.level === 2) {
+          // if (e.level === 2) {
+          if (e.deviceNearId === redata.farDevice.deviceNearId) {
             if (e.deviceId === redata.farDevice.deviceId) {
               e.alert = 1
-              this.equipmentData = [...this.treeData]
+              this.equipmentData = [...this.equipmentData]
             }
           }
         })
@@ -605,7 +606,7 @@ export default {
           if (e.level === 1) {
             if (e.deviceId === redata.nearDevice.deviceId) {
               e.alert = 0
-              this.equipmentData = [...this.treeData]
+              this.equipmentData = [...this.equipmentData]
             }
           }
         })
@@ -628,10 +629,11 @@ export default {
         })
 
         this.equipmentData.forEach(e => {
-          if (e.level === 2) {
+          // if (e.level === 2) {
+          if (e.deviceNearId === redata.farDevice.deviceNearId) {
             if (e.deviceId === redata.farDevice.deviceId) {
               e.alert = 0
-              this.equipmentData = [...this.treeData]
+              this.equipmentData = [...this.equipmentData]
             }
           }
         })
