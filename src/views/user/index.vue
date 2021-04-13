@@ -101,8 +101,8 @@
         <el-form-item label="密码" prop="password" label-width="120px">
           <el-input v-model="addForm.password" placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="userphone" label-width="120px">
-          <el-input v-model="addForm.userphone" placeholder="请输入手机号"></el-input>
+        <el-form-item label="手机号" prop="userPhone" label-width="120px">
+          <el-input v-model="addForm.userPhone" placeholder="请输入手机号"></el-input>
         </el-form-item>
          <!-- 开1关0 -->
         <el-form-item label="短信息接收" label-width="120px">
@@ -142,8 +142,8 @@
         <el-form-item label="用户名" prop="userName" label-width="120px">
           <el-input v-model="phoneForm.userName" placeholder="请输入用户名" disabled></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="userphone" label-width="120px">
-          <el-input v-model="phoneForm.userphone" placeholder="请输入手机号"></el-input>
+        <el-form-item label="手机号" prop="userPhone" label-width="120px">
+          <el-input v-model="phoneForm.userPhone" placeholder="请输入手机号"></el-input>
         </el-form-item>
          <!-- 开1关0 -->
         <el-form-item label="短信息接收" label-width="120px">
@@ -207,14 +207,14 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
         ],
-        userphone: [
+        userPhone: [
           { required: false, validator: checkPhone, trigger: 'blur' }
         ]
       },
       addForm: {
         username: '',
         password: '',
-        userphone: '',
+        userPhone: '',
         issms: 1
       },
       editVisible: false,
@@ -232,21 +232,20 @@ export default {
       editForm: {
         username: '',
         password: '',
-        newpassword: '',
-        userphone: ''
+        newpassword: ''
       },
       phoneVisible: false,
       phoneRules: {
         // userName: [
         //   { required: true, message: '请输入用户名', trigger: 'blur' }
         // ],
-        userphone: [
+        userPhone: [
           { required: false, validator: checkPhone, trigger: 'blur' }
         ]
       },
       phoneForm: {
         id: '',
-        userphone: '',
+        userPhone: '',
         issms: 1
       }
     }
@@ -346,7 +345,7 @@ export default {
             username: this.editForm.userName,
             password: this.editForm.userPassword,
             newpassword: this.editForm.newpassword,
-            userphone: this.editForm.userphone,
+            userphone: this.editForm.userPhone,
             issms: this.editForm.issms
           }).then(res => {
             const data = res.data
@@ -369,7 +368,7 @@ export default {
         if (valid) {
           userPhone({
             id: this.phoneForm.id,
-            userphone: this.phoneForm.userphone,
+            userphone: this.phoneForm.userPhone,
             issms: this.phoneForm.issms
           }).then(res => {
             const data = res.data

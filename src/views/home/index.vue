@@ -90,14 +90,13 @@
             </div>
           </div>
           <div class="flex-container" v-show="homeType===2">
-            <div class="flex-item m-r-md">
+            <!-- <div class="flex-item m-r-md">
               在线状态：
               <el-tag v-if="dataFar.device.online===1" type="success" effect="dark">
                 在线
               </el-tag>
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
-              <!-- <el-tag v-else-if="dataFar.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
-            </div>
+            </div> -->
             <div class="flex-item text-right">
               <el-button :loading="WSloading" type="primary" size="small" @click="onQueryFar">
                 手动检测
