@@ -271,7 +271,7 @@ import { tableHeight } from '@/mixins/tableHeight'
 import { getTree } from '@/api/get'
 import { listNear, listFar, addNear, editNear, delNear, addFar, editFar, delFar } from '@/api/equipment'
 export default {
-  name: 'user',
+  name: 'equipment',
   mixins: [tableHeight, ws],
   data () {
     return {

@@ -5,6 +5,7 @@ import Vue from 'vue'
 import {
   Alert,
   Aside,
+  DatePicker,
   Header,
   MenuItemGroup,
   Form,
@@ -27,6 +28,7 @@ import {
   Backtop,
   Icon,
   Select,
+  OptionGroup,
   Option,
   Dialog,
   Loading,
@@ -48,6 +50,7 @@ import locale from 'element-ui/lib/locale/lang/en'
 const components = [
   Alert,
   Aside,
+  DatePicker,
   Header,
   MenuItemGroup,
   Form,
@@ -70,6 +73,7 @@ const components = [
   Backtop,
   Icon,
   Select,
+  OptionGroup,
   Option,
   Dialog,
   Popconfirm,

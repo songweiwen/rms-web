@@ -84,7 +84,7 @@ export default {
         // 配置日志: '/settingLog',
         // 站点: '/site',
         设备管理: '/equipment',
-        故障管理: '/fault',
+        故障管理: '/warning',
         数据管理: '/data',
         // 线路: '/line',
         // 地址: '/address',

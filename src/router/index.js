@@ -54,13 +54,13 @@ const routes = [
       name: 'settingLog',
       component: () => import('@/views/settingLog/index.vue')
     }, {
-      path: 'site',
-      name: 'site',
-      component: () => import('@/views/site/index.vue')
+      path: 'data',
+      name: 'data',
+      component: () => import('@/views/data/index.vue')
     }, {
-      path: 'address',
-      name: 'address',
-      component: () => import('@/views/address/index.vue')
+      path: 'warning',
+      name: 'warning',
+      component: () => import('@/views/warning/index.vue')
     }, {
       path: 'equipment',
       name: 'equipment',

@@ -6,6 +6,11 @@ const getters = {
   userInfo: (state) => {
     console.log(state.userInfo)
     return state.userInfo ? state.userInfo : getStoryage('userInfo')
+  },
+
+  audioSecond: (state) => {
+    console.log(state.userInfo)
+    return state.audioSecond.audioSecond
   }
   // optionPageClass: state => state.optionPageClass.optionPageClass
   // userInfo: state => state.userInfo.userInfo
