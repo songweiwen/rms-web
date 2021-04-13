@@ -15,6 +15,11 @@ export const userUpdate = function (params) {
   return http.post('/rms/user/update', params)
 }
 
+// 用户修改手机号
+export const userPhone = function (params) {
+  return http.post('/rms/user/phone', params)
+}
+
 // 删除用户
 export const userDelete = function (params) {
   return http.post('/rms/user/delete', params)

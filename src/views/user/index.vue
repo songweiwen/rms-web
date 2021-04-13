@@ -56,9 +56,14 @@
             </el-table-column>
             <el-table-column
               label="操作"
-              width="200"
+              width="300"
               align="right">
               <template slot-scope="scope">
+                 <el-button
+                  size="mini"
+                  icon="el-icon-mobile-phone"
+                  @click="handlePhone(scope.row)"
+                  >配置手机号</el-button>
                 <el-button
                   size="mini"
                   type="primary"
@@ -125,21 +130,33 @@
         <el-form-item label="新密码" prop="newpassword" label-width="120px">
           <el-input v-model="editForm.newpassword" placeholder="请输入新密码"></el-input>
         </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="resetForm('editRuleForm')">取 消</el-button>
+        <el-button size="small" type="primary" @click="editSubmitForm('editRuleForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="配置手机号" :visible.sync="phoneVisible">
+      <el-form :model="phoneForm" :rules="phoneRules" ref="phoneRuleForm">
+        <el-form-item label="用户名" prop="userName" label-width="120px">
+          <el-input v-model="phoneForm.userName" placeholder="请输入用户名" disabled></el-input>
+        </el-form-item>
         <el-form-item label="手机号" prop="userphone" label-width="120px">
-          <el-input v-model="editForm.userphone" placeholder="请输入手机号"></el-input>
+          <el-input v-model="phoneForm.userphone" placeholder="请输入手机号"></el-input>
         </el-form-item>
          <!-- 开1关0 -->
         <el-form-item label="短信息接收" label-width="120px">
           <el-switch
-            v-model="editForm.isSms"
+            v-model="phoneForm.isSms"
             active-value="1"
             inactive-value="0">
           </el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="resetForm('editRuleForm')">取 消</el-button>
-        <el-button size="small" type="primary" @click="editSubmitForm('editRuleForm')">确 定</el-button>
+        <el-button size="small" @click="resetForm('phoneRuleForm')">取 消</el-button>
+        <el-button size="small" type="primary" @click="phoneSubmitForm('phoneRuleForm')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -148,7 +165,7 @@
 <script>
 import { ws } from '@/mixins/webSocket'
 import { tableHeight } from '@/mixins/tableHeight'
-import { userList, userAdd, userUpdate, userDelete } from '@/api/user'
+import { userList, userAdd, userUpdate, userPhone, userDelete } from '@/api/user'
 export default {
   name: 'user',
   mixins: [tableHeight, ws],
@@ -210,15 +227,26 @@ export default {
         ],
         newpassword: [
           { required: true, validator: validateNewpassword, trigger: 'blur' }
-        ],
-        userphone: [
-          { required: false, validator: checkPhone, trigger: 'blur' }
         ]
       },
       editForm: {
         username: '',
         password: '',
         newpassword: '',
+        userphone: '',
+        isSms: '1'
+      },
+      phoneVisible: false,
+      phoneRules: {
+        // userName: [
+        //   { required: true, message: '请输入用户名', trigger: 'blur' }
+        // ],
+        userphone: [
+          { required: false, validator: checkPhone, trigger: 'blur' }
+        ]
+      },
+      phoneForm: {
+        id: '',
         userphone: '',
         isSms: '1'
       }
@@ -253,6 +281,10 @@ export default {
     handleEdit (item) {
       this.editVisible = true
       this.editForm = item
+    },
+    handlePhone (item) {
+      this.phoneVisible = true
+      this.phoneForm = item
     },
     handleDelete (id) {
       this.$confirm('是否要删除此用户名？', '提示', {
@@ -311,6 +343,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           userUpdate({
+            // id: this.editForm.id,
             username: this.editForm.userName,
             password: this.editForm.userPassword,
             newpassword: this.editForm.newpassword,
@@ -332,9 +365,33 @@ export default {
         }
       })
     },
+    phoneSubmitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          userPhone({
+            id: this.phoneForm.id,
+            userphone: this.phoneForm.userphone,
+            isSms: this.phoneForm.isSms
+          }).then(res => {
+            const data = res.data
+            console.log(data)
+            this.$message({
+              message: res.message,
+              type: 'success'
+            })
+            this.resetForm('phoneRuleForm')
+            this.getTable()
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
     resetForm (formName) {
       this.addVisible = false
       this.editVisible = false
+      this.phoneVisible = false
       this.$refs[formName].resetFields()
     }
   }
