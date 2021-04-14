@@ -266,10 +266,15 @@ export default {
   },
   watch: {
     dateSelect (val) {
+      if (val) {
+        this.form.dateStart = formatDate('yyyy-MM-dd', new Date(val[0]))
+        this.form.dateEnd = formatDate('yyyy-MM-dd', new Date(val[1]))
+      } else {
+        this.form.dateStart = ''
+        this.form.dateEnd = ''
+      }
       // if (this.form.dateStart)
       // if (this.form.dateEnd)
-      this.form.dateStart = formatDate('yyyy-MM-dd', new Date(val[0]))
-      this.form.dateEnd = formatDate('yyyy-MM-dd', new Date(val[1]))
       this.getTable()
     }
     // form: {
