@@ -69,9 +69,25 @@
               label="报警类型"
               align="center">
               <template slot-scope="scope">
+                <!-- 1 红色   2 绿色   3 黄色 -->
                  <el-tag
+                  v-if="scope.row.warningColor===1"
                   size="mini"
                   type="danger"
+                  >
+                  {{scope.row.warningType}}
+                </el-tag>
+                 <el-tag
+                  v-else-if="scope.row.warningColor===2"
+                  size="mini"
+                  type="success"
+                  >
+                  {{scope.row.warningType}}
+                </el-tag>
+                 <el-tag
+                  v-else-if="scope.row.warningColor===3"
+                  size="mini"
+                  type="warning"
                   >
                   {{scope.row.warningType}}
                 </el-tag>

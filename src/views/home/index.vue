@@ -7,6 +7,7 @@
       <div class="home">
         <div class="home-left">
           <el-tree
+          ref="treeDom"
           :expand-on-click-node="false"
           :highlight-current="true"
           :default-expand-all="true"
@@ -46,6 +47,7 @@
           <div id="equipment">
             <img id="img" :src="require('@/assets/imgs/demo_picture.png')" />
             <vue-draggable-resizable
+              class="equipmentBox-darg"
               v-for="(item, index) in equipmentData"
               :key="index"
               :parent="true"
@@ -66,9 +68,9 @@
               >
                 {{item.deviceName}}
               </div>
-              <!-- <div class="equipmentBox-ft text-center">
-                <el-button @click.stop="aaa" type="primary" size="mini">查询</el-button>
-              </div> -->
+              <div class="equipmentBox-ft text-center">
+                <el-button @click.stop="goTree(item)" type="primary" size="mini">查询</el-button>
+              </div>
             </vue-draggable-resizable>
           </div>
 
@@ -471,12 +473,23 @@ export default {
     }
   },
   methods: {
-    aaa () {},
+    goTree (item) {
+      console.log(item)
+      this.handleNodeClick(item)
+      if (item.level === 1) {
+        this.$refs.treeDom.$el.children[item.treeIndex].className = 'el-tree-node is-expanded is-current is-focusable'
+      } else if (item.level === 2) {
+        console.log(this.$refs.treeDom.$el.children)
+        // el-tree-node__children
+        // this.$refs.treeDom.$el.children[item.treeIndex].className = 'el-tree-node is-expanded is-current is-focusable'
+        this.$refs.treeDom.$el.children[item.treeIndex].children[1].children[item.treeChildrenIndex].className = 'el-tree-node is-expanded is-current is-focusable'
+      }
+    },
     getTree () {
       getTree().then(res => {
         console.log(res)
         const treeData = res.data
-        treeData.forEach(e => {
+        treeData.forEach((e, i) => {
           this.treeData.push({
             deviceName: e.near.deviceName,
             deviceId: e.near.deviceId,
@@ -484,7 +497,8 @@ export default {
             deviceAddress: e.near.deviceAddress,
             level: 1,
             children: e.far,
-            treeId: e.near.id
+            treeId: e.near.id,
+            treeIndex: i
           })
 
           this.equipmentData.push({
@@ -496,10 +510,11 @@ export default {
             locationX: e.near.locationX,
             locationY: e.near.locationY,
             alert: 0,
-            treeId: e.near.id
+            treeId: e.near.id,
+            treeIndex: i
           })
 
-          e.far.forEach(o => {
+          e.far.forEach((o, j) => {
             console.log(o)
             this.equipmentData.push({
               deviceName: o.deviceName,
@@ -511,14 +526,19 @@ export default {
               locationX: o.locationX,
               locationY: o.locationY,
               alert: 0,
-              treeId: o.deviceNearId + '-' + o.id
+              treeId: o.deviceNearId + '-' + o.id,
+              treeIndex: i,
+              treeChildrenIndex: j
             })
           })
         })
 
-        this.treeData.forEach(e => {
-          e.children.forEach(o => {
+        this.treeData.forEach((e, i) => {
+          e.children.forEach((o, j) => {
             o.treeId = o.deviceNearId + '-' + o.id
+            o.treeChildrenIndex = j
+            o.treeIndex = i
+            o.level = 2
           })
         })
       })
@@ -688,6 +708,23 @@ export default {
       }
     },
     handleNodeClick (data) {
+      if (data.level === 1) {
+        this.$refs.treeDom.$el.children.forEach((e, i) => {
+          if (data.treeIndex !== i) {
+            e.className = 'el-tree-node is-expanded'
+          }
+        })
+      } else if (data.level === 2) {
+        console.log(data)
+        console.log(this.$refs.treeDom.$el.children[data.treeIndex])
+        this.$refs.treeDom.$el.children[data.treeIndex].children[1].children.forEach((e, i) => {
+          if (data.treeChildrenIndex !== i) {
+            console.log(e)
+            e.className = 'el-tree-node'
+            // e.className = 'el-tree-node is-expanded'
+          }
+        })
+      }
       this.homeType = data.level || 2
       console.log(data)
       this.deviceId = data.id
