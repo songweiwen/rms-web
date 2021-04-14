@@ -52,7 +52,7 @@ export const ws = {
       this.audioSrc('参数设置成功')
     },
     nearErroePlay () {
-      this.audioDom.setAttribute('loop', 'loop')
+      this.audioDom.setAttribute('loop', true)
       this.audioSrc('近端机故障报警')
       this.audioStop()
     },
@@ -73,9 +73,10 @@ export const ws = {
       this.audioDom.setAttribute('loop', 'loop')
     },
     audioStop () {
-      setInterval(() => {
+      setTimeout(() => {
         this.audioDom.pause()
-      }, this.audioForTime)
+        // alert(1)
+      }, this.audioForTime * 1000)
     },
     closeNotify () {
       if (this.notifyList.length !== 0) {
