@@ -67,3 +67,12 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+  #audio {
+    position: fixed;
+    top: 0;
+    left: -1000px;
+    opacity: 0;
+  }
+</style>

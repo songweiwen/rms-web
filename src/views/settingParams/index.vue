@@ -676,8 +676,7 @@ export default {
           type: 'success'
         })
         this.WSloadingText = '读取完毕'
-        this.nearErroePlay()
-
+        this.queryPlay()
         // }
       } else if (redata.commandString === 'SRF') { // 读取远端机
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
