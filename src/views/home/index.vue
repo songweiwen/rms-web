@@ -55,6 +55,7 @@
               :snap="true"
               :y="item.locationY"
               :x="item.locationX"
+              drag-handle=".equipmentBox"
               :is-conflict-check="true"
               @dragging="onDragging(item)"
               @dragstop="onDragstop">
@@ -65,6 +66,9 @@
               >
                 {{item.deviceName}}
               </div>
+              <!-- <div class="equipmentBox-ft text-center">
+                <el-button @click.stop="aaa" type="primary" size="mini">查询</el-button>
+              </div> -->
             </vue-draggable-resizable>
           </div>
 
@@ -467,6 +471,7 @@ export default {
     }
   },
   methods: {
+    aaa () {},
     getTree () {
       getTree().then(res => {
         console.log(res)

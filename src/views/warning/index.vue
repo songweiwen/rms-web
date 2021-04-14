@@ -258,6 +258,8 @@ export default {
         this.form.deviceNearId = arr[0]
         this.form.deviceId = arr[1]
       }
+      this.pageSize = 10
+      this.currentPage = 1
       this.getTable()
     }
     // clearSelect () {
@@ -274,6 +276,8 @@ export default {
         this.form.dateEnd = ''
       }
       // if (this.form.dateStart)
+      this.pageSize = 10
+      this.currentPage = 1
       // if (this.form.dateEnd)
       this.getTable()
     }
