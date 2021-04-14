@@ -44,33 +44,33 @@ export const ws = {
       this.audioDom.play()
     },
     queryPlay () {
-      this.audioDom.setAttribute('loop', false)
+      this.audioDom.removeAttribute('loop')
       this.audioSrc('参数读取成功')
     },
     settingPlay () {
-      this.audioDom.setAttribute('loop', false)
+      this.audioDom.removeAttribute('loop')
       this.audioSrc('参数设置成功')
     },
     nearErroePlay () {
-      this.audioDom.setAttribute('loop', true)
+      this.audioDom.setAttribute('loop', 'loop')
       this.audioSrc('近端机故障报警')
       this.audioStop()
     },
     nearSuccessPlay () {
-      this.audioDom.setAttribute('loop', true)
+      this.audioDom.setAttribute('loop', 'loop')
       this.audioSrc('近端机故障恢复')
       this.audioStop()
     },
     farErroePlay () {
-      this.audioDom.setAttribute('loop', true)
+      this.audioDom.setAttribute('loop', 'loop')
       this.audioSrc('远端机故障报警')
       this.audioStop()
     },
     farSuccessPlay () {
-      this.audioDom.setAttribute('loop', true)
+      this.audioDom.setAttributev('loop', 'loop')
       this.audioSrc('远端机故障恢复')
       this.audioStop()
-      this.audioDom.setAttribute('loop', false)
+      this.audioDom.setAttribute('loop', 'loop')
     },
     audioStop () {
       setInterval(() => {
