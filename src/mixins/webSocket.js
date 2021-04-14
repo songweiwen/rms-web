@@ -3,7 +3,8 @@ import { formatDate } from '@/utils/utils'
 export const ws = {
   data () {
     return {
-      notifyList: []
+      notifyList: [],
+      audioDom: null
     }
   },
   created () {
@@ -13,8 +14,49 @@ export const ws = {
     //     this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
     //   }, 1000)
     // })
+    this.$nextTick(() => {
+      console.log(document.getElementById('audio'))
+      this.audioDom = document.getElementById('audio')
+      console.log(this.audioDom.children)
+      // this.audioDom.children[0].setAttribute('src', 'audio/参数读取成功.wav')
+      // this.audioDom.children[1].setAttribute('src', 'audio/参数读取成功.mp3')
+    })
+    // if (!document.getElementById('audio')) {
+    //   this.audioDom = document.createElement('AUDIO')
+    //   this.audioDom.id = 'audio'
+    // this.audioDom.setAttribute('src', '/i/horse.mp3')
+    // y.setAttribute('src', '/i/horse.ogg')
+    // y.setAttribute('type', 'audio/ogg')
+    // document.getElementById('myAudio').appendChild(y)
+    //   this.audioDom.setAttribute('controls', 'controls')
+    //   document.body.appendChild(this.audioDom)
+    //   this.audioDom.play()
+    // }
   },
   methods: {
+    audioSrc (name) {
+      this.audioDom.children[0].setAttribute('src', 'audio/' + name + '.wav')
+      this.audioDom.children[1].setAttribute('src', 'audio/' + name + '.mp3')
+      this.audioDom.play()
+    },
+    queryPlay () {
+      this.audioSrc('参数读取成功')
+    },
+    settingPlay () {
+      this.audioSrc('参数设置成功')
+    },
+    nearErroePlay () {
+      this.audioSrc('近端机故障报警')
+    },
+    nearSuccessPlay () {
+      this.audioSrc('近端机故障恢复')
+    },
+    farErroePlay () {
+      this.audioSrc('远端机故障报警')
+    },
+    farSuccessPlay () {
+      this.audioSrc('远端机故障恢复')
+    },
     closeNotify () {
       if (this.notifyList.length !== 0) {
         // this.notifyList[0].close()
@@ -44,6 +86,7 @@ export const ws = {
           message: `报警时间：${redata.nearDevice.deviceTime}`,
           duration: 0
         })
+        this.nearErroePlay()
         // )
       } else if (redata.commandString === 'WF') {
       // 远端机报警  全局提示
@@ -56,6 +99,7 @@ export const ws = {
           message: `报警时间：${redata.farDevice.deviceTime}`,
           duration: 0
         })
+        this.farErroePlay()
         // )
       } else if (redata.commandString === 'TRN') {
       // 近端机修复故障  全局提示
@@ -69,6 +113,7 @@ export const ws = {
           duration: 0,
           type: 'success'
         })
+        this.nearSuccessPlay()
         // )
       } else if (redata.commandString === 'TRF') {
       // 远端机修复故障  全局提示
@@ -82,6 +127,7 @@ export const ws = {
           duration: 0,
           type: 'success'
         })
+        this.farSuccessPlay()
         // )
       }
       console.log(redata.commandString, 88888)

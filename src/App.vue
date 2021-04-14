@@ -13,6 +13,10 @@
       <!-- <a-config-provider :locale="locale"> -->
         <div id="app">
           <router-view />
+          <audio id="audio" controls>
+            <source src="" type="audio/wav">
+            <source src="" type="audio/mpeg">
+          </audio>
         </div>
       <!-- </a-config-provider> -->
   <!-- </div> -->

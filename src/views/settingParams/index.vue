@@ -676,6 +676,7 @@ export default {
           type: 'success'
         })
         this.WSloadingText = '读取完毕'
+        this.queryPlay()
         // }
       } else if (redata.commandString === 'SRF') { // 读取远端机
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
@@ -687,6 +688,7 @@ export default {
           type: 'success'
         })
         this.WSloadingText = '读取完毕'
+        this.queryPlay()
         // }
       } else if (redata.commandString === 'SRNV') { // 近端机 版本
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
@@ -715,6 +717,7 @@ export default {
           type: 'success'
         })
         this.WSloadingText = '设置完毕'
+        this.settingPlay()
         // this.onQueryNear()// 近端机读取
       } else if (redata.commandString === 'SSF') { // 远端机 设置
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
@@ -725,6 +728,7 @@ export default {
           type: 'success'
         })
         this.WSloadingText = '设置完毕'
+        this.settingPlay()
         // this.onQueryFar()// 远端机读取
       }
     },

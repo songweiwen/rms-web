@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
+/src/audio
+audio
 # local env files
 .env.local
 .env.*.local
