@@ -4,7 +4,9 @@ export const ws = {
   data () {
     return {
       notifyList: [],
-      audioDom: null
+      audioDom: null,
+      audioTimer: null,
+      audioForTime: 15
     }
   },
   created () {
@@ -14,6 +16,7 @@ export const ws = {
     //     this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
     //   }, 1000)
     // })
+    this.audioForTime = this.$store.getters.audioSecond
     this.$nextTick(() => {
       console.log(document.getElementById('audio'))
       this.audioDom = document.getElementById('audio')
@@ -37,25 +40,42 @@ export const ws = {
     audioSrc (name) {
       this.audioDom.children[0].setAttribute('src', 'audio/' + name + '.wav')
       this.audioDom.children[1].setAttribute('src', 'audio/' + name + '.mp3')
+      this.audioDom.load()
       this.audioDom.play()
     },
     queryPlay () {
+      this.audioDom.setAttribute('loop', false)
       this.audioSrc('参数读取成功')
     },
     settingPlay () {
+      this.audioDom.setAttribute('loop', false)
       this.audioSrc('参数设置成功')
     },
     nearErroePlay () {
+      this.audioDom.setAttribute('loop', true)
       this.audioSrc('近端机故障报警')
+      this.audioStop()
     },
     nearSuccessPlay () {
+      this.audioDom.setAttribute('loop', true)
       this.audioSrc('近端机故障恢复')
+      this.audioStop()
     },
     farErroePlay () {
+      this.audioDom.setAttribute('loop', true)
       this.audioSrc('远端机故障报警')
+      this.audioStop()
     },
     farSuccessPlay () {
+      this.audioDom.setAttribute('loop', true)
       this.audioSrc('远端机故障恢复')
+      this.audioStop()
+      this.audioDom.setAttribute('loop', false)
+    },
+    audioStop () {
+      setInterval(() => {
+        this.audioDom.pause()
+      }, this.audioForTime)
     },
     closeNotify () {
       if (this.notifyList.length !== 0) {

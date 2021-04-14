@@ -81,7 +81,7 @@ var websocket = {
     }
     if (process.env.NODE_ENV === "development") {
       // alert("开发环境");
-      params.type= 'test1' 
+      params.type= 'test' 
     }else {
       // alert("生产环境");
       params.type= 'prod' 
