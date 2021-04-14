@@ -538,7 +538,14 @@ export default {
             id: e.near.id,
             deviceAddress: e.near.deviceAddress,
             level: 1,
-            children: e.far
+            children: e.far,
+            treeId: e.near.id
+          })
+        })
+
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            o.treeId = o.deviceNearId + '-' + o.id
           })
         })
         this.handleNodeClick(this.treeData[0])

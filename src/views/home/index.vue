@@ -478,8 +478,10 @@ export default {
             id: e.near.id,
             deviceAddress: e.near.deviceAddress,
             level: 1,
-            children: e.far
+            children: e.far,
+            treeId: e.near.id
           })
+
           this.equipmentData.push({
             deviceName: e.near.deviceName,
             deviceId: e.near.deviceId,
@@ -488,7 +490,8 @@ export default {
             level: 1,
             locationX: e.near.locationX,
             locationY: e.near.locationY,
-            alert: 0
+            alert: 0,
+            treeId: e.near.id
           })
 
           e.far.forEach(o => {
@@ -502,8 +505,15 @@ export default {
               deviceNearId: o.deviceNearId,
               locationX: o.locationX,
               locationY: o.locationY,
-              alert: 0
+              alert: 0,
+              treeId: o.deviceNearId + '-' + o.id
             })
+          })
+        })
+
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            o.treeId = o.deviceNearId + '-' + o.id
           })
         })
       })

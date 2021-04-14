@@ -45,17 +45,27 @@
             :data="tableData"
             >
             <el-table-column
-              prop="id"
-              label="设备ID"
+              prop="deviceNearId"
+              label="近端机ID"
               align="center">
             </el-table-column>
             <el-table-column
+              prop="deviceId"
+              label="远端机ID"
+              align="center">
+            </el-table-column>
+            <!-- <el-table-column
               prop="deviceName"
               label="设备名称"
               align="center">
+            </el-table-column> -->
+            <el-table-column
+              prop="deviceType"
+              label="设备类型"
+              align="center">
             </el-table-column>
             <el-table-column
-              prop="warning_type"
+              prop="warningType"
               label="报警类型"
               align="center">
               <template slot-scope="scope">
@@ -63,7 +73,7 @@
                   size="mini"
                   type="danger"
                   >
-                  {{scope.row.warning_type}}
+                  {{scope.row.warningType}}
                 </el-tag>
               </template>
             </el-table-column>
@@ -72,7 +82,7 @@
               label="报警时间"
               align="center">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="time"
               label="核销人"
               align="center">
@@ -81,7 +91,7 @@
               prop="time"
               label="核销时间"
               align="center">
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <div class="table-pagination">
             <el-pagination
@@ -256,9 +266,10 @@ export default {
   },
   watch: {
     dateSelect (val) {
-      alert(1)
-      if (this.form.dateStart) this.form.dateStart = formatDate('yyyy-MM-dd', new Date(val[0]))
-      if (this.form.dateEnd) this.form.dateEnd = formatDate('yyyy-MM-dd', new Date(val[1]))
+      // if (this.form.dateStart)
+      // if (this.form.dateEnd)
+      this.form.dateStart = formatDate('yyyy-MM-dd', new Date(val[0]))
+      this.form.dateEnd = formatDate('yyyy-MM-dd', new Date(val[1]))
       this.getTable()
     }
     // form: {
