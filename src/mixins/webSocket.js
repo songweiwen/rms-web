@@ -38,11 +38,14 @@ export const ws = {
   },
   methods: {
     audioSrc (name) {
+      const that = this
       this.audioForTime = this.$store.getters.audioSecond
       this.audioDom.children[0].setAttribute('src', 'audio/' + name + '.wav')
       this.audioDom.children[1].setAttribute('src', 'audio/' + name + '.mp3')
       this.audioDom.load()
-      // this.audioDom.play()
+      this.audioDom.addEventListener('canplay', function () { // 监听audio是否加载完毕，如果加载完毕，则读取audio播放时间
+        that.audioDom.play()
+      })
     },
     queryPlay () {
       this.audioDom.removeAttribute('loop')
