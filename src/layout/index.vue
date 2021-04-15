@@ -83,12 +83,12 @@ export default {
         // 状态日志: '/stateLog',
         // 配置日志: '/settingLog',
         // 站点: '/site',
-        设备管理: '/equipment',
+        开站设置: '/equipment',
         故障管理: '/warning',
-        数据管理: '/data',
+        操作日志: '/data',
         // 线路: '/line',
         // 地址: '/address',
-        设置参数: '/settingParams',
+        参数设置: '/settingParams',
         用户管理: '/user'
       }
     }
