@@ -21,7 +21,7 @@
           <div class="form-center">
             <el-form class="text-center" :inline="true"  :model="audioForm" :rules="audioRules" ref="audioRuleForm">
               <el-form-item label="设置音频循环播放时间" prop="second" label-width="200px">
-                <el-input v-model="audioForm.second" placeholder="请输入秒数">
+                <el-input v-model.number="audioForm.second" placeholder="请输入秒数">
                   <template slot="append">秒</template>
                 </el-input>
               </el-form-item>
@@ -140,6 +140,7 @@ export default {
               type: 'success'
             })
             console.log(this.$store.getters.audioSecond)
+            this.audioForTime = this.audioForm.second
           })
         } else {
           console.log('error submit!!')
