@@ -38,6 +38,7 @@ export const ws = {
   },
   methods: {
     audioSrc (name) {
+      this.audioForTime = this.$store.getters.audioSecond
       this.audioDom.children[0].setAttribute('src', 'audio/' + name + '.wav')
       this.audioDom.children[1].setAttribute('src', 'audio/' + name + '.mp3')
       this.audioDom.load()
