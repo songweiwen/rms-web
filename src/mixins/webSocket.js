@@ -42,7 +42,7 @@ export const ws = {
       this.audioDom.children[0].setAttribute('src', 'audio/' + name + '.wav')
       this.audioDom.children[1].setAttribute('src', 'audio/' + name + '.mp3')
       this.audioDom.load()
-      this.audioDom.play()
+      // this.audioDom.play()
     },
     queryPlay () {
       this.audioDom.removeAttribute('loop')
@@ -68,7 +68,7 @@ export const ws = {
       this.audioStop()
     },
     farSuccessPlay () {
-      this.audioDom.setAttributev('loop', 'loop')
+      this.audioDom.setAttribute('loop', 'loop')
       this.audioSrc('远端机故障恢复')
       this.audioStop()
       this.audioDom.setAttribute('loop', 'loop')
