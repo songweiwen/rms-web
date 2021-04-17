@@ -359,9 +359,16 @@ export default {
           }
         )
         .then((res) => {
-          console.log(res)
+          function getCaption (obj) {
+            var index = obj.lastIndexOf('=')
+            obj = obj.substring(index + 1, obj.length)
+            // console.log(obj);
+            return obj
+          }
+          const name = getCaption(res.headers['content-disposition'])
+          console.log(name)
           const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据
-          const fileName = '故障日志.xlsx' // 导出文件名
+          const fileName = name // 导出文件名
           const elink = document.createElement('a') // 创建a标签
           elink.download = fileName // a标签添加属性
           elink.style.display = 'none'
