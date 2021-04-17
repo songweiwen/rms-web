@@ -339,15 +339,15 @@ export default {
       // })
       this.$axios
         .get(
-          process.env.VUE_APP_BASE_API + '/rms/log/download',
+          process.env.VUE_APP_BASE_API + '/rms/warning/download',
           {
             params: {
               // page: this.currentPage,
               // size: this.pageSize
               dateStart: this.form.dateStart,
               dateEnd: this.form.dateEnd,
-              deviceId: this.form.deviceNearId,
-              deviceNearId: this.form.deviceId,
+              deviceId: this.form.deviceId,
+              deviceNearId: this.form.deviceNearId,
               deviceType: this.form.deviceType,
               warningType: this.form.warningType
             },
