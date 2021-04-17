@@ -17,8 +17,8 @@
           @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
-                <i v-if="data.level===1" class="el-icon-s-help"></i>
-                <i v-else class="el-icon-s-platform"></i>
+                <i v-if="data.level===1" class="iconfont icon-yuanduanji"></i>
+                <i v-else class="iconfont icon-jinduanji"></i>
                 {{ node.label }}
               </span>
               <!-- {{data.online}} -->

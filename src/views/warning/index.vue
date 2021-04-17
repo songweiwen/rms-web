@@ -56,6 +56,9 @@
             <!-- <el-form-item>
               <el-button type="primary" icon="el-icon-search" size="mini" @click="submitForm">增加</el-button>
             </el-form-item> -->
+            <el-button icon="el-icon-download" type="success" class="pull-right m-t-sm" @click="exportExcel" size="mini">
+              导出Excel
+            </el-button>
           </el-form>
         </div>
         <div class="table-bd">
@@ -322,10 +325,41 @@ export default {
       this.pageSize = 10
       this.currentPage = 1
       this.getTable()
+    },
+    exportExcel () {
+      getWarning({
+        page: this.currentPage,
+        size: this.pageSize,
+        dateStart: this.form.dateStart,
+        dateEnd: this.form.dateEnd,
+        deviceId: this.form.deviceNearId,
+        deviceNearId: this.form.deviceId,
+        deviceType: this.form.deviceType,
+        warningType: this.form.warningType
+      })
+        .then((res) => {
+          // console.log(res)
+          if (res.code !== '200') {
+            this.$message({
+              message: '导出失败',
+              type: 'warning'
+            })
+            return false
+          } else {
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            })
+          }
+          const a = document.createElement('a')
+          a.href = res.path
+          a.download = this.form.dateStart + '-' + this.form.dateEnd + ' 操作日志.xls'
+          a.click()
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
     }
-    // clearSelect () {
-    //   this.getTable()
-    // }
   },
   watch: {
     dateSelect (val) {
