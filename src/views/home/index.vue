@@ -95,6 +95,7 @@
                 <!-- {{item.deviceName}} -->
                  <el-popover
                   placement="top"
+                  ref="popover"
                   width="200"
                   trigger="hover">
                   <div class="text-left">
@@ -865,6 +866,12 @@ export default {
       return false
     },
     onDragging (item) {
+      console.log(this.$refs.popover)
+      this.$refs.popover.forEach(e => {
+        e.doClose()
+      })
+      // this.$refs.popover.doClose()
+      // document.body.click()
       this.equipmentActive = item
       console.log(item)
     },
