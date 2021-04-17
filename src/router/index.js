@@ -50,9 +50,9 @@ const routes = [
       name: 'settingParams',
       component: () => import('@/views/settingParams/index.vue')
     }, {
-      path: 'settingLog',
-      name: 'settingLog',
-      component: () => import('@/views/settingLog/index.vue')
+      path: 'log',
+      name: 'log',
+      component: () => import('@/views/log/index.vue')
     }, {
       path: 'data',
       name: 'data',

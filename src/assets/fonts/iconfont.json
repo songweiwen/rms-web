@@ -1,0 +1,58 @@
+{
+  "id": "2494128",
+  "name": "光纤直放站",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3868276",
+      "name": "使用文档",
+      "font_class": "caozuorizhi",
+      "unicode": "eb68",
+      "unicode_decimal": 60264
+    },
+    {
+      "icon_id": "3868264",
+      "name": "关联设备",
+      "font_class": "yuanduanji",
+      "unicode": "eb63",
+      "unicode_decimal": 60259
+    },
+    {
+      "icon_id": "3868266",
+      "name": "功能定义",
+      "font_class": "jinduanji",
+      "unicode": "eb62",
+      "unicode_decimal": 60258
+    },
+    {
+      "icon_id": "3868274",
+      "name": "配网引导",
+      "font_class": "zhuye",
+      "unicode": "eb65",
+      "unicode_decimal": 60261
+    },
+    {
+      "icon_id": "3868278",
+      "name": "权限审批",
+      "font_class": "yonghuguanli",
+      "unicode": "eb66",
+      "unicode_decimal": 60262
+    },
+    {
+      "icon_id": "3868282",
+      "name": "应用管理",
+      "font_class": "canshushezhi",
+      "unicode": "eb67",
+      "unicode_decimal": 60263
+    },
+    {
+      "icon_id": "4118040",
+      "name": "自定义",
+      "font_class": "kaizhanguanli",
+      "unicode": "eb6a",
+      "unicode_decimal": 60266
+    }
+  ]
+}

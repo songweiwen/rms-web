@@ -16,8 +16,8 @@
           @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
-                <i v-if="data.level===1" class="el-icon-s-help"></i>
-                <i v-else class="el-icon-s-platform"></i>
+                <i v-if="data.level===1" class="iconfont icon-yuanduanji"></i>
+                <i v-else class="iconfont icon-jinduanji"></i>
                 {{ node.label }}
               </span>
               <!-- {{data.online}} -->
@@ -29,7 +29,15 @@
                   @click="() => append(data)">
                   Append
                 </el-button> -->
-                <span v-if="data.alert===1" class="el-tag el-tag--danger el-tag--dark"></span>
+                <!-- 根据 每个设备的online决定   绿色在线1  红色报警2  灰色不在线0 -->
+                <span v-if="data.online===1" class="el-tag el-tag--success el-tag--dark"></span>
+                <span v-else-if="data.online===0" class="el-tag el-tag--info el-tag--dark"></span>
+                <span v-else-if="data.online===2" class="el-tag el-tag--danger el-tag--dark" :class="{
+                  shanshuo: data.shanshuo===1
+                }"></span>
+                <!-- {{data.shanshuo}} -->
+                <!-- {{data.shanshuo===1}} -->
+                <!-- <span v-if="data.alert===1" class="el-tag el-tag--danger el-tag--dark"></span> -->
                 <!-- 1 -->
                 <!-- <el-tag v-if="data.online===1" type="danger" effect="dark"></el-tag>  -->
                 <!-- <el-tag v-if="node.device.faguanggonglv===0" type="success" effect="dark"></el-tag>
@@ -38,6 +46,11 @@
               </span>
             </span>
           </el-tree>
+          <!-- <el-button type="primary" @click="onShanshuoNear">近端机闪烁</el-button>
+          <el-button type="primary" @click="onShanshuoFar">远端机闪烁</el-button>
+        <el-button type="primary" @click="onShanshuoNearClose">近端机闪烁关闭</el-button>
+          <el-button type="primary" @click="onShanshuoFarClose">远端机闪烁关闭</el-button> -->
+
         </div>
         <div class="home-right" style="width: 100%;" v-show="!deviceId">
           <!-- <img style="width: 100%;" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset=""> -->
@@ -52,8 +65,8 @@
               :key="index"
               :parent="true"
               :handles="dragActive"
-              :w="120"
-              :h="30"
+              :w="48"
+              :h="48"
               :snap="true"
               :y="item.locationY"
               :x="item.locationX"
@@ -61,15 +74,40 @@
               :is-conflict-check="true"
               @dragging="onDragging(item)"
               @dragstop="onDragstop">
-              <div class="equipmentBox"
-                :class="{'equipmentBox--near': item.level===1,
+              <!-- <div class="equipmentBox"
+                :class="{
+                  'equipmentBox--near': item.level===1,
                 'equipmentBox--far': item.level===2,
-                'equipmentBox--dagder': item.alert===1 }"
+                'equipmentBox--info': item.online===0,
+                'equipmentBox--success': item.online===1,
+                'equipmentBox--dagder': item.online===2,
+                'shanshuo': item.shanshuo===1 }"
               >
-                {{item.deviceName}}
-              </div>
-              <div class="equipmentBox-ft text-center">
-                <el-button @click.stop="goTree(item)" type="primary" size="mini">查询</el-button>
+              </div> -->
+              <div class="equipmentBox"
+                :class="{
+                'equipmentBox--near': item.level===1,
+                'equipmentBox--far': item.level===2,
+                'equipmentBox--info': item.online===0,
+                'equipmentBox--success': item.online===1,
+                'equipmentBox--dagder': item.online===2,
+                'shanshuo': item.shanshuo===1 }">
+                <!-- {{item.deviceName}} -->
+                 <el-popover
+                  placement="top"
+                  width="200"
+                  trigger="hover">
+                  <div class="text-left">
+                    <div>设备名称： {{item.deviceName}}</div>
+                    <div>设备ID： {{item.deviceId}}</div>
+                    <div v-if="item.level===2">所属近端机： {{item.deviceNearId}}</div>
+                  </div>
+                  <div class="text-center">
+                    <el-button class="m-t-md" @click.stop="goTree(item)" type="primary" size="mini">查询</el-button>
+                  </div>
+                  <i slot="reference" v-if="item.level===2" class="iconfont icon-yuanduanji"></i>
+                  <i slot="reference" v-else class="iconfont icon-jinduanji"></i>
+                </el-popover>
               </div>
             </vue-draggable-resizable>
           </div>
@@ -473,6 +511,34 @@ export default {
     }
   },
   methods: {
+    onShanshuoNear () { // 闪烁
+      const data = {}
+      data.nearDevice = this.equipmentData[0]
+      data.type = 'shanshuo-OPENNEAR'
+      data.commandString = 'shanhong-near'
+      this.$webSocket.Send(data)
+    },
+    onShanshuoFar () { // 闪烁
+      const data = {}
+      data.farDevice = this.equipmentData[0]
+      data.type = 'shanshuo-OPENNEAR'
+      data.commandString = 'shanhong-far'
+      this.$webSocket.Send(data)
+    },
+    onShanshuoNearClose () { // 闪烁
+      const data = {}
+      data.nearDevice = this.equipmentData[0]
+      data.type = 'shanshuo-CLOSENEAR'
+      data.commandString = 'shanhong-near'
+      this.$webSocket.Send(data)
+    },
+    onShanshuoFarClose () { // 闪烁
+      const data = {}
+      data.farDevice = this.equipmentData[0]
+      data.type = 'shanshuo-CLOSEFAR'
+      data.commandString = 'shanhong-far'
+      this.$webSocket.Send(data)
+    },
     goTree (item) {
       console.log(item)
       this.handleNodeClick(item)
@@ -498,7 +564,9 @@ export default {
             level: 1,
             children: e.far,
             treeId: e.near.id,
-            treeIndex: i
+            treeIndex: i,
+            online: e.near.online,
+            shanshuo: e.near.shanshuo
           })
 
           this.equipmentData.push({
@@ -509,9 +577,10 @@ export default {
             level: 1,
             locationX: e.near.locationX,
             locationY: e.near.locationY,
-            alert: 0,
             treeId: e.near.id,
-            treeIndex: i
+            treeIndex: i,
+            online: e.near.online,
+            shanshuo: e.near.shanshuo
           })
 
           e.far.forEach((o, j) => {
@@ -525,10 +594,11 @@ export default {
               deviceNearId: o.deviceNearId,
               locationX: o.locationX,
               locationY: o.locationY,
-              alert: 0,
               treeId: o.deviceNearId + '-' + o.id,
               treeIndex: i,
-              treeChildrenIndex: j
+              treeChildrenIndex: j,
+              online: o.online,
+              shanshuo: o.shanshuo
             })
           })
         })
@@ -576,10 +646,10 @@ export default {
       this.websocketonMessageAll(redata)
 
       // 近端机报警  更新树状图的报警灯泡
-      if (redata.commandString === 'WN') {
+      if (redata.commandString === 'WN' || redata.commandString === 'CSSNAER') {
         this.treeData.forEach(e => {
           if (e.deviceId === redata.nearDevice.deviceId) {
-            e.alert = 1
+            e = redata.nearDevice
             this.treeData = [...this.treeData]
           }
         })
@@ -587,7 +657,7 @@ export default {
         this.equipmentData.forEach(e => {
           if (e.level === 1) {
             if (e.deviceId === redata.nearDevice.deviceId) {
-              e.alert = 1
+              e = redata.nearDevice
               this.equipmentData = [...this.equipmentData]
             }
           }
@@ -599,12 +669,12 @@ export default {
             this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
           }
         }
-      } else if (redata.commandString === 'WF') {
+      } else if (redata.commandString === 'WF' || redata.commandString === 'CSSFAR') {
         // 远端机报警  更新树状图的报警灯泡
         this.treeData.forEach(e => {
           e.children.forEach(o => {
             if (o.deviceId === redata.farDevice.deviceId) {
-              o.alert = 1
+              o = redata.farDevice
               this.treeData = [...this.treeData]
             }
           })
@@ -614,7 +684,7 @@ export default {
           // if (e.level === 2) {
           if (e.deviceNearId === redata.farDevice.deviceNearId) {
             if (e.deviceId === redata.farDevice.deviceId) {
-              e.alert = 1
+              e = redata.farDevice
               this.equipmentData = [...this.equipmentData]
             }
           }
@@ -631,7 +701,7 @@ export default {
         this.treeData.forEach(e => {
           e.children.forEach(o => {
             if (o.deviceId === redata.nearDevice.deviceId) {
-              o.alert = 0
+              o = redata.nearDevice
               this.treeData = [...this.treeData]
             }
           })
@@ -640,7 +710,7 @@ export default {
         this.equipmentData.forEach(e => {
           if (e.level === 1) {
             if (e.deviceId === redata.nearDevice.deviceId) {
-              e.alert = 0
+              e = redata.nearDevice
               this.equipmentData = [...this.equipmentData]
             }
           }
@@ -657,7 +727,7 @@ export default {
         this.treeData.forEach(e => {
           e.children.forEach(o => {
             if (o.deviceId === redata.farDevice.deviceId) {
-              o.alert = 0
+              o = redata.farDevice
               this.treeData = [...this.treeData]
             }
           })
@@ -667,7 +737,7 @@ export default {
           // if (e.level === 2) {
           if (e.deviceNearId === redata.farDevice.deviceNearId) {
             if (e.deviceId === redata.farDevice.deviceId) {
-              e.alert = 0
+              e = redata.farDevice
               this.equipmentData = [...this.equipmentData]
             }
           }

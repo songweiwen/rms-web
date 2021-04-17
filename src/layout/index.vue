@@ -36,7 +36,7 @@
           v-for="(item, index) in menuData"
           :key="index"
           :index="String(index)">
-          <i :class="item.icon?item.icon:'el-icon-menu'"></i>
+          <i :class="item.icon?item.icon + ' iconfont':'el-icon-menu'"></i>
           <span slot="title">
             {{item.webTitle}}
           </span>
@@ -81,15 +81,22 @@ export default {
       menuUrl: {
         主页: '/home',
         // 状态日志: '/stateLog',
-        // 配置日志: '/settingLog',
         // 站点: '/site',
-        开站设置: '/equipment',
         故障管理: '/warning',
-        操作日志: '/data',
+        // 操作日志: '/data',
         // 线路: '/line',
         // 地址: '/address',
         参数设置: '/settingParams',
-        用户管理: '/user'
+        操作日志: '/log',
+        用户管理: '/user',
+        开站设置: '/equipment'
+      },
+      menuIcon: {
+        主页: 'icon-zhuye',
+        操作日志: 'icon-caozuorizhi',
+        参数设置: 'icon-canshushezhi',
+        用户管理: 'icon-yonghuguanli',
+        开站设置: 'icon-kaizhanguanli'
       }
     }
   },
@@ -122,6 +129,25 @@ export default {
       //   break
       // }
     }
+    console.log(this.menuData)
+    // for (let i = 0; i < this.menuData.length; i++) {
+    //   const e = this.menuData[i]
+    //   console.log(e)
+    for (const key in this.menuIcon) {
+      console.log(key)
+      // if (e.webTitle === key) {
+      this.menuData.forEach(e => {
+        console.log(e)
+        if (e.webTitle === key) {
+          e.icon = this.menuIcon[key]
+        }
+      })
+      // }
+    }
+    // this.menuIcon.forEach(o => {
+    //   console.log(o)
+    // })
+    // }
   },
   methods: {
     onMenu (index, indexPath) {

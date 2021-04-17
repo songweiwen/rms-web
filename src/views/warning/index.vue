@@ -5,7 +5,7 @@
         <div class="table-hd">
           <el-form :inline="true" :model="form" >
             <el-form-item label="设备选择" label-width="70px">
-              <el-select v-model="form.id" clearable placeholder="请选择" size="mini" @change="changeSelect">
+              <el-select v-model="form.id" clearable placeholder="请选择" size="mini" @change="changeSelect" style="width: 120px;">
                 <el-option-group
                   v-for="group in selectOptions"
                   :key="group.label"
@@ -17,6 +17,26 @@
                     :value="item.value">
                   </el-option>
                 </el-option-group>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="设备类型" label-width="70px">
+              <el-select v-model="form.deviceType" clearable placeholder="请选择" size="mini" @change="changeTable" style="width: 100px;">
+                <el-option
+                  v-for="(item, key) in deviceOptions"
+                  :key="key"
+                  :label="item.label"
+                  :value="item.label">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="报警类型" label-width="70px">
+              <el-select v-model="form.warningType" clearable placeholder="请选择" size="mini" @change="changeTable" style="width: 100px;">
+                <el-option
+                  v-for="(item, key) in warningOptions"
+                  :key="key"
+                  :label="item.label"
+                  :value="item.label">
+                </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="日期查询" label-width="70px">
@@ -137,6 +157,19 @@ export default {
   mixins: [tableHeight, ws],
   data () {
     return {
+      deviceOptions: [{
+        label: '近端机'
+      },
+      {
+        label: '远端机'
+      }],
+      warningOptions: [{
+        label: '故障告警'
+      },
+      {
+        label: '故障恢复'
+      }
+      ],
       selectOptions: [{
         label: '近端机',
         options: []
@@ -145,6 +178,9 @@ export default {
         options: []
       }],
       pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() > Date.now() // 选当前时间之前的时间
+        },
         shortcuts: [{
           text: '最近一周',
           onClick (picker) {
@@ -186,7 +222,9 @@ export default {
         deviceId: '',
         deviceNearId: '',
         dateStart: '',
-        dateEnd: ''
+        dateEnd: '',
+        deviceType: '',
+        warningType: ''
       },
       pageHeight: 500,
       treeData: [],
@@ -245,7 +283,9 @@ export default {
         dateStart: this.form.dateStart,
         dateEnd: this.form.dateEnd,
         deviceId: this.form.deviceNearId,
-        deviceNearId: this.form.deviceId
+        deviceNearId: this.form.deviceId,
+        deviceType: this.form.deviceType,
+        warningType: this.form.warningType
       }).then(res => {
         const data = res.data
         console.log(data)
@@ -274,6 +314,11 @@ export default {
         this.form.deviceNearId = arr[0]
         this.form.deviceId = arr[1]
       }
+      this.pageSize = 10
+      this.currentPage = 1
+      this.getTable()
+    },
+    changeTable () {
       this.pageSize = 10
       this.currentPage = 1
       this.getTable()

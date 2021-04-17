@@ -35,12 +35,15 @@ import {
   Message,
   MessageBox,
   Popconfirm,
+  Popover,
   Table,
   TableColumn,
   Tag,
   TabPane,
   Tree,
   Tabs,
+  TimePicker,
+  TimeSelect,
   // msgbox
   Pagination,
   Notification
@@ -77,12 +80,15 @@ const components = [
   Option,
   Dialog,
   Popconfirm,
+  Popover,
   Table,
   TableColumn,
   Tag,
   TabPane,
   Tree,
   Tabs,
+  TimePicker,
+  TimeSelect,
   // Message
   // MessageBox
   Pagination
