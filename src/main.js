@@ -3,6 +3,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import qs from 'qs'
 // import { audiojs } from '@/plugins/audiojs/audio.min.js'
 // import Cookies from 'js-cookie'
 // 引入各插件
@@ -42,6 +43,7 @@ Vue.config.productionTip = false
 // Vue.prototype.$back = () => router.back(-1)
 Vue.prototype.$nbsp = '\u3000'
 Vue.prototype.$axios = axios
+Vue.prototype.$qs = qs
 
 // Vue.prototype.$audiojs = audiojs
 // console.log(Vue.$audiojs)

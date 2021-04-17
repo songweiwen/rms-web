@@ -200,30 +200,56 @@ export default {
       console.log(`当前页: ${val}`)
     },
     exportExcel () {
-      getLog({
-        page: this.currentPage,
-        size: this.pageSize,
-        dateStart: this.form.dateStart,
-        dateEnd: this.form.dateEnd
-      })
-        .then((res) => {
-          // console.log(res)
-          if (res.code !== '200') {
-            this.$message({
-              message: '导出失败',
-              type: 'warning'
-            })
-            return false
-          } else {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
+      this.$axios
+        .get(
+          process.env.VUE_APP_BASE_API + '/rms/log/download',
+          {
+            params: {
+              dateStart: this.form.dateStart,
+              dateEnd: this.form.dateEnd
+            },
+            responseType: 'blob',
+            headers: {
+              'content-type': 'application/json',
+              Authorization: this.$Cookies.get('access_token') // token换成从缓存获取
+            }
           }
-          const a = document.createElement('a')
-          a.href = res.path
-          a.download = this.form.dateStart + '-' + this.form.dateEnd + ' 操作日志.xls'
-          a.click()
+        )
+      // loadLog({
+      //   // page: this.currentPage,
+      //   // size: this.pageSize,
+      //   dateStart: this.form.dateStart,
+      //   dateEnd: this.form.dateEnd
+      // })
+        .then((res) => {
+          console.log(res)
+          const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据
+          const fileName = '操作日志.xlsx' // 导出文件名
+          const elink = document.createElement('a') // 创建a标签
+          elink.download = fileName // a标签添加属性
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click() // 执行下载
+          URL.revokeObjectURL(elink.href) // 释放URL 对象
+          document.body.removeChild(elink) // 释放标签
+          // console.log(res)
+          // if (res.code !== '200') {
+          //   this.$message({
+          //     message: '导出失败',
+          //     type: 'warning'
+          //   })
+          //   return false
+          // } else {
+          //   this.$message({
+          //     message: res.msg,
+          //     type: 'success'
+          //   })
+          // }
+          // const a = document.createElement('a')
+          // a.href = res.path
+          // a.download = this.form.dateStart + '-' + this.form.dateEnd + ' 操作日志.xls'
+          // a.click()
         })
         .catch(function (err) {
           console.log(err)

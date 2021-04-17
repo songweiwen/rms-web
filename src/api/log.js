@@ -4,3 +4,7 @@ import http from '@/utils/http'
 export const getLog = function (params) {
   return http.post('/rms/log/list', params)
 }
+
+export const loadLog = function (params) {
+  return http.post('/rms/log/download', params)
+}
