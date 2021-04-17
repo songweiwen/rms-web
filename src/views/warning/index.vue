@@ -285,8 +285,8 @@ export default {
         size: this.pageSize,
         dateStart: this.form.dateStart,
         dateEnd: this.form.dateEnd,
-        deviceId: this.form.deviceNearId,
-        deviceNearId: this.form.deviceId,
+        deviceId: this.form.deviceId,
+        deviceNearId: this.form.deviceNearId,
         deviceType: this.form.deviceType,
         warningType: this.form.warningType
       }).then(res => {
