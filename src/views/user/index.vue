@@ -141,6 +141,13 @@
                   </el-input>
                 </el-form-item>
               </div>
+              <div>
+                <el-form-item label="故障机循环检测的时间间隔" prop="guzhangTime" label-width="200px"  style="margin-left: -10px;">
+                  <el-input style="width: 200px;" type="number" v-model.number="inspectForm.guzhangTime" placeholder="请输入间隔分钟" :max="60" min="1">
+                    <template slot="append">分钟</template>
+                  </el-input>
+                </el-form-item>
+              </div>
               <!-- 开1关0 -->
               <el-form-item label="是否开启巡检" label-width="200px" style="margin-left: -60px;">
                 <el-switch
@@ -352,12 +359,16 @@ export default {
         ],
         patrolTime: [
           { required: true, message: '请输入分钟', trigger: 'blur' }
+        ],
+        guzhangTime: [
+          { required: true, message: '请输入分钟', trigger: 'blur' }
         ]
       },
       value: '',
       inspectForm: {
         patrolDays: '',
         patrolTime: '',
+        guzhangTime: '',
         enable: 0 // 0 关 1 开
       }
     }
@@ -578,6 +589,7 @@ export default {
           updatePatrol({
             day: this.inspectForm.patrolDays,
             minute: this.inspectForm.patrolTime,
+            guzhangTime: this.inspectForm.guzhangTime,
             enable: this.inspectForm.enable
           }).then(res => {
             const data = res.data
