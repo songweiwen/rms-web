@@ -142,7 +142,7 @@
                 </el-form-item>
               </div>
               <div>
-                <el-form-item label="故障机循环检测的时间间隔" prop="guzhangTime" label-width="200px"  style="margin-left: -10px;">
+                <el-form-item label="复检时间间隔" prop="guzhangTime" label-width="200px"  style="margin-left: -10px;">
                   <el-input style="width: 200px;" type="number" v-model.number="inspectForm.guzhangTime" placeholder="请输入间隔分钟" :max="60" min="1">
                     <template slot="append">分钟</template>
                   </el-input>
