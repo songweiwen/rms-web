@@ -248,7 +248,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  指示说明
+                  状态说明
                 </el-col>
                 <el-col :span="12">
                   <el-tag class="home-item__tag" type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>
@@ -427,7 +427,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  指示说明
+                  状态说明
                 </el-col>
                 <el-col :span="12">
                   <el-tag class="home-item__tag" type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>

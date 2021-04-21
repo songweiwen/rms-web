@@ -123,7 +123,7 @@
         <el-tab-pane label="巡检设置">
           <div class="form-center">
             <el-form class="text-center" :inline="true"  :model="inspectForm" :rules="inspectRules" ref="inspectRuleForm">
-              <el-form-item label="设置巡检起始时间" prop="patrolDays" label-width="200px">
+              <el-form-item label="巡检起始时间" prop="patrolDays" label-width="200px">
                 <el-time-select
                   v-model="inspectForm.patrolDays"
                   :picker-options="{
@@ -135,7 +135,7 @@
                 </el-time-select>
               </el-form-item>
               <div>
-                <el-form-item label="设置巡检时间间隔" prop="patrolTime" label-width="200px"  style="margin-left: -10px;">
+                <el-form-item label="巡检时间间隔" prop="patrolTime" label-width="200px"  style="margin-left: -10px;">
                   <el-input style="width: 200px;" type="number" v-model.number="inspectForm.patrolTime" placeholder="请输入间隔分钟" :max="24*60" min="1">
                     <template slot="append">分钟</template>
                   </el-input>
