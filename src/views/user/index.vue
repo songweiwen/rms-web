@@ -5,7 +5,7 @@
     </el-button> -->
     <div class="page-container page-tabs page-tabs--h" ref="pageHeight">
       <el-tabs type="border-card">
-        <el-tab-pane label="用户">
+        <el-tab-pane label="用户管理">
           <div class="table">
             <div class="table-hd">
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisible=true">增加</el-button>
@@ -97,7 +97,7 @@
         <el-tab-pane label="短信设置">
           <div class="form-center">
             <el-form class="text-center" :inline="true" :model="IPForm" :rules="IPRules" ref="IPRuleForm">
-              <el-form-item label="IP地址" prop="ip" label-width="120px">
+              <el-form-item label="短信猫IP地址" prop="ip" label-width="120px">
                 <el-input v-model="IPForm.ip" placeholder="请输入IP地址"></el-input>
               </el-form-item>
               <el-form-item>
@@ -109,7 +109,7 @@
         <el-tab-pane label="音频设置">
           <div class="form-center">
             <el-form class="text-center" :inline="true"  :model="audioForm" :rules="audioRules" ref="audioRuleForm">
-              <el-form-item label="设置音频循环播放时间" prop="second" label-width="200px">
+              <el-form-item label="语音循环播报时间" prop="second" label-width="200px">
                 <el-input style="width: 200px;" type="number" v-model.number="audioForm.second" placeholder="请输入秒数" min="1">
                   <template slot="append">秒</template>
                 </el-input>
@@ -136,14 +136,14 @@
               </el-form-item>
               <div>
                 <el-form-item label="巡检时间间隔" prop="patrolTime" label-width="200px"  style="margin-left: -10px;">
-                  <el-input style="width: 200px;" type="number" v-model.number="inspectForm.patrolTime" placeholder="请输入间隔分钟" :max="24*60" min="1">
-                    <template slot="append">分钟</template>
+                  <el-input style="width: 200px;" type="number" v-model.number="inspectForm.patrolTime" placeholder="请输入时间间隔" :max="24*60" min="1">
+                    <template slot="append">小时</template>
                   </el-input>
                 </el-form-item>
               </div>
               <div>
                 <el-form-item label="复检时间间隔" prop="guzhangTime" label-width="200px"  style="margin-left: -10px;">
-                  <el-input style="width: 200px;" type="number" v-model.number="inspectForm.guzhangTime" placeholder="请输入间隔分钟" :max="60" min="1">
+                  <el-input style="width: 200px;" type="number" v-model.number="inspectForm.guzhangTime" placeholder="请输入时间间隔" :max="60" min="1">
                     <template slot="append">分钟</template>
                   </el-input>
                 </el-form-item>

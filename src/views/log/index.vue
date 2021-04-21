@@ -52,11 +52,11 @@
               label="操作时间"
               align="center">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="level"
               label="操作级别"
               align="center">
-              <!-- level  1级红色吧   2级橙色  3级绿色 -->
+              level  1级红色吧   2级橙色  3级绿色
               <template slot-scope="scope">
                  <el-tag
                   v-if="scope.row.level===1"
@@ -80,7 +80,7 @@
                   {{scope.row.level}}
                 </el-tag>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <div class="table-pagination">
             <el-pagination

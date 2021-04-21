@@ -222,7 +222,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  UPS警告
+                  UPS状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -299,7 +299,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  发光警告
+                  发光状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -314,7 +314,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  收光警告
+                  收光状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -404,7 +404,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  UPS警告
+                  UPS状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">

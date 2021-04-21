@@ -4,7 +4,7 @@
       <div class="table">
         <div class="table-hd">
           <el-form :inline="true" :model="form" >
-            <el-form-item label="设备选择" label-width="70px">
+            <el-form-item label="近端机" label-width="70px">
               <el-select v-model="form.id" clearable placeholder="请选择" size="mini" @change="changeSelect" style="width: 120px;">
                 <el-option-group
                   v-for="group in selectOptions"
@@ -19,7 +19,7 @@
                 </el-option-group>
               </el-select>
             </el-form-item>
-            <el-form-item label="设备类型" label-width="70px">
+            <el-form-item label="远端机" label-width="70px">
               <el-select v-model="form.deviceType" clearable placeholder="请选择" size="mini" @change="changeTable" style="width: 100px;">
                 <el-option
                   v-for="(item, key) in deviceOptions"
