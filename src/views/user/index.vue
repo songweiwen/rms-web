@@ -59,7 +59,7 @@
                 <el-table-column
                   label="操作"
                   width="300"
-                  align="right">
+                  align="center">
                   <template slot-scope="scope">
                     <el-button
                       size="mini"

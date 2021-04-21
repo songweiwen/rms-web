@@ -914,8 +914,8 @@ export default {
         this.overTime = setTimeout(() => {
           this.WSloading = false
           this.WSloadingState = 2
-          this.WSloadingText = '检测超时'
-          this.$message.error('检测超时')
+          this.WSloadingText = '检测失败'
+          this.$message.error('检测失败')
           // 近端机
           // this.dataNear.device.online = 0
           this.dataNear.device.shouguanggonglv = 99
