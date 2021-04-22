@@ -36,7 +36,7 @@
                 </el-table-column> -->
                 <el-table-column
                   prop="userAdmin"
-                  label="巡检管理权限"
+                  label="管理权限"
                   align="center">
                   <template slot-scope="scope">
                     <template>
@@ -191,7 +191,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="修改用户名" :visible.sync="editVisible">
+    <el-dialog title="修改密码" :visible.sync="editVisible">
       <el-form :model="editForm" :rules="editRules" ref="editRuleForm">
         <el-form-item label="用户名" prop="userName" label-width="120px">
           <el-input v-model="editForm.userName" placeholder="请输入用户名" disabled></el-input>
