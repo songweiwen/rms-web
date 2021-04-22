@@ -28,7 +28,7 @@
                 </el-table-column>
                 <el-table-column
                   prop="deviceAddress"
-                  label="地址"
+                  label="安装位置"
                   align="center">
                 </el-table-column>
                 <!-- <el-table-column
@@ -38,7 +38,7 @@
                 </el-table-column> -->
                 <el-table-column
                   prop="devicePort"
-                  label="IP信息"
+                  label="IP及端口号"
                   align="center">
                 </el-table-column>
                 <el-table-column
@@ -49,7 +49,7 @@
                 <el-table-column
                   label="操作"
                   width="200"
-                  align="right">
+                  align="center">
                   <template slot-scope="scope">
                     <el-button
                       size="mini"
@@ -103,7 +103,7 @@
                 </el-table-column>
                 <el-table-column
                   prop="deviceAddress"
-                  label="地址"
+                  label="安装位置"
                   align="center">
                 </el-table-column>
                 <!-- <el-table-column
@@ -111,11 +111,11 @@
                   label="IP地址"
                   align="center">
                 </el-table-column> -->
-                <el-table-column
+                <!-- <el-table-column
                   prop="devicePort"
-                  label="IP信息"
+                  label="IP及端口号"
                   align="center">
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                   prop="deviceTime"
                   label="更新时间"
@@ -124,7 +124,7 @@
                 <el-table-column
                   label="操作"
                   width="200"
-                  align="right">
+                  align="center">
                   <template slot-scope="scope">
                     <el-button
                       size="mini"
@@ -163,11 +163,11 @@
         <el-form-item label="设备ID" prop="deviceId" label-width="120px">
           <el-input v-model.number="addForm.deviceId" placeholder="请输入设备ID"></el-input>
         </el-form-item>
-        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
+        <el-form-item label="设备名称" prop="deviceName" label-width="120px">
           <el-input v-model="addForm.deviceName" placeholder="请输入设备名称"></el-input>
         </el-form-item>
-        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
-          <el-input v-model="addForm.deviceAddress" placeholder="请输入地址"></el-input>
+        <el-form-item label="安装位置" prop="deviceAddress" label-width="120px">
+          <el-input v-model="addForm.deviceAddress" placeholder="请输入安装位置"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input>
@@ -185,11 +185,11 @@
         <el-form-item label="设备ID" prop="deviceId" label-width="120px">
           <el-input v-model="editForm.deviceId" placeholder="请输入设备ID" disabled></el-input>
         </el-form-item>
-        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
+        <el-form-item label="设备名称" prop="deviceName" label-width="120px">
           <el-input v-model="editForm.deviceName" placeholder="请输入设备名字"></el-input>
         </el-form-item>
-        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
-          <el-input v-model="editForm.deviceAddress" placeholder="请输入地址"></el-input>
+        <el-form-item label="安装位置" prop="deviceAddress" label-width="120px">
+          <el-input v-model="editForm.deviceAddress" placeholder="请输入安装位置"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="editForm.deviceDescribe" placeholder="请输入描述"></el-input>
@@ -206,7 +206,7 @@
         <el-form-item label="设备ID" prop="deviceId" label-width="120px">
           <el-input v-model.number="addFormFar.deviceId" placeholder="请输入设备ID"></el-input>
         </el-form-item>
-        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
+        <el-form-item label="设备名称" prop="deviceName" label-width="120px">
           <el-input v-model="addFormFar.deviceName" placeholder="请输入设备名称"></el-input>
         </el-form-item>
         <el-form-item label="归属于近端机" prop="deviceNearId" label-width="120px">
@@ -219,8 +219,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
-          <el-input v-model="addFormFar.deviceAddress" placeholder="请输入地址"></el-input>
+        <el-form-item label="安装位置" prop="deviceAddress" label-width="120px">
+          <el-input v-model="addFormFar.deviceAddress" placeholder="请输入安装位置"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="addFormFar.deviceDescribe" placeholder="请输入描述"></el-input>
@@ -237,8 +237,8 @@
         <el-form-item label="设备ID" prop="deviceId" label-width="120px">
           <el-input v-model="editFormFar.deviceId" placeholder="请输入设备ID" disabled></el-input>
         </el-form-item>
-        <el-form-item label="设备名字" prop="deviceName" label-width="120px">
-          <el-input v-model="editFormFar.deviceName" placeholder="请输入设备名字"></el-input>
+        <el-form-item label="设备名称" prop="deviceName" label-width="120px">
+          <el-input v-model="editFormFar.deviceName" placeholder="请输入设备名称"></el-input>
         </el-form-item>
         <el-form-item label="归属于近端机" prop="deviceNearId" label-width="120px">
           <el-select v-model="editFormFar.deviceNearId" placeholder="请选择近端机">
@@ -250,8 +250,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="地址" prop="deviceAddress" label-width="120px">
-          <el-input v-model="editFormFar.deviceAddress" placeholder="请输入地址"></el-input>
+        <el-form-item label="安装位置" prop="deviceAddress" label-width="120px">
+          <el-input v-model="editFormFar.deviceAddress" placeholder="请输入安装位置"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="editFormFar.deviceDescribe" placeholder="请输入描述"></el-input>

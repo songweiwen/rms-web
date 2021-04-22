@@ -14,7 +14,7 @@ module.exports = {
     // port: 8081,
     proxy: { // 设置代理
       [process.env.VUE_APP_BASE_API]: {
-        target: 'http://songweiwenceshi.oicp.io:20010', // 接口的基础地址
+        target: 'http://songweiwenceshi.oicp.io', // 接口的基础地址
         // secure: false,  // 如果是https接口，需要配置这个参数
         ws: true, // 如果要代理 websockets
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置

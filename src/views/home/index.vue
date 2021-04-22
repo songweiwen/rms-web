@@ -222,7 +222,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  UPS警告
+                  UPS状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -248,7 +248,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  指示说明
+                  状态说明
                 </el-col>
                 <el-col :span="12">
                   <el-tag class="home-item__tag" type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>
@@ -299,7 +299,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  发光警告
+                  发光状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -314,7 +314,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  收光警告
+                  收光状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -404,7 +404,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  UPS警告
+                  UPS状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -427,7 +427,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  指示说明
+                  状态说明
                 </el-col>
                 <el-col :span="12">
                   <el-tag class="home-item__tag" type="success" effect="dark"></el-tag> <span class="home-tagtext">正常</span>
@@ -914,8 +914,8 @@ export default {
         this.overTime = setTimeout(() => {
           this.WSloading = false
           this.WSloadingState = 2
-          this.WSloadingText = '检测超时'
-          this.$message.error('检测超时')
+          this.WSloadingText = '检测失败'
+          this.$message.error('检测失败')
           // 近端机
           // this.dataNear.device.online = 0
           this.dataNear.device.shouguanggonglv = 99

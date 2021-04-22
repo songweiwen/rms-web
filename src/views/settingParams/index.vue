@@ -159,7 +159,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  单位:dbm
+                  DBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -268,7 +268,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  单位:dbm
+                  DBm
                 </el-col>
               </el-row>
 
@@ -288,7 +288,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  无符号数
+                  0-31（范围值）
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
@@ -314,7 +314,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  单位dbm
+                  DBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -332,7 +332,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  有符号数：℃
+                  ℃
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -350,7 +350,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  有符号数：dBm
+                  DBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -368,7 +368,6 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  无符号数
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -386,7 +385,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  有符号数：dBm
+                  DBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -405,7 +404,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  无符号数
+                  0-31（范围值）
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
@@ -431,7 +430,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  有符号数：DB
+                  DB
                 </el-col>
               </el-row>
 
