@@ -579,6 +579,7 @@ export default {
         this.inspectForm = {
           patrolDays: data.patrolDays,
           patrolTime: data.patrolTime,
+          guzhangTime: data.guzhangTime,
           enable: data.enable
         }
       })
