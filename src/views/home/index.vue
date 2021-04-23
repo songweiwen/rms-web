@@ -58,7 +58,7 @@
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
           </div> -->
           <div id="equipment">
-            <el-radio-group v-model="dragBool" size="mini">
+            <el-radio-group style="position: absolute; top: 0; left: 0;" v-if="userInfo.userName==='admin'" v-model="dragBool" size="mini">
               <el-radio-button  :label="0">关</el-radio-button>
               <el-radio-button  :label="1">开</el-radio-button>
             </el-radio-group>
@@ -481,6 +481,7 @@ export default {
   mixins: [ws],
   data () {
     return {
+      userInfo: this.$store.getters.userInfo.userInfo.userInfo,
       dragBool: 0,
       dragVisible: false,
       editRules: {
@@ -953,7 +954,7 @@ export default {
     },
     dragSubmit () {
       console.log(this.$store.getters.userInfo)
-      const pw = this.$store.getters.userInfo.userInfo.userInfo.userPassword
+      const pw = this.userInfo.userPassword
       console.log(pw)
       if (pw === this.editForm.userPassword) {
         this.dragVisible = false
