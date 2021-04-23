@@ -1,26 +1,22 @@
 const state = {
-  audioSecond: 15
+  audioSetting: {
+    second: 15,
+    enable: 0
+  }
 }
 // JSON.parse(localStorage.getItem('audioSecond')) ||
 const mutations = {
-  SET_audioSecond: (state, item) => {
+  SET_audioSetting: (state, item) => {
     // localStorage.setItem('audioSecond', JSON.stringify(item))
     console.log(item)
-    state.audioSecond = item
+    state.audioSetting = item
     console.log(state)
   }
 }
 
-// const getters = {
-//   getCatalog_id: (state) => {
-//     state.audioSecond.audioSecond = localStorage.getItem('audioSecond')
-//     return state.audioSecond.audioSecond
-//   }
-// }
-
 const actions = {
   audioSecond ({ commit }) {
-    commit('SET_audioSecond', name)
+    commit('SET_audioSetting', name)
   }
 }
 

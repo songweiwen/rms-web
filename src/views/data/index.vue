@@ -134,7 +134,10 @@ export default {
           }).then(res => {
             const data = res.data
             console.log(data)
-            this.$store.commit('SET_audioSecond', this.audioForm.second)
+            this.$store.commit('SET_audioSetting', {
+              second: this.audioForm.second,
+              enable: this.audioForm.enable
+            })
             this.$message({
               message: '设置成功',
               type: 'success'

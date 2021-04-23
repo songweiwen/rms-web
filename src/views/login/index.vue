@@ -120,7 +120,10 @@ export default {
               if (res.code === 200) {
                 this.$Cookies.set('access_token', data.token)
                 this.$store.commit('SET_userInfo', data)
-                this.$store.commit('SET_audioSecond', data.second)
+                this.$store.commit('SET_audioSetting', {
+                  second: data.second,
+                  enable: data.enable
+                })
                 this.$router.push({ path: 'home' })
               }
             }).catch(error => {

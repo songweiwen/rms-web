@@ -21,7 +21,7 @@ import Cookies from 'js-cookie'
 // 创建自定义axios
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // api 的 base_url
-  timeout: 10000, // request timeout 请求超时时间
+  timeout: 10000 * 6, // request timeout 请求超时时间
   withCredentials: false // 是否允许带cookie这些
   // headers: {
   // 'Content-Type': "application/json;charset=utf-8"

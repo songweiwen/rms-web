@@ -24,3 +24,11 @@ export const userPhone = function (params) {
 export const userDelete = function (params) {
   return http.post('/rms/user/delete', params)
 }
+
+// 修改用户
+export const userAuthor = function (params) {
+  return http.post('/rms/user/author', params)
+}
+// username    - 要修改的用户名
+//  userAdmin  (Stringl类型的 1 2 3)
+// 1 全部 2 普通 3 查看

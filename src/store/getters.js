@@ -8,9 +8,9 @@ const getters = {
     return state.userInfo ? state.userInfo : getStoryage('userInfo')
   },
 
-  audioSecond: (state) => {
+  audioSetting: (state) => {
     console.log(state.userInfo)
-    return state.audioSecond.audioSecond
+    return state.audioSetting.audioSetting
   }
   // optionPageClass: state => state.optionPageClass.optionPageClass
   // userInfo: state => state.userInfo.userInfo

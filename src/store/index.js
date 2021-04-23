@@ -5,13 +5,13 @@ import Vuex from 'vuex'
 import getters from './getters'
 
 import userInfo from './modules/userInfo'
-import audioSecond from './modules/audioSecond'
+import audioSetting from './modules/audioSetting'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
     userInfo,
-    audioSecond
+    audioSetting
   },
   getters,
   plugins: [createPersistedState({

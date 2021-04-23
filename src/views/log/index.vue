@@ -228,7 +228,7 @@ export default {
           const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据
           const fileName = name // 导出文件名
           const elink = document.createElement('a') // 创建a标签
-          elink.download = fileName // a标签添加属性
+          elink.download = '操作日志 ' + fileName // a标签添加属性
           elink.style.display = 'none'
           elink.href = URL.createObjectURL(blob)
           document.body.appendChild(elink)

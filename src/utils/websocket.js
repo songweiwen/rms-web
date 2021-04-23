@@ -178,7 +178,7 @@ var heartCheck = {
       // onmessage拿到返回的心跳就说明连接正常
       console.log('心跳检测...')
       // "HeartBeat": 0,
-      ws.send(JSON.stringify({"username": userInfo.userName }))
+      ws.send(JSON.stringify({"username": userInfo.userName, "commandString": 'HB' }))
       self.serverTimeoutObj = setTimeout(function () {
         if (ws.readyState !== 1) {
           ws.close()

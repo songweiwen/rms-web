@@ -36,14 +36,27 @@
                 </el-table-column> -->
                 <el-table-column
                   prop="userAdmin"
-                  label="巡检管理权限"
+                  label="管理权限"
                   align="center">
                   <template slot-scope="scope">
-                    <template>
-                      <el-tag v-if="scope.row.userAdmin==='1'" size="medium">
-                        全部
-                      </el-tag>
-                    </template>
+                    <!-- 1 全部 2 普通 3 查看 -->
+                    <!-- {{scope.row}} -->
+                    <el-dropdown>
+                      <el-button type="primary" size="mini" v-if="scope.row.userAdmin==='1'">
+                          全部
+                      </el-button>
+                      <el-button type="warning" size="mini" v-else-if="scope.row.userAdmin==='2'">
+                          普通
+                      </el-button>
+                      <el-button type="success" size="mini" v-else-if="scope.row.userAdmin==='3'">
+                          查看
+                      </el-button>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click.native="updateAuth(scope.row, 1)">全部</el-dropdown-item>
+                        <el-dropdown-item @click.native="updateAuth(scope.row, 2)">普通</el-dropdown-item>
+                        <el-dropdown-item @click.native="updateAuth(scope.row, 3)">查看</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
                   </template>
                 </el-table-column>
                 <!-- <el-table-column
@@ -94,74 +107,85 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="短信设置">
-          <div class="form-center">
-            <el-form class="text-center" :inline="true" :model="IPForm" :rules="IPRules" ref="IPRuleForm">
-              <el-form-item label="短信猫IP地址" prop="ip" label-width="120px">
-                <el-input v-model="IPForm.ip" placeholder="请输入IP地址"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="ipSubmitForm('IPRuleForm')">设置</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
+        <el-tab-pane label="设置">
+
+              <div class="">
+                <el-form  :inline="true" :model="IPForm" :rules="IPRules" ref="IPRuleForm">
+                  <el-form-item label="短信猫IP地址" prop="ip" label-width="140px">
+                    <el-input v-model="IPForm.ip" placeholder="请输入IP地址"></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="ipSubmitForm('IPRuleForm')">设置</el-button>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div class="hr"></div>
+              <div class="">
+                <el-form :model="audioForm" :rules="audioRules" ref="audioRuleForm">
+                  <el-form-item label="语音循环播报时间" prop="second" label-width="140px">
+                    <el-input style="width: 200px;" type="number" v-model.number="audioForm.second" placeholder="请输入秒数" min="1">
+                      <template slot="append">秒</template>
+                    </el-input>
+                  </el-form-item>
+                  <el-form-item label="启用语音播报" label-width="140px">
+                    <el-switch
+                      v-model="audioForm.enable"
+                      :active-value="1"
+                      :inactive-value="0">
+                    </el-switch>
+                  </el-form-item>
+                  <div style="padding-left: 140px;">
+                    <el-button type="primary" @click="audioSubmitForm('audioRuleForm')">设置</el-button>
+                  </div>
+                </el-form>
+              </div>
+              <div class="hr"></div>
+              <div class="">
+                <el-form  :inline="true"  :model="inspectForm" :rules="inspectRules" ref="inspectRuleForm">
+                  <el-form-item label="巡检起始时间" prop="patrolDays" label-width="140px">
+                    <el-time-select
+                      v-model="inspectForm.patrolDays"
+                      :picker-options="{
+                        start: '00:00',
+                        step: '00:15',
+                        end: '24:45'
+                      }"
+                      placeholder="请选择起始时间">
+                    </el-time-select>
+                  </el-form-item>
+                  <div>
+                    <el-form-item label="巡检时间间隔" prop="patrolTime" label-width="140px" >
+                      <el-input style="width: 200px;" type="number" v-model.number="inspectForm.patrolTime" placeholder="请输入时间间隔" :max="24" :min="1">
+                        <template slot="append">小时</template>
+                      </el-input>
+                    </el-form-item>
+                  </div>
+                  <div>
+                    <el-form-item label="复检时间间隔" prop="guzhangTime" label-width="140px" >
+                      <el-input style="width: 200px;" type="number" v-model.number="inspectForm.guzhangTime" placeholder="请输入时间间隔" :max="60" :min="1">
+                        <template slot="append">分钟</template>
+                      </el-input>
+                    </el-form-item>
+                  </div>
+                  <!-- 开1关0 -->
+                  <el-form-item label="是否开启巡检" label-width="140px">
+                    <el-switch
+                      v-model="inspectForm.enable"
+                      :active-value="1"
+                      :inactive-value="0">
+                    </el-switch>
+                  </el-form-item>
+                  <div style="padding-left: 140px;">
+                    <el-button type="primary" @click="inspectSubmitForm('inspectRuleForm')">设置</el-button>
+                  </div>
+                </el-form>
+              </div>
+
         </el-tab-pane>
-        <el-tab-pane label="音频设置">
-          <div class="form-center">
-            <el-form class="text-center" :inline="true"  :model="audioForm" :rules="audioRules" ref="audioRuleForm">
-              <el-form-item label="语音循环播报时间" prop="second" label-width="200px">
-                <el-input style="width: 200px;" type="number" v-model.number="audioForm.second" placeholder="请输入秒数" min="1">
-                  <template slot="append">秒</template>
-                </el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="audioSubmitForm('audioRuleForm')">设置</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
+        <!-- <el-tab-pane label="音频设置">
         </el-tab-pane>
         <el-tab-pane label="巡检设置">
-          <div class="form-center">
-            <el-form class="text-center" :inline="true"  :model="inspectForm" :rules="inspectRules" ref="inspectRuleForm">
-              <el-form-item label="巡检起始时间" prop="patrolDays" label-width="200px">
-                <el-time-select
-                  v-model="inspectForm.patrolDays"
-                  :picker-options="{
-                    start: '00:00',
-                    step: '00:15',
-                    end: '24:45'
-                  }"
-                  placeholder="请选择起始时间">
-                </el-time-select>
-              </el-form-item>
-              <div>
-                <el-form-item label="巡检时间间隔" prop="patrolTime" label-width="200px"  style="margin-left: -10px;">
-                  <el-input style="width: 200px;" type="number" v-model.number="inspectForm.patrolTime" placeholder="请输入时间间隔" :max="24*60" min="1">
-                    <template slot="append">小时</template>
-                  </el-input>
-                </el-form-item>
-              </div>
-              <div>
-                <el-form-item label="复检时间间隔" prop="guzhangTime" label-width="200px"  style="margin-left: -10px;">
-                  <el-input style="width: 200px;" type="number" v-model.number="inspectForm.guzhangTime" placeholder="请输入时间间隔" :max="60" min="1">
-                    <template slot="append">分钟</template>
-                  </el-input>
-                </el-form-item>
-              </div>
-              <!-- 开1关0 -->
-              <el-form-item label="是否开启巡检" label-width="200px" style="margin-left: -60px;">
-                <el-switch
-                  v-model="inspectForm.enable"
-                  :active-value="1"
-                  :inactive-value="0">
-                </el-switch>
-              </el-form-item>
-              <div>
-                <el-button type="primary" @click="inspectSubmitForm('inspectRuleForm')">设置</el-button>
-              </div>
-            </el-form>
-          </div>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
     </div>
 
@@ -237,7 +261,7 @@
 <script>
 import { ws } from '@/mixins/webSocket'
 import { tableHeight } from '@/mixins/tableHeight'
-import { userList, userAdd, userUpdate, userPhone, userDelete } from '@/api/user'
+import { userList, userAdd, userUpdate, userPhone, userDelete, userAuthor } from '@/api/user'
 import { getSms, updateSms, getVoice, updaeVoice, getPatrol, updatePatrol } from '@/api/data'
 export default {
   name: 'user',
@@ -281,6 +305,20 @@ export default {
         callback(new Error('请输入正确的IP地址!'))
       } else {
         callback()
+      }
+    }
+
+    var hours24 = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('巡检时间间隔不可填空'))
+      } else if (!Number.isInteger(value)) {
+        callback(new Error('请输入数字'))
+      } else {
+        if (value > 24) {
+          callback(new Error('巡检时间间隔不可大于24小时'))
+        } else {
+          callback()
+        }
       }
     }
     return {
@@ -351,14 +389,15 @@ export default {
         ]
       },
       audioForm: {
-        second: ''
+        second: '',
+        enable: 0
       },
       inspectRules: {
         patrolDays: [
           { required: true, message: '请选择起始时间', trigger: 'change' }
         ],
         patrolTime: [
-          { required: true, message: '请输入分钟', trigger: 'blur' }
+          { required: true, validator: hours24, trigger: 'blur' }
         ],
         guzhangTime: [
           { required: true, message: '请输入分钟', trigger: 'blur' }
@@ -442,6 +481,19 @@ export default {
       this.currentPage = val
       this.getTable()
       console.log(`当前页: ${val}`)
+    },
+    updateAuth (item, type) {
+      console.log(item)
+      userAuthor({
+        username: item.userName,
+        userAdmin: type
+      }).then(res => {
+        this.getTable()
+        this.$message({
+          message: '修改成功',
+          type: 'success'
+        })
+      })
     },
     addSubmitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -549,17 +601,22 @@ export default {
         const data = res.data
         console.log(data)
         this.audioForm.second = data.vSecond
+        this.audioForm.enable = data.enable
       })
     },
     audioSubmitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           updaeVoice({
-            second: this.audioForm.second
+            second: this.audioForm.second,
+            enable: this.audioForm.enable
           }).then(res => {
             const data = res.data
             console.log(data)
-            this.$store.commit('SET_audioSecond', this.audioForm.second)
+            this.$store.commit('SET_audioSetting', {
+              second: this.audioForm.second,
+              enable: this.audioForm.enable
+            })
             this.$message({
               message: '设置成功',
               type: 'success'

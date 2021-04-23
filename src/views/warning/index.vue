@@ -5,27 +5,23 @@
         <div class="table-hd">
           <el-form :inline="true" :model="form" >
             <el-form-item label="近端机" label-width="70px">
-              <el-select v-model="form.id" clearable placeholder="请选择" size="mini" @change="changeSelect" style="width: 120px;">
-                <el-option-group
+              <el-select v-model="form.deviceNearId" clearable placeholder="请选择" size="mini" @change="changeSelect" style="width: 120px;">
+                <el-option
                   v-for="group in selectOptions"
-                  :key="group.label"
-                  :label="group.label">
-                  <el-option
-                    v-for="item in group.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-option-group>
+                  :key="group.value"
+                  :value="group.value"
+                  :label="group.label"
+                  >
+                </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="远端机" label-width="70px">
-              <el-select v-model="form.deviceType" clearable placeholder="请选择" size="mini" @change="changeTable" style="width: 100px;">
+              <el-select v-model="form.deviceId" clearable placeholder="请选择" size="mini" @change="changeSelectFar" style="width: 120px;">
                 <el-option
-                  v-for="(item, key) in deviceOptions"
+                  v-for="(item, key) in selectOptionsFar"
                   :key="key"
                   :label="item.label"
-                  :value="item.label">
+                  :value="item.deviceId">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -173,13 +169,12 @@ export default {
         label: '故障恢复'
       }
       ],
-      selectOptions: [{
-        label: '近端机',
-        options: []
-      }, {
-        label: '远端机',
-        options: []
-      }],
+      selectOptions: [],
+      selectOptionsFar: [],
+      // , {
+      //   label: '远端机',
+      //   options: []
+      // }
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() > Date.now() // 选当前时间之前的时间
@@ -218,7 +213,7 @@ export default {
           }
         }]
       },
-      dateSelect: '',
+      dateSelect: [new Date(), new Date()],
       // deviceId: '',
       form: {
         id: '',
@@ -238,6 +233,8 @@ export default {
     }
   },
   created () {
+    this.form.dateStart = formatDate('yyyy-MM-dd', new Date())
+    this.form.dateEnd = formatDate('yyyy-MM-dd', new Date())
     this.$nextTick(() => {
       this.setTableHeight(130, 'pageHeight')
       setTimeout(() => {
@@ -257,8 +254,9 @@ export default {
       getTree().then(res => {
         console.log(res)
         const treeData = res.data
+        this.treeData = treeData
         treeData.forEach(e => {
-          this.selectOptions[0].options.push({
+          this.selectOptions.push({
             label: e.near.deviceName,
             deviceId: e.near.deviceId,
             value: e.near.id,
@@ -266,16 +264,16 @@ export default {
             level: 1
           })
 
-          e.far.forEach(o => {
-            this.selectOptions[1].options.push({
-              label: o.deviceName,
-              deviceId: o.deviceId,
-              deviceNearId: o.deviceNearId,
-              value: o.deviceNearId + '-' + o.deviceId,
-              deviceAddress: o.deviceAddress,
-              level: 2
-            })
-          })
+          // e.far.forEach(o => {
+          //   this.selectOptions[1].options.push({
+          //     label: o.deviceName,
+          //     deviceId: o.deviceId,
+          //     deviceNearId: o.deviceNearId,
+          //     value: o.deviceNearId + '-' + o.deviceId,
+          //     deviceAddress: o.deviceAddress,
+          //     level: 2
+          //   })
+          // })
         })
       })
     },
@@ -287,7 +285,7 @@ export default {
         dateEnd: this.form.dateEnd,
         deviceId: this.form.deviceId,
         deviceNearId: this.form.deviceNearId,
-        deviceType: this.form.deviceType,
+        // deviceType: this.form.deviceType,
         warningType: this.form.warningType
       }).then(res => {
         const data = res.data
@@ -306,17 +304,43 @@ export default {
       this.getTable()
       console.log(`当前页: ${val}`)
     },
-    changeSelect (o) {
-      if (typeof o === 'number') {
-        this.form.deviceNearId = 0
-        this.form.deviceId = o
-        // this.form.deviceId = o
-      } else {
-        const arr = o.split('-')
-        console.log(arr)
-        this.form.deviceNearId = arr[0]
-        this.form.deviceId = arr[1]
-      }
+    changeSelect (id) {
+      console.log(id)
+      this.form.deviceNearId = id
+      // if (typeof o === 'number') {
+      //   this.form.deviceNearId = 0
+      //   this.form.deviceId = o
+      //   // this.form.deviceId = o
+      // } else {
+      //   const arr = o.split('-')
+      //   console.log(arr)
+      //   this.form.deviceNearId = arr[0]
+      //   this.form.deviceId = arr[1]
+      // }
+      this.selectOptionsFar = []
+      this.treeData.forEach(e => {
+        console.log(e.near.deviceNearId, id)
+        if (e.near.deviceId === id) {
+          e.far.forEach(o => {
+            this.selectOptionsFar.push({
+              label: o.deviceName,
+              deviceId: o.deviceId,
+              deviceNearId: o.deviceNearId,
+              // value: o.deviceNearId + '-' + o.deviceId,
+              deviceAddress: o.deviceAddress,
+              level: 2
+            })
+          })
+        }
+      })
+
+      this.pageSize = 10
+      this.currentPage = 1
+      this.getTable()
+    },
+    changeSelectFar (id) {
+      console.log(id)
+      this.form.deviceId = id
       this.pageSize = 10
       this.currentPage = 1
       this.getTable()
@@ -348,7 +372,7 @@ export default {
               dateEnd: this.form.dateEnd,
               deviceId: this.form.deviceId,
               deviceNearId: this.form.deviceNearId,
-              deviceType: this.form.deviceType,
+              // deviceType: this.form.deviceType,
               warningType: this.form.warningType
             },
             responseType: 'blob',
@@ -370,7 +394,7 @@ export default {
           const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据
           const fileName = name // 导出文件名
           const elink = document.createElement('a') // 创建a标签
-          elink.download = fileName // a标签添加属性
+          elink.download = '故障管理 ' + fileName // a标签添加属性
           elink.style.display = 'none'
           elink.href = URL.createObjectURL(blob)
           document.body.appendChild(elink)

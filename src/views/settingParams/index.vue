@@ -78,19 +78,22 @@
                 <div v-show="testing" class="page-title__state">
                   <el-tag
                     v-if="WSloadingState===0"
-                    type="warning">
+                    type="warning"
+                    class="tag-big">
                     <i class="el-icon-loading"></i>
                     {{WSloadingText}}
                   </el-tag>
                   <el-tag
                     v-else-if="WSloadingState===1"
-                    type="success">
+                    type="success"
+                    class="tag-big">
                     <i class="el-icon-check"></i>
                     {{WSloadingText}}
                   </el-tag>
                   <el-tag
                     v-else-if="WSloadingState===2"
-                    type="danger">
+                    type="danger"
+                    class="tag-big">
                     <i class="el-icon-warning-outline"></i>
                     {{WSloadingText}}
                   </el-tag>
@@ -187,19 +190,22 @@
                 <div v-show="testing" class="page-title__state">
                   <el-tag
                     v-if="WSloadingState===0"
-                    type="warning">
+                    type="warning"
+                    class="tag-big">
                     <i class="el-icon-loading"></i>
                     {{WSloadingText}}
                   </el-tag>
                   <el-tag
                     v-else-if="WSloadingState===1"
-                    type="success">
+                    type="success"
+                    class="tag-big">
                     <i class="el-icon-check"></i>
                     {{WSloadingText}}
                   </el-tag>
                   <el-tag
                     v-else-if="WSloadingState===2"
-                    type="danger">
+                    type="danger"
+                    class="tag-big">
                     <i class="el-icon-warning-outline"></i>
                     {{WSloadingText}}
                   </el-tag>
@@ -732,6 +738,9 @@ export default {
       }
     },
     handleNodeClick (data) {
+      this.WSloadingState = 0
+      this.WSloading = false
+      this.WSloadingText = ''
       this.$nextTick(() => {
         if (this.initTree) {
           this.$refs.treeDom.$el.children[0].className = 'el-tree-node is-expanded'
