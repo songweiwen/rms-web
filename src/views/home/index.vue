@@ -58,6 +58,10 @@
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
           </div> -->
           <div id="equipment">
+            <el-radio-group v-model="dragBool" size="mini">
+              <el-radio-button  :label="0">关</el-radio-button>
+              <el-radio-button  :label="1">开</el-radio-button>
+            </el-radio-group>
             <img id="img" :src="require('@/assets/imgs/demo_picture.png')" />
             <vue-draggable-resizable
               class="equipmentBox-darg"
@@ -72,6 +76,7 @@
               :x="item.locationX"
               drag-handle=".equipmentBox"
               :is-conflict-check="true"
+              :draggable="dragBool===1"
               @dragging="onDragging(item)"
               @dragstop="onDragstop">
               <!-- <div class="equipmentBox"
@@ -446,7 +451,22 @@
         </div>
       </div>
     </div>
-
+    <el-dialog
+      title="提示"
+      :visible.sync="dragVisible"
+      width="500px"
+      :before-close="dragClose"
+      >
+      <el-form :model="editForm" :rules="editRules" ref="editRuleForm">
+        <el-form-item label="输入密码" prop="userPassword" label-width="120px">
+          <el-input v-model="editForm.userPassword" placeholder="请输入当前密码"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dragClose">取 消</el-button>
+        <el-button type="primary" @click="dragSubmit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -461,6 +481,17 @@ export default {
   mixins: [ws],
   data () {
     return {
+      dragBool: 0,
+      dragVisible: false,
+      editRules: {
+        userPassword: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      },
+      editForm: {
+        password: '',
+        newpassword: ''
+      },
       overTime: null,
       WSloadingState: 0,
       WSloading: false,
@@ -915,9 +946,44 @@ export default {
     getRefLineParams (params) {
       console.log(111)
       console.log(params)
+    },
+    dragClose () {
+      this.dragVisible = false
+      this.dragBool = 0
+    },
+    dragSubmit () {
+      console.log(this.$store.getters.userInfo)
+      const pw = this.$store.getters.userInfo.userInfo.userInfo.userPassword
+      console.log(pw)
+      if (pw === this.editForm.userPassword) {
+        this.dragVisible = false
+        this.dragBool = 1
+        this.$message({
+          message: '拖拽开启成功',
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          message: '密码不正确',
+          type: 'error'
+        })
+      }
     }
   },
   watch: {
+    dragBool (val) {
+      if (val === 1) {
+        this.dragVisible = true
+      } else {
+        setTimeout(() => {
+          this.editForm.userPassword = ''
+        }, 2000)
+      }
+    },
+    dragVisible (val) {
+      if (!val) {
+      }
+    },
     WSloading (val) {
       if (val) {
         this.overTime = setTimeout(() => {

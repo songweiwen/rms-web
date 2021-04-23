@@ -44,6 +44,8 @@ import {
   Tabs,
   TimePicker,
   TimeSelect,
+  RadioGroup,
+  RadioButton,
   // msgbox
   Pagination,
   Notification
@@ -89,6 +91,8 @@ const components = [
   Tabs,
   TimePicker,
   TimeSelect,
+  RadioGroup,
+  RadioButton,
   // Message
   // MessageBox
   Pagination
