@@ -169,7 +169,13 @@ export default {
         label: '故障恢复'
       }
       ],
-      selectOptions: [],
+      selectOptions: [
+        {
+          label: '全部',
+          deviceId: '',
+          level: 2
+        }
+      ],
       selectOptionsFar: [],
       // , {
       //   label: '远端机',
@@ -317,7 +323,11 @@ export default {
       //   this.form.deviceNearId = arr[0]
       //   this.form.deviceId = arr[1]
       // }
-      this.selectOptionsFar = []
+      this.selectOptionsFar = [{
+        label: '全部',
+        deviceId: '',
+        level: 2
+      }]
       this.treeData.forEach(e => {
         console.log(e.near.deviceNearId, id)
         if (e.near.deviceId === id) {

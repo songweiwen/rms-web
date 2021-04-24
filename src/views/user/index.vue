@@ -419,7 +419,9 @@ export default {
         this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
       }, 1000)
       this.getSms()
+      // for (let i = 0; i < 100; i++) {
       this.getVoice()
+      // }
       this.getPatrol()
     })
     this.getTable()
