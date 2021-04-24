@@ -57,11 +57,14 @@
           <!-- <div class="viewimg-left" @mousewheel.prevent="rollImg">
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
           </div> -->
-            <el-radio-group style="position: absolute; top: 0; left: 226px; z-index: 99;" v-if="userInfo.userName==='admin'" v-model="dragBool" size="mini">
+          <div id="equipment">
+          <span v-if="userInfo.userName==='admin'" >
+          拖拽开关：
+          </span>
+            <el-radio-group style="position: absolute; top: 0; left: 70px; z-index: 99;" v-if="userInfo.userName==='admin'" v-model="dragBool" size="mini">
               <el-radio-button  :label="0">关</el-radio-button>
               <el-radio-button  :label="1">开</el-radio-button>
             </el-radio-group>
-          <div id="equipment">
             <img id="img" :src="require('@/assets/imgs/demo_picture.png')" />
             <vue-draggable-resizable
               class="equipmentBox-darg"
@@ -111,8 +114,19 @@
                   <div class="text-center">
                     <el-button class="m-t-md" @click.stop="goTree(item)" type="primary" size="mini">查询</el-button>
                   </div>
-                  <i slot="reference" v-if="item.level===2" class="iconfont icon-yuanduanji"></i>
-                  <i slot="reference" v-else class="iconfont icon-jinduanji"></i>
+                  <div slot="reference">
+                    <i v-if="item.level===2" class="iconfont icon-yuanduanji"></i>
+                    <i v-else class="iconfont icon-jinduanji"></i>
+                    <template v-if="item.online===0">
+                      离线
+                    </template>
+                    <template v-else-if="item.online===1">
+                      在线
+                    </template>
+                    <template v-else-if="item.online===2">
+                      报警
+                    </template>
+                  </div>
                 </el-popover>
               </div>
             </vue-draggable-resizable>
