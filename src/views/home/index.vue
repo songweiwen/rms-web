@@ -57,11 +57,11 @@
           <!-- <div class="viewimg-left" @mousewheel.prevent="rollImg">
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
           </div> -->
-          <div id="equipment">
-            <el-radio-group style="position: absolute; top: 0; left: 0;" v-if="userInfo.userName==='admin'" v-model="dragBool" size="mini">
+            <el-radio-group style="position: absolute; top: 0; left: 226px; z-index: 99;" v-if="userInfo.userName==='admin'" v-model="dragBool" size="mini">
               <el-radio-button  :label="0">关</el-radio-button>
               <el-radio-button  :label="1">开</el-radio-button>
             </el-radio-group>
+          <div id="equipment">
             <img id="img" :src="require('@/assets/imgs/demo_picture.png')" />
             <vue-draggable-resizable
               class="equipmentBox-darg"
