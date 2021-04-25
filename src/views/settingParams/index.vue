@@ -31,7 +31,7 @@
         <!-- <div class="home-right" style="width: 800px;" v-show="!deviceId">
           <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset="">
         </div> -->
-        <div class="home-right" style="width: 800px;" v-show="deviceId">
+        <div class="home-right" style="width: 800px; padding-bottom: 40px;" v-show="deviceId">
           <div class="flex-container" v-show="homeType===1">
             <div class="flex-item m-r-md">
               在线状态：
