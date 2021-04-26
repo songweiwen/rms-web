@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-container">
       <div class="login-title">
-        <!-- <img class="img-responsive" src="@/assets/imgs/logo.png" alt=""> -->
+        <img class="img-responsive" src="@/assets/imgs/logo.png" alt="">
         <h2>光纤直放站网管中心</h2>
         <!-- <p>后台管理系统</p> -->
       </div>
@@ -169,7 +169,7 @@ export default {
     text-align: center;
 
     img {
-      width: 100px;
+      // width: 800px;
       margin: 0 auto 10px;
       border-radius: 12px;
     }
