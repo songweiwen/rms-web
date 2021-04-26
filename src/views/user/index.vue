@@ -180,7 +180,16 @@
                   </div>
                 </el-form>
               </div>
-
+              <div class="hr"></div>
+              <el-form :inline="true" :model="uploadForm">
+                <el-form-item label="巡检起始时间" prop="patrolDays" label-width="140px">
+                  <el-upload
+                    :show-file-list="false"
+                    :http-request="uploadImg"
+                    :file-list="uploadForm">
+                  </el-upload>
+                </el-form-item>
+              </el-form>
         </el-tab-pane>
         <!-- <el-tab-pane label="音频设置">
         </el-tab-pane>
@@ -263,6 +272,7 @@ import { ws } from '@/mixins/webSocket'
 import { tableHeight } from '@/mixins/tableHeight'
 import { userList, userAdd, userUpdate, userPhone, userDelete, userAuthor } from '@/api/user'
 import { getSms, updateSms, getVoice, updaeVoice, getPatrol, updatePatrol } from '@/api/data'
+import { setUpload } from '@/api/upload'
 export default {
   name: 'user',
   mixins: [tableHeight, ws],
@@ -322,6 +332,7 @@ export default {
       }
     }
     return {
+      uploadForm: [],
       pageSize: 10,
       currentPage: 1,
       total: 0,
@@ -664,6 +675,23 @@ export default {
           return false
         }
       })
+    },
+    uploadImg (file, callback) {
+      console.log(file)
+      const data = new FormData()
+      data.append('file', file.file)
+      // console.log(data)
+      setUpload(data).then(() => {
+        this.$message({
+          message: '设置成功',
+          type: 'success'
+        })
+      })
+      // .thet((res) => {
+      //   // callback(res)
+      //   // return res
+      //   // console.log(res)
+      // })
     }
   }
   // beforeRouteLeave (to, form, next) {
