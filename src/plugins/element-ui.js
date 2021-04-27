@@ -48,7 +48,8 @@ import {
   RadioButton,
   // msgbox
   Pagination,
-  Notification
+  Notification,
+  Upload
 } from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 
@@ -95,7 +96,8 @@ const components = [
   RadioButton,
   // Message
   // MessageBox
-  Pagination
+  Pagination,
+  Upload
   // Notification
 ]
 

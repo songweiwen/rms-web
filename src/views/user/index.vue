@@ -182,12 +182,19 @@
               </div>
               <div class="hr"></div>
               <el-form :inline="true" :model="uploadForm">
-                <el-form-item label="巡检起始时间" prop="patrolDays" label-width="140px">
-                  <el-upload
-                    :show-file-list="false"
-                    :http-request="uploadImg"
-                    :file-list="uploadForm">
-                  </el-upload>
+                <el-form-item label="更新布局图" prop="patrolDays" label-width="140px">
+              <el-upload
+                class="upload-demo"
+                drag
+                action=""
+                 :show-file-list="false"
+                :http-request="uploadImg"
+                :file-list="uploadForm.img"
+                >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
                 </el-form-item>
               </el-form>
         </el-tab-pane>
@@ -332,7 +339,9 @@ export default {
       }
     }
     return {
-      uploadForm: [],
+      uploadForm: {
+        img: []
+      },
       pageSize: 10,
       currentPage: 1,
       total: 0,
@@ -700,3 +709,32 @@ export default {
   // }
 }
 </script>
+
+// <style lang="less">
+//   .avatar-uploader .el-upload {
+//     position: relative;
+//     overflow: hidden;
+//     cursor: pointer;
+//     border: 1px dashed #d9d9d9;
+//     border-radius: 6px;
+//   }
+
+//   .avatar-uploader .el-upload:hover {
+//     border-color: #409EFF;
+//   }
+
+//   .avatar-uploader-icon {
+//     width: 178px;
+//     height: 178px;
+//     font-size: 28px;
+//     line-height: 178px;
+//     color: #8c939d;
+//     text-align: center;
+//   }
+
+//   .avatar {
+//     display: block;
+//     width: 178px;
+//     height: 178px;
+//   }
+// </style>

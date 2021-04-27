@@ -65,6 +65,9 @@
               <el-radio-button  :label="0">关</el-radio-button>
               <el-radio-button  :label="1">开</el-radio-button>
             </el-radio-group>
+
+            <!-- 修改图片路径 -->
+            <!-- <img id="img" src="192.111.11.11.11/home.png" /> -->
             <img id="img" :src="require('@/assets/imgs/demo_picture.png')" />
             <vue-draggable-resizable
               class="equipmentBox-darg"
