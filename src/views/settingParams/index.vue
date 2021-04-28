@@ -315,6 +315,9 @@
                       超时
                     </el-tag>
                   </template>
+                  <template v-else-if="dataFar.device.xiaxingfanxiangzhi<0">
+                   -1
+                  </template>
                   <template v-else>
                     {{dataFar.device.xiaxingfanxiangzhi}}
                   </template>
@@ -385,6 +388,9 @@
                     <el-tag type="danger">
                       超时
                     </el-tag>
+                  </template>
+                  <template v-else-if="dataFar.device.xiaxingqianxiangzhi<0">
+                    -1
                   </template>
                   <template v-else>
                     {{dataFar.device.xiaxingqianxiangzhi}}
@@ -749,12 +755,13 @@ export default {
       })
       this.homeType = data.level || 2
       console.log(data)
-      this.deviceId = data.id
+      this.deviceId = data.deviceId
+      this.id = data.id
       this.loading = true
       if (this.homeType === 1) {
         this.deviceIdNear = null
         getDetailNear({
-          id: this.deviceId
+          id: this.id
         }).then(res => {
           const data = res.data
           console.log(data)
@@ -764,7 +771,7 @@ export default {
       } else if (this.homeType === 2) {
         this.deviceIdNear = data.deviceNearId
         getDetailFar({
-          id: this.deviceId
+          id: this.id
         }).then(res => {
           const data = res.data
           console.log(data)

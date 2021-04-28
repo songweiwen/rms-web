@@ -586,6 +586,7 @@ export default {
       },
       loading: false,
       homeType: 1,
+      id: '',
       deviceId: '',
       deviceIdNear: null,
       dataFar: {
@@ -922,14 +923,15 @@ export default {
       }
       this.homeType = data.level || 2
       console.log(data)
-      this.deviceId = data.id
+      this.id = data.id
+      this.deviceId = data.deviceId
       this.loading = true
       this.WSloadingState = 0
       this.WSloadingText = ''
       if (this.homeType === 1) {
         this.deviceIdNear = null
         getDetailNear({
-          id: this.deviceId
+          id: this.id
         }).then(res => {
           const data = res.data
           console.log(data)
@@ -939,7 +941,7 @@ export default {
       } else if (this.homeType === 2) {
         this.deviceIdNear = data.deviceNearId
         getDetailFar({
-          id: this.deviceId
+          id: this.id
         }).then(res => {
           const data = res.data
           console.log(data)
