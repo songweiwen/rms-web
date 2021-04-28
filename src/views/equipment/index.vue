@@ -166,6 +166,12 @@
         <el-form-item label="设备名称" prop="deviceName" label-width="120px">
           <el-input v-model="addForm.deviceName" placeholder="请输入设备名称"></el-input>
         </el-form-item>
+        <el-form-item label="IP地址" prop="deviceIp" label-width="120px">
+          <el-input v-model="addForm.deviceIp" placeholder="请输入端口号"></el-input>
+        </el-form-item>
+        <el-form-item label="端口号" prop="port" label-width="120px">
+          <el-input v-model.number="addForm.port" placeholder="请输入端口号"></el-input>
+        </el-form-item>
         <el-form-item label="安装位置" prop="deviceAddress" label-width="120px">
           <el-input v-model="addForm.deviceAddress" placeholder="请输入安装位置"></el-input>
         </el-form-item>
@@ -187,6 +193,12 @@
         </el-form-item>
         <el-form-item label="设备名称" prop="deviceName" label-width="120px">
           <el-input v-model="editForm.deviceName" placeholder="请输入设备名字"></el-input>
+        </el-form-item>
+        <el-form-item label="IP地址" prop="deviceIp" label-width="120px">
+          <el-input v-model="editForm.deviceIp" placeholder="请输入端口号"></el-input>
+        </el-form-item>
+        <el-form-item label="端口号" prop="port" label-width="120px">
+          <el-input v-model.number="editForm.port" placeholder="请输入端口号"></el-input>
         </el-form-item>
         <el-form-item label="安装位置" prop="deviceAddress" label-width="120px">
           <el-input v-model="editForm.deviceAddress" placeholder="请输入安装位置"></el-input>
@@ -274,6 +286,21 @@ export default {
   name: 'equipment',
   mixins: [tableHeight, ws],
   data () {
+    var validateIp = (rule, value, callback) => {
+      var util = {
+        isValidIp: function (e) {
+          return /^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$/.test(e)
+        }
+      }
+
+      if (value === '') {
+        callback(new Error('请输入IP地址'))
+      } else if (!util.isValidIp(value)) {
+        callback(new Error('请输入正确的IP地址!'))
+      } else {
+        callback()
+      }
+    }
     return {
       pageHeight: 500,
       treeData: [],
@@ -292,6 +319,13 @@ export default {
         ],
         deviceName: [
           { required: true, message: '请输入设备名称', trigger: 'blur' }
+        ],
+        deviceIp: [
+          { required: true, validator: validateIp, trigger: 'blur' }
+        ],
+        port: [
+          { required: true, message: '请输入端口号', trigger: 'blur' },
+          { type: 'number', message: '端口号必须为数字值', trigger: 'blur' }
         ],
         deviceNearId: [
           { required: true, message: '请选择近端机', trigger: 'change' }
@@ -314,6 +348,8 @@ export default {
       addForm: {
         deviceId: '',
         deviceName: '',
+        deviceIp: '',
+        port: '',
         deviceAddress: '',
         deviceDescribe: ''
       },
@@ -329,6 +365,8 @@ export default {
       editForm: {
         deviceId: '',
         deviceName: '',
+        deviceIp: '',
+        port: '',
         deviceAddress: '',
         deviceDescribe: ''
       },
@@ -359,6 +397,7 @@ export default {
       this.websocketonMessageAll(redata)
     },
     getTree () {
+      this.treeData = []
       getTree().then(res => {
         console.log(res)
         const treeData = res.data
@@ -384,6 +423,7 @@ export default {
         console.log(data)
         this.tableData = data.list
         this.total = data.total
+        this.getTree()
       })
     },
     handleEdit (item) {

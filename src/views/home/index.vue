@@ -53,7 +53,6 @@
 
         </div>
         <div class="home-right" style="width: 100%;" v-show="!deviceId">
-          <!-- <img style="width: 100%;" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset=""> -->
           <!-- <div class="viewimg-left" @mousewheel.prevent="rollImg">
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
           </div> -->
@@ -67,8 +66,10 @@
             </el-radio-group>
 
             <!-- 修改图片路径 -->
-            <!-- <img id="img" src="192.111.11.11.11/home.png" /> -->
-            <img id="img" :src="require('@/assets/imgs/demo_picture.png')" />
+            <!-- {{process.env.HOME_IMG}} -->
+            <!-- <img id="img" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset=""> -->
+            <img id="img" :src="homeImg" />
+            <!-- <img id="img" :src="require('@/assets/imgs/demo_picture.png')" /> -->
             <vue-draggable-resizable
               class="equipmentBox-darg"
               v-for="(item, index) in equipmentData"
@@ -561,6 +562,7 @@ export default {
   mixins: [ws],
   data () {
     return {
+      homeImg: '',
       userInfo: this.$store.getters.userInfo.userInfo.userInfo,
       dragBool: 0,
       dragVisible: false,
@@ -615,6 +617,7 @@ export default {
     //   })
     // })
     this.$nextTick(() => {
+      this.homeImg = process.env.VUE_APP_HOME_IMG
       this.getTree()
       setTimeout(() => {
         this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
