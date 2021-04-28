@@ -152,7 +152,7 @@
               <el-button :loading="WSloading" type="primary" size="small" @click="onQueryNear">
                 手动检测
               </el-button>
-              <el-button type="danger" size="small">
+              <el-button type="danger" size="small" @click="onWorkoutNear">
                 核销故障
               </el-button>
             </div>
@@ -169,7 +169,7 @@
               <el-button :loading="WSloading" type="primary" size="small" @click="onQueryFar">
                 手动检测
               </el-button>
-              <el-button type="danger" size="small">
+              <el-button type="danger" size="small" @click="onWorkoutFar">
                 核销故障
               </el-button>
             </div>
@@ -555,7 +555,7 @@
 import { formatDate } from '@/utils/utils'
 import { ws } from '@/mixins/webSocket'
 import { getTree } from '@/api/get'
-import { getDetailFar, getDetailNear, updateMoveNear, updateMoveFar } from '@/api/home'
+import { getDetailFar, getDetailNear, updateMoveNear, updateMoveFar, workoutNear, workoutFar } from '@/api/home'
 export default {
   name: 'home',
   // overTimeInit
@@ -1054,6 +1054,28 @@ export default {
           type: 'error'
         })
       }
+    },
+    onWorkoutNear(){
+       workoutNear({
+          id: this.id
+        }).then(res => {
+          console.log(res)
+          this.$message({
+            type: 'success',
+            message: '核销成功!'
+          })
+        })
+    },
+    onWorkoutFar(){
+       workoutFar({
+          id: this.id
+        }).then(res => {
+          console.log(res)
+          this.$message({
+            type: 'success',
+            message: '核销成功!'
+          })
+        })
     }
   },
   watch: {
