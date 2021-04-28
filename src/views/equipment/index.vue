@@ -167,7 +167,7 @@
           <el-input v-model="addForm.deviceName" placeholder="请输入设备名称"></el-input>
         </el-form-item>
         <el-form-item label="IP地址" prop="deviceIp" label-width="120px">
-          <el-input v-model="addForm.deviceIp" placeholder="请输入端口号"></el-input>
+          <el-input v-model="addForm.deviceIp" placeholder="请输入IP地址"></el-input>
         </el-form-item>
         <el-form-item label="端口号" prop="port" label-width="120px">
           <el-input v-model.number="addForm.port" placeholder="请输入端口号"></el-input>
@@ -195,7 +195,7 @@
           <el-input v-model="editForm.deviceName" placeholder="请输入设备名字"></el-input>
         </el-form-item>
         <el-form-item label="IP地址" prop="deviceIp" label-width="120px">
-          <el-input v-model="editForm.deviceIp" placeholder="请输入端口号"></el-input>
+          <el-input v-model="editForm.deviceIp" placeholder="请输入IP地址"></el-input>
         </el-form-item>
         <el-form-item label="端口号" prop="port" label-width="120px">
           <el-input v-model.number="editForm.port" placeholder="请输入端口号"></el-input>

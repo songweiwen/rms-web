@@ -147,7 +147,7 @@ export default {
   left: 0;
   min-height: 100%;
   padding: 96px 0;
-  background-color: #f2f2f2;
+  background-color: #daf1f7;
   box-sizing: border-box;
 
   &-btn {
