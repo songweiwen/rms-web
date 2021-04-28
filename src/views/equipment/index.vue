@@ -301,6 +301,16 @@ export default {
         callback()
       }
     }
+
+    var deviceId = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入设备ID'))
+      } else if (value > 255 || value < 0) {
+        callback(new Error('请输入设备ID最大255!'))
+      } else {
+        callback()
+      }
+    }
     return {
       pageHeight: 500,
       treeData: [],
@@ -314,6 +324,7 @@ export default {
       tableDataFar: [],
       addRules: {
         deviceId: [
+          { required: true, validator: deviceId, trigger: 'blur' },
           { required: true, message: '请输入设备ID', trigger: 'blur' },
           { type: 'number', message: '设备ID必须为数字值', trigger: 'blur' }
         ],
@@ -333,6 +344,7 @@ export default {
       },
       editRules: {
         deviceId: [
+          { required: true, validator: deviceId, trigger: 'blur' },
           { required: true, message: '请输入设备ID', trigger: 'blur' },
           { type: 'number', message: '设备ID必须为数字值', trigger: 'blur' }
         ],
