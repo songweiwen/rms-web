@@ -30,11 +30,13 @@
                   Append
                 </el-button> -->
                 <!-- 根据 每个设备的online决定   绿色在线1  红色报警2  灰色不在线0 -->
-                <span v-if="data.online===1" class="el-tag el-tag--success el-tag--dark"></span>
-                <span v-else-if="data.online===0" class="el-tag el-tag--info el-tag--dark"></span>
-                <span v-else-if="data.online===2" class="el-tag el-tag--danger el-tag--dark" :class="{
-                  shanshuo: data.shanshuo===1
-                }"></span>
+                <template v-if="data.level===1">
+                  <span v-if="data.online===1" class="el-tag el-tag--success el-tag--dark"></span>
+                  <span v-else-if="data.online===0" class="el-tag el-tag--info el-tag--dark"></span>
+                  <span v-else-if="data.online===2" class="el-tag el-tag--danger el-tag--dark" :class="{
+                   shanshuo: data.shanshuo===1
+                  }"></span>
+                </template>
                 <!-- {{data.shanshuo}} -->
                 <!-- {{data.shanshuo===1}} -->
                 <!-- <span v-if="data.alert===1" class="el-tag el-tag--danger el-tag--dark"></span> -->
@@ -686,7 +688,7 @@ export default {
             deviceAddress: e.near.deviceAddress,
             level: 1,
             children: e.far,
-            treeId: e.near.id,
+            treeId: e.near.deviceId,
             treeIndex: i,
             online: e.near.online,
             shanshuo: e.near.shanshuo
@@ -700,7 +702,7 @@ export default {
             level: 1,
             locationX: e.near.locationX,
             locationY: e.near.locationY,
-            treeId: e.near.id,
+            treeId: e.near.deviceId,
             treeIndex: i,
             online: e.near.online,
             shanshuo: e.near.shanshuo
@@ -717,7 +719,7 @@ export default {
               deviceNearId: o.deviceNearId,
               locationX: o.locationX,
               locationY: o.locationY,
-              treeId: o.deviceNearId + '-' + o.id,
+              treeId: o.deviceNearId + '-' + o.deviceId,
               treeIndex: i,
               treeChildrenIndex: j,
               online: o.online,
@@ -728,7 +730,7 @@ export default {
 
         this.treeData.forEach((e, i) => {
           e.children.forEach((o, j) => {
-            o.treeId = o.deviceNearId + '-' + o.id
+            o.treeId = o.deviceNearId + '-' + o.deviceId
             o.treeChildrenIndex = j
             o.treeIndex = i
             o.level = 2
@@ -755,7 +757,7 @@ export default {
         commandString: 'CF',
         farDevice: {
           deviceId: this.deviceId,
-          deviceNearId: this.deviceIdNear // 父级近端机
+          deviceNearId: this.deviceNearId // 父级近端机
         }
       })
     },
@@ -930,6 +932,7 @@ export default {
       this.WSloadingText = ''
       if (this.homeType === 1) {
         this.deviceIdNear = null
+        this.deviceNearId = null
         getDetailNear({
           id: this.id
         }).then(res => {
@@ -940,6 +943,7 @@ export default {
         })
       } else if (this.homeType === 2) {
         this.deviceIdNear = data.deviceNearId
+        this.deviceNearId = data.deviceNearId
         getDetailFar({
           id: this.id
         }).then(res => {
@@ -1055,27 +1059,27 @@ export default {
         })
       }
     },
-    onWorkoutNear(){
-       workoutNear({
-          id: this.id
-        }).then(res => {
-          console.log(res)
-          this.$message({
-            type: 'success',
-            message: '核销成功!'
-          })
+    onWorkoutNear () {
+      workoutNear({
+        id: this.id
+      }).then(res => {
+        console.log(res)
+        this.$message({
+          type: 'success',
+          message: '核销成功!'
         })
+      })
     },
-    onWorkoutFar(){
-       workoutFar({
-          id: this.id
-        }).then(res => {
-          console.log(res)
-          this.$message({
-            type: 'success',
-            message: '核销成功!'
-          })
+    onWorkoutFar () {
+      workoutFar({
+        id: this.id
+      }).then(res => {
+        console.log(res)
+        this.$message({
+          type: 'success',
+          message: '核销成功!'
         })
+      })
     }
   },
   watch: {

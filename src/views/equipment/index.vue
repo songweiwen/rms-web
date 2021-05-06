@@ -225,9 +225,9 @@
           <el-select v-model="addFormFar.deviceNearId" placeholder="请选择近端机">
             <el-option
               v-for="item in treeData"
-              :key="item.id"
+              :key="item.deviceId"
               :label="item.deviceName"
-              :value="item.id">
+              :value="item.deviceId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -256,9 +256,9 @@
           <el-select v-model="editFormFar.deviceNearId" placeholder="请选择近端机">
             <el-option
               v-for="item in treeData"
-              :key="item.id"
+              :key="item.deviceId"
               :label="item.deviceName"
-              :value="item.id">
+              :value="item.deviceId">
             </el-option>
           </el-select>
         </el-form-item>

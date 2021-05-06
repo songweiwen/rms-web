@@ -20,12 +20,12 @@ export const updateMoveFar = function (params) {
   return http.postQs('/rms/move/far', params)
 }
 
-// 核销近端机   
+// 核销近端机
 export const workoutNear = function (params) {
   return http.postQs('/rms/workout/near', params)
 }
 
-// 核销远端机    
+// 核销远端机
 export const workoutFar = function (params) {
   return http.postQs('/rms/workout/far', params)
 }
