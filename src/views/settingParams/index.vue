@@ -157,6 +157,9 @@
                       超时
                     </el-tag>
                   </template>
+                  <template v-else-if="dataNear.device.shouguangzhi>127 && dataNear.device.shouguangzhi < 255">
+                    {{dataNear.device.shouguangzhi-256}}
+                  </template>
                   <template v-else>
                     {{dataNear.device.shouguangzhi}}
                   </template>
@@ -268,6 +271,9 @@
                     <el-tag type="danger">
                       超时
                     </el-tag>
+                  </template>
+                  <template v-else-if="dataFar.device.shouguangzhi>127 && dataFar.device.shouguangzhi < 255">
+                    {{dataFar.device.shouguangzhi-256}}
                   </template>
                   <template v-else>
                     {{dataFar.device.shouguangzhi}}
@@ -442,7 +448,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  DB
+                  dB
                 </el-col>
               </el-row>
 
