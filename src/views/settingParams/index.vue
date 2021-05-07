@@ -6,7 +6,7 @@
     <div class="page-container">
       <div class="home">
         <div class="home-left">
-
+          <div class="home-tree" v-show="WSloading"></div>
           <el-tree
           ref="treeDom"
           :expand-on-click-node="false"
