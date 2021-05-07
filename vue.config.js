@@ -49,7 +49,7 @@ module.exports = {
                 warnings: false,
                 compress: {
                   drop_console: process.env.VUE_APP_ENV_CONFIG === 'prod', // 删除console.log
-                  drop_debugger: true // 自动删除debugger
+                  drop_debugger: false // 自动删除debugger
                 }
               }
             })

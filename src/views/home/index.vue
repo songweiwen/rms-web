@@ -105,7 +105,7 @@
                 'equipmentBox--info': item.online===0,
                 'equipmentBox--success': item.online===1,
                 'equipmentBox--dagder': item.online===2,
-                'shanshuo': item.shanshuo===1 }">
+                'shanshuo': item.online===2?item.shanshuo===1:'' }">
                 <!-- {{item.deviceName}} -->
                  <el-popover
                   placement="top"
@@ -123,15 +123,18 @@
                   <div slot="reference">
                     <i v-if="item.level===2" class="iconfont icon-yuanduanji"></i>
                     <i v-else class="iconfont icon-jinduanji"></i>
-                    <template v-if="item.online===0">
-                      离线
-                    </template>
-                    <template v-else-if="item.online===1">
-                      在线
-                    </template>
-                    <template v-else-if="item.online===2">
-                      报警
-                    </template>
+                    <div v-if="item.level === 2"> {{item.deviceName}} </div>
+                    <div v-else>
+                      <template v-if="item.online===0">
+                        离线
+                      </template>
+                      <template v-else-if="item.online===1">
+                        在线
+                      </template>
+                      <template v-else-if="item.online===2">
+                        报警
+                      </template>
+                    </div>
                   </div>
                 </el-popover>
               </div>
@@ -274,6 +277,9 @@
                     </template>
                     <template v-else-if="dataNear.device.upsgaojing===1" >
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext">  故障</span>
+                    </template>
+                    <template v-else-if="dataNear.device.upsgaojing===2">
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未链接</span>
                     </template>
                     <template v-else>
                       <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未响应</span>
@@ -504,6 +510,9 @@
                     </template>
                     <template v-else-if="dataFar.device.upsgaojing===1">
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext">  故障</span>
+                    </template>
+                    <template v-else-if="dataFar.device.upsgaojing===2">
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未链接</span>
                     </template>
                     <template v-else>
                       <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未响应</span>

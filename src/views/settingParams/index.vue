@@ -162,7 +162,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  DBm
+                  dBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -274,7 +274,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  DBm
+                  dBm
                 </el-col>
               </el-row>
 
@@ -323,7 +323,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  DBm
+                  dBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -359,7 +359,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  DBm
+                  dBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
@@ -397,7 +397,7 @@
                   </template>
                 </el-col>
                 <el-col :span="8">
-                  DBm
+                  dBm
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle">

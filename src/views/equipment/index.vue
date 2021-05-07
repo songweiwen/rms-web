@@ -503,7 +503,9 @@ export default {
             deviceId: this.editForm.deviceId,
             deviceName: this.editForm.deviceName,
             deviceAddress: this.editForm.deviceAddress,
-            deviceDescribe: this.editForm.deviceDescribe
+            deviceDescribe: this.editForm.deviceDescribe,
+            deviceIp: this.editForm.deviceIp,
+            port: this.editForm.port
           }).then(res => {
             const data = res.data
             console.log(data)
