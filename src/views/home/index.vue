@@ -280,7 +280,7 @@
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext">  故障</span>
                     </template>
                     <template v-else-if="dataNear.device.upsgaojing===2">
-                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未链接</span>
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未连接</span>
                     </template>
                     <template v-else>
                       <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未响应</span>
@@ -513,7 +513,7 @@
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext">  故障</span>
                     </template>
                     <template v-else-if="dataFar.device.upsgaojing===2">
-                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未链接</span>
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未连接</span>
                     </template>
                     <template v-else>
                       <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext">  未响应</span>
@@ -891,12 +891,12 @@ export default {
             this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
           }
         }
-        this.$message({
-          message: '检测成功',
-          type: 'success'
-        })
+        // this.$message({
+        //   message: '检测成功',
+        //   type: 'success'
+        // })
         this.WSloadingState = 1
-        this.WSloadingText = '检测完毕'
+        this.WSloadingText = '检测成功'
       } else if (redata.commandString === 'SCF') {
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
@@ -904,12 +904,12 @@ export default {
             this.dataFar.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataFar.device.deviceTime))
           }
         }
-        this.$message({
-          message: '检测成功',
-          type: 'success'
-        })
+        // this.$message({
+        //   message: '检测成功',
+        //   type: 'success'
+        // })
         this.WSloadingState = 1
-        this.WSloadingText = '检测完毕'
+        this.WSloadingText = '检测成功'
       }
     },
     handleNodeClick (data) {
@@ -1074,10 +1074,17 @@ export default {
         id: this.id
       }).then(res => {
         console.log(res)
-        this.$message({
-          type: 'success',
-          message: '核销成功!'
-        })
+        // this.$message({
+        //   type: 'success',
+        //   message: '核销成功!'
+        // })
+        if (res.data === '已核销!') {
+          this.WSloadingState = 2
+          this.WSloadingText = '已核销!'
+        } else {
+          this.WSloadingState = 1
+          this.WSloadingText = '核销成功'
+        }
       })
     },
     onWorkoutFar () {
@@ -1085,10 +1092,17 @@ export default {
         id: this.id
       }).then(res => {
         console.log(res)
-        this.$message({
-          type: 'success',
-          message: '核销成功!'
-        })
+        // this.$message({
+        //   type: 'success',
+        //   message: '核销成功!'
+        // })
+        if (res.data === '已核销!') {
+          this.WSloadingState = 2
+          this.WSloadingText = '已核销!'
+        } else {
+          this.WSloadingState = 1
+          this.WSloadingText = '核销成功'
+        }
       })
     }
   },
@@ -1112,7 +1126,7 @@ export default {
           this.WSloading = false
           this.WSloadingState = 2
           this.WSloadingText = '检测失败'
-          this.$message.error('检测失败')
+          // this.$message.error('检测失败')
           // 近端机
           // this.dataNear.device.online = 0
           this.dataNear.device.shouguanggonglv = 99
@@ -1129,7 +1143,7 @@ export default {
           this.dataFar.device.guogonglvgaojing = 99
           this.dataFar.device.shangxingguzhang = 99
           this.dataFar.device.upsgaojing = 99
-        }, 1000 * 10)
+        }, 1000 * 3)
       }
     }
   }

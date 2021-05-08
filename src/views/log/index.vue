@@ -147,7 +147,7 @@ export default {
           }
         }]
       },
-      dateSelect: '',
+      dateSelect: [new Date(), new Date()],
       // deviceId: '',
       form: {
         dateStart: '',

@@ -132,21 +132,21 @@
                   </template>
                   <template v-else>
                     <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
-                    v-model.number="dataNear.device.shuaijianzhi" placeholder=""></el-input>
+                    v-model.number="dataNear.device.shuaijianzhi" placeholder="" @input="shuaijianzhiNear"></el-input>
                   </template>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8">SZ
                   0-31（范围值）
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-              <el-alert
+              <!-- <el-alert
                 :closable="false"
                 v-show="showShuaijianzhi"
                 title="光模块衰减值不可空，范围值允许为0-31"
                 type="error"
                 effect="dark">
-              </el-alert>
+              </el-alert> -->
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="8">
                   收光功率
@@ -247,21 +247,21 @@
                   </template>
                   <template v-else>
                     <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
-                    v-model.number="dataFar.device.shuaijianzhi" placeholder=""></el-input>
+                    v-model.number="dataFar.device.shuaijianzhi" placeholder="" @input="shuaijianzhiFar"></el-input>
                   </template>
-                </el-col>
+                </el-col>ZZ
                 <el-col :span="8">
                   0-31（范围值）
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-              <el-alert
+              <!-- <el-alert
                 :closable="false"
                 v-show="showShuaijianzhiFar"
                 title="光模块衰减值不可空，范围值允许为0-31"
                 type="error"
                 effect="dark">
-              </el-alert>
+              </el-alert> -->
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="8">
                   收光功率
@@ -295,7 +295,7 @@
                     </el-tag>
                   </template>
                   <template v-else>
-                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi"></el-input>
+                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi" @input="gongfangshuaijianzhiFar"></el-input>
                     <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
                   </template>
                 </el-col>
@@ -304,13 +304,13 @@
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-              <el-alert
+              <!-- <el-alert
                 :closable="false"
                 v-show="showGongfangshuaijianzhi"
                 title="上行衰减值不可空"
                 type="error"
                 effect="dark">
-              </el-alert>
+              </el-alert> -->
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="8">
                   下行反向功率
@@ -417,7 +417,7 @@
                     </el-tag>
                   </template>
                   <template v-else>
-                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi"></el-input>
+                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi" @input="shangxingshuajianzhiFar"></el-input>
                     <!-- {{dataFar.device.shangxingshuajianzhi}} -->
                   </template>
                 </el-col>
@@ -426,13 +426,13 @@
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-              <el-alert
+              <!-- <el-alert
                 :closable="false"
                 v-show="showShangxingshuajianzhi"
                 title="上行衰减值不可空"
                 type="error"
                 effect="dark">
-              </el-alert>
+              </el-alert> -->
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="8">
                   LNA最大增益
@@ -631,23 +631,55 @@ export default {
         }
       })
     },
-    settingNear (bool) {
-      if (this.dataNear.device.shuaijianzhi === '') {
-        this.showShuaijianzhi = true
-      } else if (this.dataNear.device.shuaijianzhi > 31 || this.dataNear.device.shuaijianzhi < 0) {
-        this.showShuaijianzhi = true
-      } else {
-        // this.settingBool = bool
-        this.WSloadingType = '设置'
-        this.WSloadingState = 0
-        this.WSloading = true
-        this.WSloadingText = '设置中'
-        this.showShuaijianzhi = false
-        this.$webSocket.Send({
-          commandString: 'SN',
-          nearDevice: this.dataNear.device
-        })
+    shuaijianzhiNear () {
+      console.log(1)
+      if (this.dataNear.device.shuaijianzhi > 31) {
+        this.dataNear.device.shuaijianzhi = 31
+      } else if (this.dataNear.device.shuaijianzhi < 0) {
+        this.dataNear.device.shuaijianzhi = 0
       }
+    },
+    shuaijianzhiFar () {
+      console.log(1)
+      if (this.dataFar.device.shuaijianzhi > 31) {
+        this.dataFar.device.shuaijianzhi = 31
+      } else if (this.dataFar.device.shuaijianzhi < 0) {
+        this.dataFar.device.shuaijianzhi = 0
+      }
+    },
+    gongfangshuaijianzhiFar () {
+      console.log(1)
+      if (this.dataFar.device.gongfangshuaijianzhi > 31) {
+        this.dataFar.device.gongfangshuaijianzhi = 31
+      } else if (this.dataFar.device.gongfangshuaijianzhi < 0) {
+        this.dataFar.device.gongfangshuaijianzhi = 0
+      }
+    },
+    shangxingshuajianzhiFar () {
+      console.log(1)
+      if (this.dataFar.device.shangxingshuajianzhi > 31) {
+        this.dataFar.device.shangxingshuajianzhi = 31
+      } else if (this.dataFar.device.shangxingshuajianzhi < 0) {
+        this.dataFar.device.shangxingshuajianzhi = 0
+      }
+    },
+    settingNear (bool) {
+      // if (this.dataNear.device.shuaijianzhi === '') {
+      //   this.showShuaijianzhi = true
+      // } else if (this.dataNear.device.shuaijianzhi > 31 || this.dataNear.device.shuaijianzhi < 0) {
+      //   this.showShuaijianzhi = true
+      // } else {
+      // this.settingBool = bool
+      this.WSloadingType = '设置'
+      this.WSloadingState = 0
+      this.WSloading = true
+      this.WSloadingText = '设置中'
+      this.showShuaijianzhi = false
+      this.$webSocket.Send({
+        commandString: 'SN',
+        nearDevice: this.dataNear.device
+      })
+      // }
     },
     settingFar (bool) {
       if (this.dataFar.device.shuaijianzhi === '') {
@@ -688,11 +720,11 @@ export default {
           this.dataNear.device = redata.nearDevice
         }
         // if (!this.settingBool) {
-        this.$message({
-          message: '读取成功',
-          type: 'success'
-        })
-        this.WSloadingText = '读取完毕'
+        // this.$message({
+        //   message: '读取成功',
+        //   type: 'success'
+        // })
+        this.WSloadingText = '读取成功'
         this.queryPlay()
         // }
       } else if (redata.commandString === 'SRF') { // 读取远端机
@@ -700,51 +732,51 @@ export default {
           this.dataFar.device = redata.farDevice
         }
         // if (!this.settingBool) {
-        this.$message({
-          message: '读取成功',
-          type: 'success'
-        })
-        this.WSloadingText = '读取完毕'
+        // this.$message({
+        //   message: '读取成功',
+        //   type: 'success'
+        // })
+        this.WSloadingText = '读取成功'
         this.queryPlay()
         // }
       } else if (redata.commandString === 'SRNV') { // 近端机 版本
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
-        this.$message({
-          message: '版本号更新成功',
-          type: 'success'
-        })
-        this.WSloadingText = '版本号更新完毕'
+        // this.$message({
+        //   message: '版本号更新成功',
+        //   type: 'success'
+        // })
+        this.WSloadingText = '版本号更新成功'
       } else if (redata.commandString === 'SRFV') { // 远端机 版本
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
         }
-        this.$message({
-          message: '版本号更新成功',
-          type: 'success'
-        })
-        this.WSloadingText = '版本号更新完毕'
+        // this.$message({
+        //   message: '版本号更新成功',
+        //   type: 'success'
+        // })
+        this.WSloadingText = '版本号更新成功'
       } else if (redata.commandString === 'SSN') { // 近端机 设置
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
-        this.$message({
-          message: '设置成功',
-          type: 'success'
-        })
-        this.WSloadingText = '设置完毕'
+        // this.$message({
+        //   message: '设置成功',
+        //   type: 'success'
+        // })
+        this.WSloadingText = '设置成功'
         this.settingPlay()
         // this.onQueryNear()// 近端机读取
       } else if (redata.commandString === 'SSF') { // 远端机 设置
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
         }
-        this.$message({
-          message: '设置成功',
-          type: 'success'
-        })
-        this.WSloadingText = '设置完毕'
+        // this.$message({
+        //   message: '设置成功',
+        //   type: 'success'
+        // })
+        this.WSloadingText = '设置成功'
         this.settingPlay()
         // this.onQueryFar()// 远端机读取
       }
@@ -800,15 +832,15 @@ export default {
           switch (this.WSloadingType) {
             case '读取':
               this.WSloadingText = '读取超时'
-              this.$message.error('读取超时')
+              // this.$message.error('读取超时')
               break
             case '读取版本':
               this.WSloadingText = '读取版本超时'
-              this.$message.error('读取版本超时')
+              // this.$message.error('读取版本超时')
               break
             case '设置':
               this.WSloadingText = '设置超时'
-              this.$message.error('设置超时')
+              // this.$message.error('设置超时')
               break
             default:
               break
@@ -818,7 +850,7 @@ export default {
 
           // 远端机
           // this.dataFar.device.online = 0
-        }, 1000 * 10)
+        }, 1000 * 3)
       }
     }
   }

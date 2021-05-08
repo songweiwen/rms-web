@@ -130,7 +130,7 @@ export const ws = {
         this.$notify.error({
           title: `${redata.nearDevice.deviceName}报警！`,
           message: `报警时间：${redata.nearDevice.deviceTime}`,
-          duration: 0
+          duration: 3000
         })
         this.nearErroePlay()
         // )
@@ -143,7 +143,7 @@ export const ws = {
         this.$notify.error({
           title: `${redata.farDevice.deviceName}报警！`,
           message: `报警时间：${redata.farDevice.deviceTime}`,
-          duration: 0
+          duration: 3000
         })
         this.farErroePlay()
         // )
@@ -156,7 +156,7 @@ export const ws = {
         this.$notify({
           title: `${redata.nearDevice.deviceName}修复故障！`,
           message: `修复时间：${redata.nearDevice.deviceTime}`,
-          duration: 0,
+          duration: 3000,
           type: 'success'
         })
         this.nearSuccessPlay()
@@ -170,7 +170,7 @@ export const ws = {
         this.$notify({
           title: `${redata.farDevice.deviceName}修复故障！`,
           message: `修复时间：${redata.farDevice.deviceTime}`,
-          duration: 0,
+          duration: 3000,
           type: 'success'
         })
         this.farSuccessPlay()

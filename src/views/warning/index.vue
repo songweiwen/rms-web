@@ -5,18 +5,18 @@
         <div class="table-hd">
           <el-form :inline="true" :model="form" >
             <el-form-item label="近端机" label-width="70px">
-              <el-select v-model="form.deviceNearId" clearable placeholder="请选择" size="mini" @change="changeSelect" style="width: 120px;">
+              <el-select v-model="form.deviceNearId" placeholder="请选择" size="mini" @change="changeSelect" style="width: 120px;">
                 <el-option
                   v-for="group in selectOptions"
                   :key="group.value"
-                  :value="group.value"
+                  :value="group.deviceId"
                   :label="group.label"
                   >
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="远端机" label-width="70px">
-              <el-select v-model="form.deviceId" clearable placeholder="请选择" size="mini" @change="changeSelectFar" style="width: 120px;">
+              <el-select v-model="form.deviceId" placeholder="请选择" size="mini" @change="changeSelectFar" style="width: 120px;">
                 <el-option
                   v-for="(item, key) in selectOptionsFar"
                   :key="key"
@@ -26,7 +26,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="报警类型" label-width="70px">
-              <el-select v-model="form.warningType" clearable placeholder="请选择" size="mini" @change="changeTable" style="width: 100px;">
+              <el-select v-model="form.warningType" placeholder="请选择" size="mini" @change="changeTable" style="width: 100px;">
                 <el-option
                   v-for="(item, key) in warningOptions"
                   :key="key"
@@ -163,20 +163,27 @@ export default {
         label: '远端机'
       }],
       warningOptions: [{
-        label: '故障告警'
-      },
-      {
+        label: '全部'
+      }, {
         label: '故障恢复'
+      }, {
+        label: '故障告警'
       }
       ],
       selectOptions: [
         {
           label: '全部',
           deviceId: '',
+          level: 1
+        }
+      ],
+      selectOptionsFar: [
+        {
+          label: '全部',
+          deviceId: '',
           level: 2
         }
       ],
-      selectOptionsFar: [],
       // , {
       //   label: '远端机',
       //   options: []
@@ -228,7 +235,7 @@ export default {
         dateStart: '',
         dateEnd: '',
         deviceType: '',
-        warningType: ''
+        warningType: '全部'
       },
       pageHeight: 500,
       treeData: [],

@@ -79,7 +79,7 @@ export default {
       userInfo: {},
       menuData: [],
       menuUrl: {
-        主页: '/home',
+        系统总览: '/home',
         // 状态日志: '/stateLog',
         // 站点: '/site',
         故障管理: '/warning',
@@ -92,7 +92,7 @@ export default {
         开站设置: '/equipment'
       },
       menuIcon: {
-        主页: 'icon-zhuye',
+        系统总览: 'icon-zhuye',
         操作日志: 'icon-caozuorizhi',
         参数设置: 'icon-canshushezhi',
         用户管理: 'icon-yonghuguanli',
