@@ -8,7 +8,7 @@
         <el-tab-pane label="用户管理">
           <div class="table">
             <div class="table-hd">
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisible=true">增加</el-button>
+              <el-button type="primary" icon="el-icon-plus" @click="addVisible=true">增加</el-button>
               <!-- <el-button type="danger" size="mini">删除</el-button> -->
               <!-- <el-button type="warning" size="mini">角色详情</el-button> -->
               <!-- <el-button type="danger" icon="el-icon-setting" size="mini">线路权限</el-button> -->
@@ -71,22 +71,19 @@
                 </el-table-column>
                 <el-table-column
                   label="操作"
-                  width="300"
+                  width="400"
                   align="center">
                   <template slot-scope="scope">
                     <el-button
-                      size="mini"
                       icon="el-icon--phone"
                       @click="handlePhone(scope.row)"
                       >配置手机号</el-button>
                     <el-button
-                      size="mini"
                       type="primary"
                       icon="el-icon-edit"
                       @click="handleEdit(scope.row)"
                       >修改</el-button>
                     <el-button
-                      size="mini"
                       type="danger"
                       icon="el-icon-delete"
                       @click="handleDelete(scope.row.id)"

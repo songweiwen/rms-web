@@ -52,7 +52,7 @@
             <!-- <el-form-item>
               <el-button type="primary" icon="el-icon-search" size="mini" @click="submitForm">增加</el-button>
             </el-form-item> -->
-            <el-button icon="el-icon-download" type="success" class="pull-right m-t-sm" @click="exportExcel" size="mini">
+            <el-button icon="el-icon-download" type="success" class="pull-right m-t-sm" @click="exportExcel">
               导出Excel
             </el-button>
           </el-form>

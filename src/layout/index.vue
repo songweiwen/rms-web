@@ -203,7 +203,7 @@ export default {
 
   .el-main {
     height: 100%;
-    padding: 16px;
+    padding: 0px;
     background-color: #f1f2f5;
   }
 

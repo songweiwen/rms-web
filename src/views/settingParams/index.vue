@@ -42,10 +42,10 @@
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" type="primary" size="small" @click="onQueryNear(false)">
+              <el-button :loading="WSloading" type="primary" @click="onQueryNear(false)">
                 读取
               </el-button>
-              <el-button :loading="WSloading" type="danger" size="small" @click="settingNear(true)">
+              <el-button :loading="WSloading" type="danger"  @click="settingNear(true)">
                 设置
               </el-button>
             </div>
@@ -59,10 +59,10 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" type="primary" size="small" @click="onQueryFar(false)">
+              <el-button :loading="WSloading" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <el-button :loading="WSloading" type="danger" size="small" @click="settingFar(true)">
+              <el-button :loading="WSloading" type="danger" @click="settingFar(true)">
                 设置
               </el-button>
             </div>
@@ -611,7 +611,6 @@ export default {
       this.versionloading = true
       this.WSloadingType = '读取版本'
       this.WSloadingState = 0
-      this.WSloading = true
       this.WSloadingText = '读取版本中'
       this.$webSocket.Send({
         commandString: 'RNV',
@@ -624,7 +623,6 @@ export default {
       this.versionloading = true
       this.WSloadingType = '读取版本'
       this.WSloadingState = 0
-      this.WSloading = true
       this.WSloadingText = '读取版本中'
       this.$webSocket.Send({
         commandString: 'RFV',
@@ -856,6 +854,22 @@ export default {
           // 远端机
           // this.dataFar.device.online = 0
 
+          this.setTimeoutLog(localStorage.getItem('wsParams'))
+        }, 1000 * 3)
+      }
+    },
+    versionloading (val) {
+      if (val) {
+        this.overTime = setTimeout(() => {
+          this.versionloading = false
+          this.WSloadingState = 2
+          switch (this.WSloadingType) {
+            case '读取版本':
+              this.WSloadingText = '读取版本超时'
+              break
+            default:
+              break
+          }
           this.setTimeoutLog(localStorage.getItem('wsParams'))
         }, 1000 * 3)
       }

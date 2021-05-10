@@ -8,7 +8,7 @@
         <el-tab-pane label="近端机设备">
           <div class="table">
             <div class="table-hd">
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisible=true">增加</el-button>
+              <el-button type="primary" icon="el-icon-plus" @click="addVisible=true">增加</el-button>
             </div>
             <div class="table-bd">
               <el-table
@@ -48,17 +48,15 @@
                 </el-table-column>
                 <el-table-column
                   label="操作"
-                  width="200"
+                  width="300"
                   align="center">
                   <template slot-scope="scope">
                     <el-button
-                      size="mini"
                       type="primary"
                       icon="el-icon-edit"
                       @click="handleEdit(scope.row)"
                       >修改</el-button>
                     <el-button
-                      size="mini"
                       type="danger"
                       icon="el-icon-delete"
                       @click="handleDelete(scope.row.id)"
@@ -83,7 +81,7 @@
         <el-tab-pane label="远端机设备">
           <div class="table">
             <div class="table-hd">
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addVisibleFar=true">增加</el-button>
+              <el-button type="primary" icon="el-icon-plus" @click="addVisibleFar=true">增加</el-button>
             </div>
             <div class="table-bd">
               <el-table
@@ -123,17 +121,15 @@
                 </el-table-column>
                 <el-table-column
                   label="操作"
-                  width="200"
+                  width="300"
                   align="center">
                   <template slot-scope="scope">
                     <el-button
-                      size="mini"
                       type="primary"
                       icon="el-icon-edit"
                       @click="handleEditFar(scope.row)"
                       >修改</el-button>
                     <el-button
-                      size="mini"
                       type="danger"
                       icon="el-icon-delete"
                       @click="handleDeleteFar(scope.row.id)"
