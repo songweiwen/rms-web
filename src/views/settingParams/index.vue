@@ -135,7 +135,7 @@
                     v-model.number="dataNear.device.shuaijianzhi" placeholder="" @input="shuaijianzhiNear"></el-input>
                   </template>
                 </el-col>
-                <el-col :span="8">SZ
+                <el-col :span="8">
                   0-31（范围值）
                 </el-col>
               </el-row>
@@ -249,7 +249,7 @@
                     <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
                     v-model.number="dataFar.device.shuaijianzhi" placeholder="" @input="shuaijianzhiFar"></el-input>
                   </template>
-                </el-col>ZZ
+                </el-col>
                 <el-col :span="8">
                   0-31（范围值）
                 </el-col>

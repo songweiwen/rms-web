@@ -37,15 +37,15 @@
             </el-form-item>
             <el-form-item label="日期查询" label-width="70px">
               <el-date-picker
-                class="m-l-md"
+                class="demonstration"
                 size="mini"
                 v-model="dateSelect"
-                type="daterange"
+                type="datetimerange"
                 align="right"
                 unlink-panels
-                range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
+                :default-time="['12:00:00']">
                 :picker-options="pickerOptions">
               </el-date-picker>
             </el-form-item>
@@ -226,7 +226,7 @@ export default {
           }
         }]
       },
-      dateSelect: [new Date(), new Date()],
+      dateSelect: [new Date(new Date(new Date().toLocaleDateString()).getTime()), new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1)],
       // deviceId: '',
       form: {
         id: '',
@@ -246,8 +246,8 @@ export default {
     }
   },
   created () {
-    this.form.dateStart = formatDate('yyyy-MM-dd', new Date())
-    this.form.dateEnd = formatDate('yyyy-MM-dd', new Date())
+    this.form.dateStart = formatDate('yyyy-MM-dd hh:mm:ss', new Date(new Date(new Date().toLocaleDateString()).getTime()))
+    this.form.dateEnd = formatDate('yyyy-MM-dd hh:mm:ss', new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1))
     this.$nextTick(() => {
       this.setTableHeight(130, 'pageHeight')
       setTimeout(() => {
@@ -427,8 +427,8 @@ export default {
   watch: {
     dateSelect (val) {
       if (val) {
-        this.form.dateStart = formatDate('yyyy-MM-dd', new Date(val[0]))
-        this.form.dateEnd = formatDate('yyyy-MM-dd', new Date(val[1]))
+        this.form.dateStart = formatDate('yyyy-MM-dd hh:mm:ss', new Date(val[0]))
+        this.form.dateEnd = formatDate('yyyy-MM-dd hh:mm:ss', new Date(val[1]))
       } else {
         this.form.dateStart = ''
         this.form.dateEnd = ''
