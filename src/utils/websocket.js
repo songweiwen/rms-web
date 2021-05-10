@@ -110,6 +110,7 @@ var websocket = {
     //   overTime = null
     //   clearTimeout(overTime)
     // }, 1000*10);
+    localStorage.setItem('wsParams', msg)
     ws.send(msg)
   },
   getWebSocket () {

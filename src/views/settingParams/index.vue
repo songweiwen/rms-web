@@ -176,7 +176,7 @@
                   {{dataNear.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" size="small" @click="onVersionNear" :loading="WSloading">
+                  <el-button type="primary" size="small" @click="onVersionNear" :loading="versionloading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -460,7 +460,7 @@
                   {{dataFar.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" size="small" @click="onVersionFar" :loading="WSloading">
+                  <el-button type="primary" size="small" @click="onVersionFar" :loading="versionloading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -492,6 +492,7 @@ export default {
       WSloadingState: 0,
       WSloading: false,
       WSloadingText: '',
+      versionloading: false,
       treeData: [],
       defaultProps: {
         children: 'children',
@@ -607,6 +608,7 @@ export default {
       })
     },
     onVersionNear () { // 近端机 版本
+      this.versionloading = true
       this.WSloadingType = '读取版本'
       this.WSloadingState = 0
       this.WSloading = true
@@ -619,6 +621,7 @@ export default {
       })
     },
     onVersionFar () { // 远端机 版本
+      this.versionloading = true
       this.WSloadingType = '读取版本'
       this.WSloadingState = 0
       this.WSloading = true
@@ -747,6 +750,7 @@ export default {
         //   message: '版本号更新成功',
         //   type: 'success'
         // })
+        this.versionloading = false
         this.WSloadingText = '版本号更新成功'
       } else if (redata.commandString === 'SRFV') { // 远端机 版本
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
@@ -756,6 +760,7 @@ export default {
         //   message: '版本号更新成功',
         //   type: 'success'
         // })
+        this.versionloading = false
         this.WSloadingText = '版本号更新成功'
       } else if (redata.commandString === 'SSN') { // 近端机 设置
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
@@ -850,6 +855,8 @@ export default {
 
           // 远端机
           // this.dataFar.device.online = 0
+
+          this.setTimeoutLog(localStorage.getItem('wsParams'))
         }, 1000 * 3)
       }
     }

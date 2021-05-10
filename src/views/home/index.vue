@@ -1143,6 +1143,8 @@ export default {
           this.dataFar.device.guogonglvgaojing = 99
           this.dataFar.device.shangxingguzhang = 99
           this.dataFar.device.upsgaojing = 99
+
+          this.setTimeoutLog(localStorage.getItem('wsParams'))
         }, 1000 * 3)
       }
     }

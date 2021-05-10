@@ -1,5 +1,6 @@
 
 import { formatDate } from '@/utils/utils'
+import { setTimeoutLog } from '@/api/other'
 export const ws = {
   data () {
     return {
@@ -40,6 +41,13 @@ export const ws = {
     // }
   },
   methods: {
+    setTimeoutLog (params) {
+      console.log(params)
+      JSON.parse(params)
+      setTimeoutLog({ model: params }).then(res => {
+        localStorage.removeItem('wsParams')
+      })
+    },
     audioSrc (name) {
       if (this.audioEnable) {
         const that = this
