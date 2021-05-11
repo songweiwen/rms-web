@@ -4,18 +4,20 @@
       <div class="table">
         <div class="table-hd">
           <el-form :inline="true" :model="form" >
-            <el-form-item label="日期查询" label-width="70px">
+            <el-form-item label="起始时间" label-width="70px">
               <el-date-picker
-                class="demonstration"
-                size="mini"
-                v-model="dateSelect"
-                type="datetimerange"
-                align="right"
-                unlink-panels
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :default-time="['12:00:00']">
-                :picker-options="pickerOptions">
+                v-model="dateSelect[0]"
+                :clearable="false"
+                type="datetime"
+                placeholder="选择日期时间">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间" label-width="70px">
+              <el-date-picker
+                v-model="dateSelect[1]"
+                :clearable="false"
+                type="datetime"
+                placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
             <!-- <el-form-item>

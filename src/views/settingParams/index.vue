@@ -42,10 +42,10 @@
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" type="primary" @click="onQueryNear(false)">
+              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryNear(false)">
                 读取
               </el-button>
-              <el-button :loading="WSloading" type="danger"  @click="settingNear(true)">
+              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingNear(true)">
                 设置
               </el-button>
             </div>
@@ -59,10 +59,10 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" type="primary" @click="onQueryFar(false)">
+              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <el-button :loading="WSloading" type="danger" @click="settingFar(true)">
+              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingFar(true)">
                 设置
               </el-button>
             </div>
@@ -176,7 +176,7 @@
                   {{dataNear.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" size="small" @click="onVersionNear" :loading="versionloading">
+                  <el-button type="primary" :disabled ="dataNear.device.online ===0"  size="small" @click="onVersionNear" :loading="versionloading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -460,7 +460,7 @@
                   {{dataFar.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" size="small" @click="onVersionFar" :loading="versionloading">
+                  <el-button type="primary" :disabled ="dataFar.device.online ===0" size="small" @click="onVersionFar" :loading="versionloading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -557,7 +557,8 @@ export default {
             deviceAddress: e.near.deviceAddress,
             level: 1,
             children: e.far,
-            treeId: e.near.id
+            treeId: e.near.id,
+            deviceVersion: e.near.deviceVersion
           })
         })
 
