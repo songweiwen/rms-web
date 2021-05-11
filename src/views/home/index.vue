@@ -151,6 +151,7 @@
                 在线
               </el-tag>
               <el-tag v-else-if="dataNear.device.online===0" type="info" effect="dark"> 离线</el-tag>
+              <el-tag v-else-if="dataNear.device.online===2" type="danger" effect="dark"> 告警</el-tag>
               <!-- <el-tag v-else type="info" effect="dark"> 未知</el-tag> -->
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
@@ -890,6 +891,12 @@ export default {
           if (String(this.dataNear.device.deviceTime).length === 13) {
             this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
           }
+          this.treeData.forEach(e => {
+            if (e.deviceId === redata.nearDevice.deviceId) {
+              e = redata.nearDevice
+              this.treeData = [...this.treeData]
+            }
+          })
         }
         // this.$message({
         //   message: '检测成功',
@@ -910,6 +917,17 @@ export default {
         // })
         this.WSloadingState = 1
         this.WSloadingText = '检测成功'
+      } else if (redata.commandString === 'OLN') {
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
+          this.dataNear.device = redata.nearDevice
+        }
+        this.treeData.forEach(e => {
+          if (e.deviceId === redata.nearDevice.deviceId) {
+            alert(2)
+            e = redata.nearDevice
+            this.treeData = [...this.treeData]
+          }
+        })
       }
     },
     handleNodeClick (data) {
@@ -950,6 +968,12 @@ export default {
           console.log(data)
           this.dataNear = data
           this.loading = false
+          this.treeData.forEach(e => {
+            if (e.deviceId === data.deviceId) {
+              e = data
+              this.treeData = [...this.treeData]
+            }
+          })
         })
       } else if (this.homeType === 2) {
         this.deviceIdNear = data.deviceNearId
@@ -1085,6 +1109,12 @@ export default {
           this.WSloadingState = 1
           this.WSloadingText = '核销成功'
           this.dataNear.device.shanshuo = 0
+          this.treeData.forEach(e => {
+            if (e.deviceId === this.dataNear.device.deviceId) {
+              e = this.dataNear.device
+              this.treeData = [...this.treeData]
+            }
+          })
         }
       })
     },
