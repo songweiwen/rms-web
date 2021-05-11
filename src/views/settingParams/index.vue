@@ -21,17 +21,23 @@
                 <i v-else class="iconfont icon-jinduanji"></i>
                 {{ node.label }}
               </span>
-              <!-- {{data.online}} -->
-              <!-- <span>
-                <span v-if="data.alert===1" class="el-tag el-tag--danger el-tag--dark"></span>
-              </span> -->
+              <span>
+              <!-- 根据 每个设备的online决定   绿色在线1  红色报警2  灰色不在线0 -->
+                <template v-if="data.level===1">
+                  <span v-if="data.online===1" class="el-tag el-tag--success el-tag--dark"></span>
+                  <span v-else-if="data.online===0" class="el-tag el-tag--info el-tag--dark"></span>
+                  <span v-else-if="data.online===2" class="el-tag el-tag--danger el-tag--dark" :class="{
+                   shanshuo: data.shanshuo===1
+                  }"></span>
+                </template>
+              </span>
             </span>
           </el-tree>
         </div>
         <!-- <div class="home-right" style="width: 800px;" v-show="!deviceId">
           <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset="">
         </div> -->
-        <div class="home-right" style="width: 800px; padding-bottom: 40px;" v-show="deviceId">
+        <div class="home-right" style="width: 850px; padding-bottom: 40px;" v-show="deviceId">
           <div class="flex-container" v-show="homeType===1">
             <div class="flex-item m-r-md">
               在线状态：
@@ -42,10 +48,10 @@
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryNear(false)">
+              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryNear(false)">
                 读取
               </el-button>
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingNear(true)">
+              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingNear(true)">
                 设置
               </el-button>
             </div>
@@ -59,10 +65,10 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryFar(false)">
+              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingFar(true)">
+              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingFar(true)">
                 设置
               </el-button>
             </div>
@@ -176,7 +182,7 @@
                   {{dataNear.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" :disabled ="dataNear.device.online ===0"  size="small" @click="onVersionNear" :loading="versionloading">
+                  <el-button type="primary" :disabled ="dataNear.device.online ===0"  size="small" @click="onVersionNear" :loading="versionLoading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -460,7 +466,7 @@
                   {{dataFar.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" :disabled ="dataFar.device.online ===0" size="small" @click="onVersionFar" :loading="versionloading">
+                  <el-button type="primary" :disabled ="dataFar.device.online ===0" size="small" @click="onVersionFar" :loading="versionLoading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -475,6 +481,7 @@
 </template>
 
 <script>
+import { formatDate } from '@/utils/utils'
 import { ws } from '@/mixins/webSocket'
 // import { overTimeInit } from '@/mixins/overTime'
 import { getTree } from '@/api/get'
@@ -492,7 +499,9 @@ export default {
       WSloadingState: 0,
       WSloading: false,
       WSloadingText: '',
-      versionloading: false,
+      getLoading: false,
+      versionLoading: false,
+      settingLoading: false,
       treeData: [],
       defaultProps: {
         children: 'children',
@@ -547,9 +556,8 @@ export default {
   methods: {
     getTree () {
       getTree().then(res => {
-        console.log(res)
         const treeData = res.data
-        treeData.forEach(e => {
+        treeData.forEach((e, i) => {
           this.treeData.push({
             deviceName: e.near.deviceName,
             deviceId: e.near.deviceId,
@@ -557,16 +565,22 @@ export default {
             deviceAddress: e.near.deviceAddress,
             level: 1,
             children: e.far,
-            treeId: e.near.id,
-            deviceVersion: e.near.deviceVersion
+            treeId: e.near.deviceId,
+            treeIndex: i,
+            online: e.near.online,
+            shanshuo: e.near.shanshuo
           })
         })
 
-        this.treeData.forEach(e => {
-          e.children.forEach(o => {
-            o.treeId = o.deviceNearId + '-' + o.id
+        this.treeData.forEach((e, i) => {
+          e.children.forEach((o, j) => {
+            o.treeId = o.deviceNearId + '-' + o.deviceId
+            o.treeChildrenIndex = j
+            o.treeIndex = i
+            o.level = 2
           })
         })
+
         this.handleNodeClick(this.treeData[0])
         // this.active = [String(this.treeData[0].id)]
         // .el-tree-node
@@ -576,6 +590,14 @@ export default {
           this.initTree = true
         })
       })
+    },
+    onZeroNear () {
+      this.dataNear.device.shuaijianzhi = 0
+    },
+    onZeroFar () {
+      this.dataFar.device.shuaijianzhi = 0
+      this.dataFar.device.gongfangshuaijianzhi = 0
+      this.dataFar.device.shangxingshuajianzhi = 0
     },
     onQueryNear (bool) { // 近端机读取
       // this.settingBool = bool || true
@@ -591,6 +613,9 @@ export default {
           deviceId: this.deviceId
         }
       })
+
+      this.getLoading = true
+      this.onZeroNear()
     },
     onQueryFar (bool) { // 远端机读取
       // this.settingBool = bool || true
@@ -607,9 +632,11 @@ export default {
           deviceNearId: this.deviceIdNear // 父级近端机
         }
       })
+      this.onZeroFar()
+      this.getLoading = true
     },
     onVersionNear () { // 近端机 版本
-      this.versionloading = true
+      this.versionLoading = true
       this.WSloadingType = '读取版本'
       this.WSloadingState = 0
       this.WSloadingText = '读取版本中'
@@ -621,7 +648,7 @@ export default {
       })
     },
     onVersionFar () { // 远端机 版本
-      this.versionloading = true
+      this.versionLoading = true
       this.WSloadingType = '读取版本'
       this.WSloadingState = 0
       this.WSloadingText = '读取版本中'
@@ -681,7 +708,9 @@ export default {
         commandString: 'SN',
         nearDevice: this.dataNear.device
       })
+      this.settingLoading = true
       // }
+      // this.onZeroNear()
     },
     settingFar (bool) {
       if (this.dataFar.device.shuaijianzhi === '') {
@@ -707,6 +736,8 @@ export default {
           farDevice: this.dataFar.device
         })
       }
+      // this.onZeroFar()
+      this.settingLoading = true
     },
     websocketonMessage (e) {
       this.WSloadingState = 1
@@ -717,7 +748,111 @@ export default {
       const redata = JSON.parse(e.data)
       this.websocketonMessageAll(redata)
       // alert(1)
-      if (redata.commandString === 'SRN') { // 读取近端机
+      // 近端机报警  更新树状图的报警灯泡
+      if (redata.commandString === 'WN' || redata.commandString === 'CSSNAER') {
+        this.treeData.forEach(e => {
+          if (e.deviceId === redata.nearDevice.deviceId) {
+            e = redata.nearDevice
+            this.treeData = [...this.treeData]
+          }
+        })
+
+        this.equipmentData.forEach(e => {
+          if (e.level === 1) {
+            if (e.deviceId === redata.nearDevice.deviceId) {
+              e = redata.nearDevice
+              this.equipmentData = [...this.equipmentData]
+            }
+          }
+        })
+
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
+          this.dataNear.device = redata.nearDevice
+          if (String(this.dataNear.device.deviceTime).length === 13) {
+            this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
+          }
+        }
+      } else if (redata.commandString === 'WF' || redata.commandString === 'CSSFAR') {
+        // 远端机报警  更新树状图的报警灯泡
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            if (o.deviceId === redata.farDevice.deviceId) {
+              o = redata.farDevice
+              this.treeData = [...this.treeData]
+            }
+          })
+        })
+
+        this.equipmentData.forEach(e => {
+          // if (e.level === 2) {
+          if (e.deviceNearId === redata.farDevice.deviceNearId) {
+            if (e.deviceId === redata.farDevice.deviceId) {
+              e = redata.farDevice
+              this.equipmentData = [...this.equipmentData]
+            }
+          }
+        })
+
+        if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
+          this.dataFar.device = redata.farDevice
+          if (String(this.dataFar.device.deviceTime).length === 13) {
+            this.dataFar.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataFar.device.deviceTime))
+          }
+        }
+      } else if (redata.commandString === 'TRN') {
+        // 近端机修复故障  更新树状图的报警灯泡
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            if (o.deviceId === redata.nearDevice.deviceId) {
+              o = redata.nearDevice
+              this.treeData = [...this.treeData]
+            }
+          })
+        })
+
+        this.equipmentData.forEach(e => {
+          if (e.level === 1) {
+            if (e.deviceId === redata.nearDevice.deviceId) {
+              e = redata.nearDevice
+              this.equipmentData = [...this.equipmentData]
+            }
+          }
+        })
+
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
+          this.dataNear.device = redata.nearDevice
+          if (String(this.dataNear.device.deviceTime).length === 13) {
+            this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
+          }
+        }
+      } else if (redata.commandString === 'TRF') {
+        // 远端机修复故障  更新树状图的报警灯泡
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            if (o.deviceId === redata.farDevice.deviceId) {
+              o = redata.farDevice
+              this.treeData = [...this.treeData]
+            }
+          })
+        })
+
+        this.equipmentData.forEach(e => {
+          // if (e.level === 2) {
+          if (e.deviceNearId === redata.farDevice.deviceNearId) {
+            if (e.deviceId === redata.farDevice.deviceId) {
+              e = redata.farDevice
+              this.equipmentData = [...this.equipmentData]
+            }
+          }
+        })
+
+        if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
+          this.dataFar.device = redata.farDevice
+          if (String(this.dataFar.device.deviceTime).length === 13) {
+            this.dataFar.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataFar.device.deviceTime))
+          }
+        }
+      } else if (redata.commandString === 'SRN') { // 读取近端机
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
@@ -728,6 +863,7 @@ export default {
         // })
         this.WSloadingText = '读取成功'
         this.queryPlay()
+        this.getLoading = false
         // }
       } else if (redata.commandString === 'SRF') { // 读取远端机
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
@@ -740,6 +876,7 @@ export default {
         // })
         this.WSloadingText = '读取成功'
         this.queryPlay()
+        this.getLoading = false
         // }
       } else if (redata.commandString === 'SRNV') { // 近端机 版本
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
@@ -749,7 +886,7 @@ export default {
         //   message: '版本号更新成功',
         //   type: 'success'
         // })
-        this.versionloading = false
+        this.versionLoading = false
         this.WSloadingText = '版本号更新成功'
       } else if (redata.commandString === 'SRFV') { // 远端机 版本
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
@@ -759,7 +896,7 @@ export default {
         //   message: '版本号更新成功',
         //   type: 'success'
         // })
-        this.versionloading = false
+        this.versionLoading = false
         this.WSloadingText = '版本号更新成功'
       } else if (redata.commandString === 'SSN') { // 近端机 设置
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
@@ -772,6 +909,7 @@ export default {
         this.WSloadingText = '设置成功'
         this.settingPlay()
         // this.onQueryNear()// 近端机读取
+        this.settingLoading = false
       } else if (redata.commandString === 'SSF') { // 远端机 设置
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
@@ -783,6 +921,7 @@ export default {
         this.WSloadingText = '设置成功'
         this.settingPlay()
         // this.onQueryFar()// 远端机读取
+        this.settingLoading = false
       }
     },
     handleNodeClick (data) {
@@ -859,10 +998,10 @@ export default {
         }, 1000 * 3)
       }
     },
-    versionloading (val) {
+    versionLoading (val) {
       if (val) {
         this.overTime = setTimeout(() => {
-          this.versionloading = false
+          this.versionLoading = false
           this.WSloadingState = 2
           switch (this.WSloadingType) {
             case '读取版本':

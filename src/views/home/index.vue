@@ -143,7 +143,7 @@
           </div>
 
         </div>
-        <div class="home-right" style="width: 800px;" v-show="deviceId">
+        <div class="home-right" style="width: 850px;" v-show="deviceId">
           <div class="flex-container" v-show="homeType===1">
             <div class="flex-item m-r-md">
               在线状态：
@@ -173,7 +173,7 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online === 0" type="primary" @click="onQueryFar">
+              <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0" type="primary" @click="onQueryFar">
                 手动检测
               </el-button>
               <el-button type="danger" :disabled ="dataFar.device.shanshuo === 0" @click="onWorkoutFar">
@@ -182,7 +182,7 @@
             </div>
           </div>
 
-          <el-card class="home-card m-t-md" v-show="homeType===1" v-loading="loading">
+          <el-card class="home-card m-t-md m-b-md" v-show="homeType===1" v-loading="loading">
             <div slot="header" class="clearfix">
               <div class="page-title">
                 {{dataNear.device.deviceName}}
@@ -310,7 +310,7 @@
               </el-row>
             </div>
           </el-card>
-          <el-card class="home-card m-t-md" v-show="homeType===2" v-loading="loading">
+          <el-card class="home-card m-t-md m-b-md" v-show="homeType===2" v-loading="loading">
             <div slot="header" class="clearfix">
               <div class="page-title">
                 {{dataFar.device.deviceName}}
@@ -1105,12 +1105,18 @@ export default {
           this.WSloadingState = 2
           this.WSloadingText = '已核销!'
         } else {
-          this.treeData.forEach(e => {
-            if (e.deviceId === this.dataNear.device.deviceId) {
-              e = this.dataNear.device
-              this.treeData = [...this.treeData]
+          const treeData = JSON.parse(JSON.stringify(this.treeData))
+          treeData.forEach((e, i) => {
+            if (e.deviceId === res.data.deviceId) {
+              e.shanshuo = res.data.shanshuo
+              // console.log(res.data)
+              // this.treeData = JSON.parse(JSON.stringify(this.treeData))
+              // console.log(e.deviceId)
+              // console.log(this.treeData)
+              // console.log(treeData)
             }
           })
+          this.treeData = treeData
           this.WSloadingState = 1
           this.WSloadingText = '核销成功'
           this.dataNear.device.shanshuo = 0

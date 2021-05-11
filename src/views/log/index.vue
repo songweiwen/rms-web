@@ -9,7 +9,8 @@
                 v-model="dateSelect[0]"
                 :clearable="false"
                 type="datetime"
-                placeholder="选择日期时间">
+                placeholder="选择日期时间"
+                :picker-options="startDatePicker">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间" label-width="70px">
@@ -17,7 +18,8 @@
                 v-model="dateSelect[1]"
                 :clearable="false"
                 type="datetime"
-                placeholder="选择日期时间">
+                placeholder="选择日期时间"
+                :picker-options="endDatePicker">
               </el-date-picker>
             </el-form-item>
             <!-- <el-form-item>
@@ -149,6 +151,8 @@ export default {
           }
         }]
       },
+      startDatePicker: this.beginDate(),
+      endDatePicker: this.processDate(),
       dateSelect: [new Date(new Date(new Date().toLocaleDateString()).getTime()), new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1)],
       // deviceId: '',
       form: {
@@ -175,6 +179,30 @@ export default {
     this.getTable()
   },
   methods: {
+    beginDate () {
+      const that = this
+      return {
+        disabledDate (time) {
+          if (that.dateSelect[0]) { // 如果结束时间不为空，则小于结束时间
+            return new Date(that.dateSelect[1]).getTime() < time.getTime()
+          } else {
+            // return time.getTime() > Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          }
+        }
+      }
+    },
+    processDate () {
+      const that = this
+      return {
+        disabledDate (time) {
+          if (that.dateSelect[1]) { // 如果开始时间不为空，则结束时间大于开始时间
+            return new Date(that.dateSelect[0]).getTime() > time.getTime()
+          } else {
+            // return time.getTime() > Date.now()//开始时间不选时，结束时间最大值小于等于当天
+          }
+        }
+      }
+    },
     websocketonMessage (e) {
       // this.overTimeClear()
       const redata = JSON.parse(e.data)
