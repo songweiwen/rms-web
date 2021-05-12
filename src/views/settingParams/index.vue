@@ -45,7 +45,7 @@
                 在线
               </el-tag>
               <el-tag v-else-if="dataNear.device.online===0" type="info" effect="dark"> 离线</el-tag>
-              <el-tag v-else-if="dataNear.device.online===2" type="danger" effect="dark"> 告警</el-tag>
+              <el-tag v-else-if="dataNear.device.online===2" type="success" effect="dark"> 在线</el-tag>
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
@@ -923,6 +923,16 @@ export default {
         this.settingPlay()
         // this.onQueryFar()// 远端机读取
         this.settingLoading = false
+      } else if (redata.commandString === 'OLN') {
+        this.treeData.forEach(e => {
+          if (e.deviceId === redata.nearDevice.deviceId) {
+            e = redata.nearDevice
+            this.treeData = [...this.treeData]
+          }
+        })
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
+          this.dataNear.device = redata.nearDevice
+        }
       }
     },
     handleNodeClick (data) {

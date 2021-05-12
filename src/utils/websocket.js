@@ -166,7 +166,7 @@ function reconnect (sname) {
 
 // 心跳检测
 var heartCheck = {
-  timeout: 1000 * 60 * 10,
+  timeout: 1000 * 60 * 1,
   timeoutObj: null,
   serverTimeoutObj: null,
   start: function () {

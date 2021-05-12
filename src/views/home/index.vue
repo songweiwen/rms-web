@@ -151,7 +151,7 @@
                 在线
               </el-tag>
               <el-tag v-else-if="dataNear.device.online===0" type="info" effect="dark"> 离线</el-tag>
-              <el-tag v-else-if="dataNear.device.online===2" type="danger" effect="dark"> 告警</el-tag>
+              <el-tag v-else-if="dataNear.device.online===2" type="success" effect="dark"> 在线</el-tag>
               <!-- <el-tag v-else type="info" effect="dark"> 未知</el-tag> -->
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
