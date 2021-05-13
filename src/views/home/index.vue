@@ -976,6 +976,7 @@ export default {
       this.loading = true
       this.WSloadingState = 0
       this.WSloadingText = ''
+      this.getTree()
       if (this.homeType === 1) {
         this.deviceIdNear = null
         this.deviceNearId = null

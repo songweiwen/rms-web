@@ -933,14 +933,14 @@ export default {
         treeData.forEach((e, i) => {
           const data = redata.nearDevice
           if (e.deviceId === redata.nearDevice.deviceId) {
-            // e.deviceName = data.deviceName
-            // e.deviceId = data.deviceId
-            // e.id = data.id
-            // e.deviceAddress = data.deviceAddress
-            // e.treeId = data.deviceId
-            // e.treeIndex = i
+            e.deviceName = data.deviceName
+            e.deviceId = data.deviceId
+            e.id = data.id
+            e.deviceAddress = data.deviceAddress
+            e.treeId = data.deviceId
+            e.treeIndex = i
             e.online = data.online
-            // e.shanshuo = data.shanshuo
+            e.shanshuo = data.shanshuo
           }
         })
         this.treeData = treeData
@@ -967,6 +967,7 @@ export default {
       this.loading = true
       if (this.homeType === 1) {
         this.deviceIdNear = null
+        this.getTree()
         getDetailNear({
           id: this.id
         }).then(res => {
@@ -977,6 +978,7 @@ export default {
         })
       } else if (this.homeType === 2) {
         this.deviceIdNear = data.deviceNearId
+        this.getTree()
         getDetailFar({
           id: this.id
         }).then(res => {
