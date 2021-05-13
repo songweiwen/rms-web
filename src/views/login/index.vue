@@ -122,7 +122,7 @@ export default {
                 this.$store.commit('SET_userInfo', data)
                 this.$store.commit('SET_audioSetting', {
                   second: data.second,
-                  enable: data.enable
+                  enable: data.voiceEnable
                 })
                 this.$router.push({ path: 'home' })
               }

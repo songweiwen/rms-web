@@ -186,7 +186,7 @@ export default {
           if (that.dateSelect[0]) { // 如果结束时间不为空，则小于结束时间
             return new Date(that.dateSelect[1]).getTime() < time.getTime()
           } else {
-            // return time.getTime() > Date.now()//开始时间不选时，结束时间最大值小于等于当天
+            return time.getTime() > Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       }
@@ -198,7 +198,7 @@ export default {
           if (that.dateSelect[1]) { // 如果开始时间不为空，则结束时间大于开始时间
             return new Date(that.dateSelect[0]).getTime() > time.getTime()
           } else {
-            // return time.getTime() > Date.now()//开始时间不选时，结束时间最大值小于等于当天
+            return time.getTime() > Date.now()// 开始时间不选时，结束时间最大值小于等于当天
           }
         }
       }

@@ -15,6 +15,12 @@ const store = new Vuex.Store({
   },
   getters,
   plugins: [createPersistedState({
+    // reducer (val) {
+    //   return {
+    //     // 只储存state中的count
+    //     userInfo: val.userInfo
+    //   }
+    // }
     // userInfo(val){
     //   return {
     //     user

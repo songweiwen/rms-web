@@ -923,12 +923,28 @@ export default {
         // this.onQueryFar()// 远端机读取
         this.settingLoading = false
       } else if (redata.commandString === 'OLN') {
-        this.treeData.forEach(e => {
+        // this.treeData.forEach(e => {
+        //   if (e.deviceId === redata.nearDevice.deviceId) {
+        //     e = redata.nearDevice
+        //     this.treeData = [...this.treeData]
+        //   }
+        // })
+        const treeData = JSON.parse(JSON.stringify(this.treeData))
+        treeData.forEach((e, i) => {
+          const data = redata.nearDevice
           if (e.deviceId === redata.nearDevice.deviceId) {
-            e = redata.nearDevice
-            this.treeData = [...this.treeData]
+            // e.deviceName = data.deviceName
+            // e.deviceId = data.deviceId
+            // e.id = data.id
+            // e.deviceAddress = data.deviceAddress
+            // e.treeId = data.deviceId
+            // e.treeIndex = i
+            e.online = data.online
+            // e.shanshuo = data.shanshuo
           }
         })
+        this.treeData = treeData
+        this.treeData = treeData
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
