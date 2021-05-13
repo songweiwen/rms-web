@@ -744,7 +744,6 @@ export default {
       this.WSloadingState = 1
       this.WSloading = false
       this.clearOverTime()
-
       // this.overTimeClear()
       const redata = JSON.parse(e.data)
       this.websocketonMessageAll(redata)

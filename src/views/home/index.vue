@@ -751,6 +751,7 @@ export default {
     },
     onQueryNear () { // 近端机查询
       // this.overTimeRun()
+      this.checkNear()
       this.WSloading = true
       this.WSloadingText = '检测中'
       this.$webSocket.Send({
@@ -762,6 +763,7 @@ export default {
     },
     onQueryFar () { // 远端机查询
       // this.overTimeRun()
+      this.checkFar()
       this.WSloading = true
       this.WSloadingText = '检测中'
       this.$webSocket.Send({
@@ -886,6 +888,7 @@ export default {
           }
         }
       } else if (redata.commandString === 'SCN') {
+        this.checkNearSuccess()
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
           if (String(this.dataNear.device.deviceTime).length === 13) {
@@ -905,6 +908,7 @@ export default {
         this.WSloadingState = 1
         this.WSloadingText = '检测成功'
       } else if (redata.commandString === 'SCF') {
+        this.checkFarSuccess()
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
           if (String(this.dataFar.device.deviceTime).length === 13) {

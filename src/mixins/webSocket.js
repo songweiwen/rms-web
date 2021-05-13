@@ -101,10 +101,45 @@ export const ws = {
         this.audioDom.setAttribute('loop', 'loop')
       }
     },
+    workOutNear () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('核销近端机成功')
+      }
+    },
+    workOutFar () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('核销远端机成功')
+      }
+    },
+    checkNear () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('检测近端机')
+      }
+    },
+    checkFar () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('检测远端机')
+      }
+    },
+    checkNearSuccess () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('检测近端机成功')
+      }
+    },
+    checkFarSuccess () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('检测远端机成功')
+      }
+    },
     audioStop () {
       setTimeout(() => {
         this.audioDom.pause()
-        // alert(1)
       }, this.audioForTime * 1000)
     },
     closeNotify () {
