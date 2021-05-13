@@ -495,6 +495,7 @@ export default {
     return {
       overTime: null,
       initTree: false,
+      initTreeData: true,
       active: [],
       WSloadingType: '',
       WSloadingState: 0,
@@ -557,6 +558,7 @@ export default {
   methods: {
     getTree () {
       getTree().then(res => {
+        this.treeData = []
         const treeData = res.data
         treeData.forEach((e, i) => {
           this.treeData.push({
@@ -582,12 +584,15 @@ export default {
           })
         })
 
-        this.handleNodeClick(this.treeData[0])
         // this.active = [String(this.treeData[0].id)]
         // .el-tree-node
         this.$nextTick(() => {
           // el-tree-node is-expanded is-current is-focusable
-          this.$refs.treeDom.$el.children[0].className = 'el-tree-node is-expanded is-current is-focusable'
+          if (this.initTreeData) {
+            this.$refs.treeDom.$el.children[0].className = 'el-tree-node is-expanded is-current is-focusable'
+            this.handleNodeClick(this.treeData[0])
+            this.initTreeData = false
+          }
           this.initTree = true
         })
       })
@@ -944,7 +949,6 @@ export default {
           }
         })
         this.treeData = treeData
-        this.treeData = treeData
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
         }
@@ -965,9 +969,9 @@ export default {
       this.deviceId = data.deviceId
       this.id = data.id
       this.loading = true
+      this.getTree()
       if (this.homeType === 1) {
         this.deviceIdNear = null
-        this.getTree()
         getDetailNear({
           id: this.id
         }).then(res => {
@@ -978,7 +982,6 @@ export default {
         })
       } else if (this.homeType === 2) {
         this.deviceIdNear = data.deviceNearId
-        this.getTree()
         getDetailFar({
           id: this.id
         }).then(res => {

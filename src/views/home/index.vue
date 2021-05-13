@@ -689,6 +689,7 @@ export default {
     },
     getTree () {
       getTree().then(res => {
+        this.treeData = []
         console.log(res)
         const treeData = res.data
         treeData.forEach((e, i) => {
@@ -976,6 +977,7 @@ export default {
       this.loading = true
       this.WSloadingState = 0
       this.WSloadingText = ''
+
       this.getTree()
       if (this.homeType === 1) {
         this.deviceIdNear = null
