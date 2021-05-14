@@ -946,6 +946,9 @@ export default {
         this.treeData = treeData
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
+          if (String(this.dataNear.device.deviceTime).length === 13) {
+            this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
+          }
         }
       }
     },

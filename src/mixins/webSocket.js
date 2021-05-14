@@ -74,31 +74,26 @@ export const ws = {
     },
     nearErroePlay () {
       if (this.audioEnable) {
-        this.audioDom.setAttribute('loop', 'loop')
+        this.audioDom.removeAttribute('loop')
         this.audioSrc('近端机故障报警')
-        this.audioStop()
       }
     },
     nearSuccessPlay () {
       if (this.audioEnable) {
-        this.audioDom.setAttribute('loop', 'loop')
+        this.audioDom.removeAttribute('loop')
         this.audioSrc('近端机故障恢复')
-        this.audioStop()
       }
     },
     farErroePlay () {
       if (this.audioEnable) {
-        this.audioDom.setAttribute('loop', 'loop')
+        this.audioDom.removeAttribute('loop')
         this.audioSrc('远端机故障报警')
-        this.audioStop()
       }
     },
     farSuccessPlay () {
       if (this.audioEnable) {
-        this.audioDom.setAttribute('loop', 'loop')
+        this.audioDom.removeAttribute('loop')
         this.audioSrc('远端机故障恢复')
-        this.audioStop()
-        this.audioDom.setAttribute('loop', 'loop')
       }
     },
     workOutNear () {
