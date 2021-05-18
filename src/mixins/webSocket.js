@@ -171,6 +171,9 @@ export const ws = {
           duration: 3000
         })
         this.nearErroePlay()
+        if (this.getTree() && this.isHome) {
+          this.getTree()
+        }
         // )
       } else if (redata.commandString === 'WF') {
       // 远端机报警  全局提示
@@ -184,6 +187,9 @@ export const ws = {
           duration: 3000
         })
         this.farErroePlay()
+        if (this.getTree() && this.isHome) {
+          this.getTree()
+        }
         // )
       } else if (redata.commandString === 'TRN') {
       // 近端机修复故障  全局提示
@@ -198,6 +204,9 @@ export const ws = {
           type: 'success'
         })
         this.nearSuccessPlay()
+        if (this.getTree() && this.isHome) {
+          this.getTree()
+        }
         // )
       } else if (redata.commandString === 'TRF') {
       // 远端机修复故障  全局提示
@@ -212,6 +221,9 @@ export const ws = {
           type: 'success'
         })
         this.farSuccessPlay()
+        if (this.getTree() && this.isHome) {
+          this.getTree()
+        }
         // )
       }
       console.log(redata.commandString, 88888)

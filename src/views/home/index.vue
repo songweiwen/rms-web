@@ -144,6 +144,12 @@
 
         </div>
         <div class="home-right" style="width: 850px;" v-show="deviceId">
+          <template>
+            <div>
+              <el-button  type="primary" @click="deviceId=''">  <i class="el-icon-back"></i> 返回布局图 </el-button>
+              <el-divider content-position="right">设备状态</el-divider>
+            </div>
+          </template>
           <div class="flex-container" v-show="homeType===1">
             <div class="flex-item m-r-md">
               在线状态：
@@ -575,6 +581,7 @@ export default {
   mixins: [ws],
   data () {
     return {
+      isHome: true,
       homeImg: '',
       userInfo: this.$store.getters.userInfo.userInfo.userInfo,
       dragBool: 0,
@@ -690,6 +697,7 @@ export default {
     getTree () {
       getTree().then(res => {
         this.treeData = []
+        this.equipmentData = []
         console.log(res)
         const treeData = res.data
         treeData.forEach((e, i) => {
@@ -705,7 +713,6 @@ export default {
             online: e.near.online,
             shanshuo: e.near.shanshuo
           })
-
           this.equipmentData.push({
             deviceName: e.near.deviceName,
             deviceId: e.near.deviceId,
