@@ -56,6 +56,27 @@
 
         </div>
         <div class="home-right" style="width: 100%;" v-show="!deviceId">
+           <div class="flex-container">
+            <div class="flex-item p-b-md">
+              <marquee-text :duration="5" :repeat="1" v-show="reservedShow"  :reverse="true" class="text-right">
+                <template v-if="reserved==='巡检开始'">
+                  <el-tag
+                    class="m-r-md"
+                    type="success"
+                    effect="dark">
+                    {{ reserved }}
+                  </el-tag>
+                </template>
+                <template v-else-if="reserved==='巡检结束'">
+                  <el-tag
+                    class="m-r-md"
+                    effect="dark">
+                    {{ reserved }}
+                  </el-tag>
+                </template>
+              </marquee-text>
+            </div>
+          </div>
           <!-- <div class="viewimg-left" @mousewheel.prevent="rollImg">
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
           </div> -->
@@ -144,14 +165,32 @@
 
         </div>
         <div class="home-right" style="width: 850px;" v-show="deviceId">
-          <template>
+          <div class="flex-container">
             <div>
-              <el-button  type="primary" @click="deviceId=''">  <i class="el-icon-back"></i> 返回布局图 </el-button>
-              <el-divider content-position="right">设备状态</el-divider>
+              <el-button v-show="deviceId"  type="primary" @click="deviceId=''">  <i class="el-icon-back"></i> 返回布局图 </el-button>
             </div>
-          </template>
+            <div class="flex-item p-l-lg">
+              <marquee-text :duration="5" :repeat="1" v-show="reservedShow" :reverse="true" class="text-right">
+                <template v-if="reserved==='巡检开始'">
+                  <el-tag
+                    class="m-r-md"
+                    type="success"
+                    effect="dark">
+                    {{ reserved }}
+                  </el-tag>
+                </template>
+                <template v-else-if="reserved==='巡检结束'">
+                  <el-tag
+                    class="m-r-md"
+                    effect="dark">
+                    {{ reserved }}
+                  </el-tag>
+                </template>
+              </marquee-text>
+            </div>
+          </div>
           <div class="flex-container" v-show="homeType===1">
-            <div class="flex-item m-r-md">
+            <div class="flex-item m-r-md p-t-md">
               在线状态：
               <el-tag v-if="dataNear.device.online===1" type="success" effect="dark">
                 在线
@@ -581,6 +620,8 @@ export default {
   mixins: [ws],
   data () {
     return {
+      reserved: '',
+      reservedShow: true,
       isHome: true,
       homeImg: '',
       userInfo: this.$store.getters.userInfo.userInfo.userInfo,
@@ -957,6 +998,8 @@ export default {
             this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
           }
         }
+      } else if (redata.commandString === 'xunjian') {
+        this.reserved = redata.reserved
       }
     },
     handleNodeClick (data) {
