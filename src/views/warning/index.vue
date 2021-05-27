@@ -117,6 +117,14 @@
               </template>
             </el-table-column>
             <el-table-column
+              prop="warningType"
+              label="报警原因"
+              align="center">
+              <template slot-scope="scope">
+                 {{scope.row.warningContent}}
+              </template>
+            </el-table-column>
+            <el-table-column
               prop="time"
               label="报警时间"
               align="center">

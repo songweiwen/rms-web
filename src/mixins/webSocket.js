@@ -132,6 +132,18 @@ export const ws = {
         this.audioSrc('检测远端机成功')
       }
     },
+    xunjianStart () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('巡检开始')
+      }
+    },
+    xunjianEnd () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('巡检结束')
+      }
+    },
     audioStop () {
       setTimeout(() => {
         this.audioDom.pause()

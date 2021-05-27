@@ -469,7 +469,7 @@ export default {
       this.phoneForm = item
     },
     handleDelete (id) {
-      this.$confirm('是否要删除此用户名？', '提示', {
+      this.$confirm('是否要删除此用户？', '提示', {
         type: 'error'
       }).then(() => {
         // this.$message({

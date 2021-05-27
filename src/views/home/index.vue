@@ -57,8 +57,8 @@
         </div>
         <div class="home-right" style="width: 100%;" v-show="!deviceId">
            <div class="flex-container">
-            <div class="flex-item p-b-md">
-              <marquee-text :duration="5" :repeat="1" v-show="reservedShow"  :reverse="true" class="text-right">
+            <!-- <div class="flex-item p-b-md">
+              <marquee-text :duration="15" :repeat="1" v-show="reservedShow"  class="text-right">
                 <template v-if="reserved==='巡检开始'">
                   <el-tag
                     class="m-r-md"
@@ -75,7 +75,7 @@
                   </el-tag>
                 </template>
               </marquee-text>
-            </div>
+            </div> -->
           </div>
           <!-- <div class="viewimg-left" @mousewheel.prevent="rollImg">
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
@@ -169,8 +169,8 @@
             <div>
               <el-button v-show="deviceId"  type="primary" @click="deviceId=''">  <i class="el-icon-back"></i> 返回布局图 </el-button>
             </div>
-            <div class="flex-item p-l-lg">
-              <marquee-text :duration="5" :repeat="1" v-show="reservedShow" :reverse="true" class="text-right">
+            <!-- <div class="flex-item p-l-lg">
+              <marquee-text :duration="5" :repeat="1" v-show="reservedShow" class="text-right">
                 <template v-if="reserved==='巡检开始'">
                   <el-tag
                     class="m-r-md"
@@ -187,7 +187,7 @@
                   </el-tag>
                 </template>
               </marquee-text>
-            </div>
+            </div> -->
           </div>
           <div class="flex-container" v-show="homeType===1">
             <div class="flex-item m-r-md p-t-md">
@@ -201,7 +201,7 @@
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryNear">
+              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryNear">
                 手动检测
               </el-button>
               <el-button type="danger" :disabled ="dataNear.device.shanshuo === 0" @click="onWorkoutNear">
@@ -210,6 +210,7 @@
             </div>
           </div>
           <div class="flex-container" v-show="homeType===2">
+
             <!-- <div class="flex-item m-r-md">
               在线状态：
               <el-tag v-if="dataFar.device.online===1" type="success" effect="dark">
@@ -218,7 +219,7 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right">
-              <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0" type="primary" @click="onQueryFar">
+              <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar">
                 手动检测
               </el-button>
               <el-button type="danger" :disabled ="dataFar.device.shanshuo === 0" @click="onWorkoutFar">
@@ -284,7 +285,7 @@
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
                     </template>
                     <template v-else>
-                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
                     </template>
                   </div>
                 </el-col>
@@ -305,7 +306,7 @@
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
                     </template>
                     <template v-else>
-                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
                     </template>
                   </div>
                 </el-col>
@@ -639,6 +640,7 @@ export default {
       overTime: null,
       WSloadingState: 0,
       WSloading: false,
+      xunjianDisabled: false,
       WSloadingText: '',
       treeData: [],
       defaultProps: {
@@ -1000,6 +1002,19 @@ export default {
         }
       } else if (redata.commandString === 'xunjian') {
         this.reserved = redata.reserved
+        this.$notify.success({
+          /* eslint-disable */
+          title: `巡检`,
+          message: `${redata.reserved}`,
+          duration: 3000
+        })
+        if (redata.reserved === '巡检开始') {
+          this.xunjianStart()
+          this.xunjianDisabled = true
+        } else {
+          this.xunjianEnd()
+          this.xunjianDisabled = false
+        }
       }
     },
     handleNodeClick (data) {

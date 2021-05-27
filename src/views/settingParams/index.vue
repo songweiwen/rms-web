@@ -49,10 +49,10 @@
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
             <div class="flex-item text-right">
-              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryNear(false)">
+              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryNear(false)">
                 读取
               </el-button>
-              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingNear(true)">
+              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="danger" @click="settingNear(true)">
                 设置
               </el-button>
             </div>
@@ -66,10 +66,10 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right">
-              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0" type="primary" @click="onQueryFar(false)">
+              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0" type="danger" @click="settingFar(true)">
+              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
                 设置
               </el-button>
             </div>
@@ -183,7 +183,7 @@
                   {{dataNear.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" :disabled ="dataNear.device.online ===0"  size="small" @click="onVersionNear" :loading="versionLoading">
+                  <el-button type="primary" :disabled ="dataNear.device.online ===0?true:xunjianDisabled"  size="small" @click="onVersionNear" :loading="versionLoading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -467,7 +467,7 @@
                   {{dataFar.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" :disabled ="dataFar.device.online ===0" size="small" @click="onVersionFar" :loading="versionLoading">
+                  <el-button type="primary" :disabled ="dataFar.device.online ===0?true:xunjianDisabled" size="small" @click="onVersionFar" :loading="versionLoading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -500,6 +500,7 @@ export default {
       WSloadingType: '',
       WSloadingState: 0,
       WSloading: false,
+      xunjianDisabled: false,
       WSloadingText: '',
       getLoading: false,
       versionLoading: false,
@@ -955,6 +956,21 @@ export default {
             this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
           }
         }
+      } else if (redata.commandString === 'xunjian') {
+        this.reserved = redata.reserved
+        this.$notify.success({
+          /* eslint-disable */
+          title: `巡检`,
+          message: `${redata.reserved}`,
+          duration: 3000
+        })
+        if (redata.reserved === '巡检开始') {
+          this.xunjianStart()
+          this.xunjianDisabled = true
+        } else {
+          this.xunjianEnd()
+          this.xunjianDisabled = false
+        }
       }
     },
     handleNodeClick (data) {
@@ -1006,6 +1022,7 @@ export default {
         this.overTime = setTimeout(() => {
           this.WSloading = false
           this.WSloadingState = 2
+          this.settingLoading = false
           switch (this.WSloadingType) {
             case '读取':
               this.WSloadingText = '读取超时'
