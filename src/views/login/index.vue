@@ -33,16 +33,6 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item prop="ws">
-          <el-input
-            @input="getWs"
-            v-model="form.ws"
-            placeholder="通讯地址"
-            allow-clear
-            prefix-icon="el-icon-user"
-          >
-          </el-input>
-        </el-form-item>
         <!-- <el-form-item  prop="vercode">
           <el-row :gutter="8">
             <el-col :span="15">
@@ -90,6 +80,21 @@
 import { setLogin } from '@/api/login'
 export default {
   data () {
+    var validateIp = (rule, value, callback) => {
+      var util = {
+        isValidIp: function (e) {
+          return /^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$/.test(e)
+        }
+      }
+
+      if (value === '') {
+        callback(new Error('请输入IP地址'))
+      } else if (!util.isValidIp(value)) {
+        callback(new Error('请输入正确的IP地址!'))
+      } else {
+        callback()
+      }
+    }
     return {
       rules: {
         username: [
@@ -99,10 +104,8 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' }
         ],
         api: [
-          { required: true, message: '请输入接口地址', trigger: 'blur' }
-        ],
-        ws: [
-          { required: true, message: '请输入通讯地址', trigger: 'blur' }
+          { required: true, validator: validateIp, trigger: 'blur' }
+          // { required: true, message: '请输入接口地址', trigger: 'blur' }
         ]
         // vercode: [
         //   { required: true, message: '请输入验证码', trigger: 'blur' }
@@ -112,8 +115,7 @@ export default {
       form: {
         username: '',
         password: '',
-        api: '',
-        ws: ''
+        api: ''
         // vercode: '',
         // uuid: ''
       }
@@ -138,14 +140,13 @@ export default {
       // this.imgCaptcha = 'http://songweiwenceshi.oicp.io:20010/admin/captcha?uuid=' + this.uuid
     },
     getApi (v) {
-      this.$Cookies.set('api', v)
+      this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
+      this.$Cookies.set('ws', 'ws//:' + this.form.api + ':5330/ws')
     },
-    getWs (v) {
-      this.$Cookies.set('ws', v)
-    },
+
     onLogin () {
-      this.$Cookies.set('api', this.form.api)
-      this.$Cookies.set('ws', this.ws)
+      this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
+      this.$Cookies.set('ws', 'ws//:' + this.form.api + ':5330/ws')
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           // this.form.uuid = this.uuid
@@ -164,8 +165,8 @@ export default {
                   enable: data.voiceEnable
                 })
 
-                this.$Cookies.set('api', this.api)
-                this.$Cookies.set('ws', this.ws)
+                this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
+                this.$Cookies.set('ws', 'ws//:' + this.form.api + ':5330/ws')
 
                 this.$router.push({ path: 'home' })
               }
