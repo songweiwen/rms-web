@@ -19,8 +19,10 @@ import Cookies from 'js-cookie'
  */
 
 // 创建自定义axios
+console.log(Cookies.get('api'))
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // api 的 base_url
+  // baseURL: process.env.VUE_APP_BASE_API, // api 的 base_url
+  baseURL: Cookies.get('api'),
   timeout: 10000 * 6, // request timeout 请求超时时间
   withCredentials: false // 是否允许带cookie这些
   // headers: {
@@ -67,6 +69,7 @@ service.interceptors.request.use(
     // config.headers['Authorization'] = 'Bearer a6afd3ae-c555-4508-bf7c-bde1cbf6033f' // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
     // }
     // console.log(Cookies.get('access_token'))
+    console.log(Cookies.get('api'))
     config.headers.Authorization = Cookies.get('access_token')
     // console.log('Authorization', config.headers.Authorization)
     // config.headers.Authorization = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wveHpzLmFwcC4yNDE4LmNuXC9hdXRoXC9sb2dpbl9ieV9zbXMiLCJpYXQiOjE2MDA4MjU2MTMsImV4cCI6MTYwMDkxMjAxMywibmJmIjoxNjAwODI1NjEzLCJqdGkiOiI2NXRCSDZNWFNFRmhuaHFRIiwic3ViIjo3LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.8bSt-1zwQPNNo646_7u7o_0MSmtxQTwtqQzIyw9g8Ss'
@@ -110,6 +113,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     // console.log('清除成功', response.config.timer)
+    console.log(response.config)
     if (toastLodingList.indexOf(response.config.url) > -1) {
       // Toast.clear()
       clearTimeout(response.config.timer)

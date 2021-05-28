@@ -166,6 +166,8 @@ export default {
         localStorage.removeItem('vuex')
         this.$Cookies.remove('access_token')
         this.$router.push({ path: '/login' })
+        this.$Cookies.remove('api', this.api)
+        this.$Cookies.remove('ws', this.ws)
       }).catch(() => {
         // 点击确定的操作(调用接口)
       })

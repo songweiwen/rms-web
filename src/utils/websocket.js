@@ -2,8 +2,9 @@
 import store from '@/store'
 import { Message, MessageBox } from 'element-ui'
 import Vue from 'vue'
-var url = process.env.VUE_APP_WS_API
-var ws
+// var url = process.env.VUE_APP_WS_API
+import Cookies from 'js-cookie'
+var url = Cookies.get('ws')
 var tt
 var lockReconnect = false// 避免重复连接
 var clientId = localStorage.getItem('userInfo')// 缓存中取出客户端id

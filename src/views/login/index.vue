@@ -23,6 +23,26 @@
             autocomplete="off"
             prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
+        <el-form-item prop="api">
+          <el-input
+            @input="getApi"
+            v-model="form.api"
+            placeholder="接口地址"
+            allow-clear
+            prefix-icon="el-icon-user"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="ws">
+          <el-input
+            @input="getWs"
+            v-model="form.ws"
+            placeholder="通讯地址"
+            allow-clear
+            prefix-icon="el-icon-user"
+          >
+          </el-input>
+        </el-form-item>
         <!-- <el-form-item  prop="vercode">
           <el-row :gutter="8">
             <el-col :span="15">
@@ -77,15 +97,23 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        api: [
+          { required: true, message: '请输入接口地址', trigger: 'blur' }
+        ],
+        ws: [
+          { required: true, message: '请输入通讯地址', trigger: 'blur' }
         ]
         // vercode: [
         //   { required: true, message: '请输入验证码', trigger: 'blur' }
         // ]
       },
-      // uuid: '',
+
       form: {
         username: '',
-        password: ''
+        password: '',
+        api: '',
+        ws: ''
         // vercode: '',
         // uuid: ''
       }
@@ -109,11 +137,22 @@ export default {
       // this.uuid = this.$uuid()
       // this.imgCaptcha = 'http://songweiwenceshi.oicp.io:20010/admin/captcha?uuid=' + this.uuid
     },
+    getApi (v) {
+      this.$Cookies.set('api', v)
+    },
+    getWs (v) {
+      this.$Cookies.set('ws', v)
+    },
     onLogin () {
+      this.$Cookies.set('api', this.form.api)
+      this.$Cookies.set('ws', this.ws)
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           // this.form.uuid = this.uuid
-          setLogin(this.form)
+          setLogin({
+            username: this.form.username,
+            password: this.form.password
+          })
             .then(res => {
               const data = res.data
               console.log(data)
@@ -124,6 +163,10 @@ export default {
                   second: data.second,
                   enable: data.voiceEnable
                 })
+
+                this.$Cookies.set('api', this.api)
+                this.$Cookies.set('ws', this.ws)
+
                 this.$router.push({ path: 'home' })
               }
             }).catch(error => {
