@@ -2,7 +2,7 @@
 import store from '@/store'
 import { Message, MessageBox } from 'element-ui'
 import Vue from 'vue'
-var url = process.env.VUE_APP_WS_API
+var url = window.g.baseWS
 var ws
 var tt
 var lockReconnect = false// 避免重复连接

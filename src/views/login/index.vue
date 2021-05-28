@@ -4,6 +4,8 @@
       <div class="login-title">
         <img class="img-responsive" src="@/assets/imgs/logo.png" alt="">
         <h2>光纤直放站网管中心</h2>
+        <h3>{{window.g.baseURL}}</h3>
+        <h4>{{window.g.baseWS}}</h4>
         <!-- <p>后台管理系统</p> -->
       </div>
       <el-form :model="form" :rules="rules" ref="ruleForm">

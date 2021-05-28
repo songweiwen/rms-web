@@ -92,7 +92,7 @@
             <!-- 修改图片路径 -->
             <!-- {{process.env.HOME_IMG}} -->
             <!-- <img id="img" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset=""> -->
-            <img id="img" :src="homeImg" />
+            <img id="img" :src="homeImg + '?id=' + new Date()" />
             <!-- <img id="img" :src="require('@/assets/imgs/demo_picture.png')" /> -->
             <vue-draggable-resizable
               class="equipmentBox-darg"
@@ -939,7 +939,9 @@ export default {
           }
         }
       } else if (redata.commandString === 'SCN') {
-        this.checkNearSuccess()
+        if (this.xunjianDisabled === false) {
+          this.checkNearSuccess()
+        }
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
           if (String(this.dataNear.device.deviceTime).length === 13) {
@@ -959,7 +961,9 @@ export default {
         this.WSloadingState = 1
         this.WSloadingText = '检测成功'
       } else if (redata.commandString === 'SCF') {
-        this.checkFarSuccess()
+        if (this.xunjianDisabled === false) {
+          this.checkFarSuccess()
+        }
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
           if (String(this.dataFar.device.deviceTime).length === 13) {

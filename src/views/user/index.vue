@@ -106,7 +106,7 @@
         </el-tab-pane>
         <el-tab-pane label="设置">
 
-              <div class="">
+              <!-- <div class="">
                 <el-form  :inline="true" :model="IPForm" :rules="IPRules" ref="IPRuleForm">
                   <el-form-item label="短信猫IP地址" prop="ip" label-width="140px">
                     <el-input v-model="IPForm.ip" placeholder="请输入IP地址"></el-input>
@@ -115,15 +115,15 @@
                     <el-button type="primary" @click="ipSubmitForm('IPRuleForm')">设置</el-button>
                   </el-form-item>
                 </el-form>
-              </div>
+              </div> -->
               <div class="hr"></div>
               <div class="">
                 <el-form :model="audioForm" :rules="audioRules" ref="audioRuleForm">
-                  <el-form-item label="语音循环播报时间" prop="second" label-width="140px">
+                  <!-- <el-form-item label="语音循环播报时间" prop="second" label-width="140px">
                     <el-input style="width: 200px;" type="number" v-model.number="audioForm.second" placeholder="请输入秒数" min="1">
                       <template slot="append">秒</template>
                     </el-input>
-                  </el-form-item>
+                  </el-form-item> -->
                   <el-form-item label="启用语音播报" label-width="140px">
                     <el-switch
                       v-model="audioForm.enable"
