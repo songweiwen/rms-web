@@ -124,6 +124,11 @@ export default {
     }
   },
   created () {
+    // 方案三
+    if (this.$Cookies.get('api')) {
+      location.reload()
+    }
+    // 方案三
     // this.getCaptcha()
     localStorage.removeItem('vuex')
     this.$Cookies.remove('access_token')
