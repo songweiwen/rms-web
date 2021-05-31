@@ -125,9 +125,9 @@ export default {
   },
   created () {
     // 方案三
-    if (this.$Cookies.get('api')) {
-      location.reload()
-    }
+    // if (this.$Cookies.get('api')) {
+    //   location.reload()
+    // }
     // 方案三
     // this.getCaptcha()
     localStorage.removeItem('vuex')
@@ -146,12 +146,12 @@ export default {
     },
     getApi (v) {
       this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
-      this.$Cookies.set('ws', 'ws//:' + this.form.api + ':5330/ws')
+      this.$Cookies.set('ws', 'ws://' + this.form.api + ':5330/ws')
     },
 
     onLogin () {
       this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
-      this.$Cookies.set('ws', 'ws//:' + this.form.api + ':5330/ws')
+      this.$Cookies.set('ws', 'ws://' + this.form.api + ':5330/ws')
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           // this.form.uuid = this.uuid
@@ -171,7 +171,7 @@ export default {
                 })
 
                 this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
-                this.$Cookies.set('ws', 'ws//:' + this.form.api + ':5330/ws')
+                this.$Cookies.set('ws', 'ws://' + this.form.api + ':5330/ws')
 
                 this.$router.push({ path: 'home' })
               }

@@ -234,7 +234,7 @@ export default {
     exportExcel () {
       this.$axios
         .get(
-          process.env.VUE_APP_BASE_API + '/rms/log/download',
+          this.$Cookies.get('api') + '/rms/log/download',
           {
             params: {
               dateStart: this.form.dateStart,

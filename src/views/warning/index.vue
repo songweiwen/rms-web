@@ -418,7 +418,7 @@ export default {
       // })
       this.$axios
         .get(
-          process.env.VUE_APP_BASE_API + '/rms/warning/download',
+          this.$Cookies.get('api') + '/rms/warning/download',
           {
             params: {
               // page: this.currentPage,
@@ -441,7 +441,6 @@ export default {
           function getCaption (obj) {
             var index = obj.lastIndexOf('=')
             obj = obj.substring(index + 1, obj.length)
-            // console.log(obj);
             return obj
           }
           const name = getCaption(res.headers['content-disposition'])

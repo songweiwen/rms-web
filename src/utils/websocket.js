@@ -6,6 +6,7 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 var url = Cookies.get('ws')
 var tt
+var ws
 var lockReconnect = false// 避免重复连接
 var clientId = localStorage.getItem('userInfo')// 缓存中取出客户端id
 // var userInfo = localStorage.getItem('vuex')?JSON.parse(localStorage.getItem('vuex')).userInfo.userInfo.userInfo : null
@@ -167,7 +168,7 @@ function reconnect (sname) {
 
 // 心跳检测
 var heartCheck = {
-  timeout: 1000 * 60 * 1,
+  timeout: 1000 * 20 * 1,
   timeoutObj: null,
   serverTimeoutObj: null,
   start: function () {
