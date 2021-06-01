@@ -70,6 +70,7 @@ service.interceptors.request.use(
     // }
     // console.log(Cookies.get('access_token'))
     console.log(Cookies.get('api'))
+    config.baseURL = Cookies.get('api')
     config.headers.Authorization = Cookies.get('access_token')
     // console.log('Authorization', config.headers.Authorization)
     // config.headers.Authorization = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wveHpzLmFwcC4yNDE4LmNuXC9hdXRoXC9sb2dpbl9ieV9zbXMiLCJpYXQiOjE2MDA4MjU2MTMsImV4cCI6MTYwMDkxMjAxMywibmJmIjoxNjAwODI1NjEzLCJqdGkiOiI2NXRCSDZNWFNFRmhuaHFRIiwic3ViIjo3LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.8bSt-1zwQPNNo646_7u7o_0MSmtxQTwtqQzIyw9g8Ss'

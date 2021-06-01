@@ -66,10 +66,10 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right">
-              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
+              <el-button :loading="getLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
+              <el-button :loading="settingLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
                 设置
               </el-button>
             </div>
@@ -467,7 +467,7 @@
                   {{dataFar.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" :disabled ="dataFar.device.online ===0?true:xunjianDisabled" size="small" @click="onVersionFar" :loading="versionLoading">
+                  <el-button type="primary" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" size="small" @click="onVersionFar" :loading="versionLoading">
                     读取版本号
                   </el-button>
                 </el-col>

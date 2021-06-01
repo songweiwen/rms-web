@@ -170,7 +170,7 @@ export default {
         // 方案一
         this.$Cookies.remove('api')
         this.$Cookies.remove('ws')
-        window.close()
+        // window.close()
         // 方案一
       }).catch(() => {
         // 点击确定的操作(调用接口)
