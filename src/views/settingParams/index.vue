@@ -1021,6 +1021,7 @@ export default {
       if (val) {
         this.overTime = setTimeout(() => {
           this.WSloading = false
+          this.getLoading = false
           this.WSloadingState = 2
           this.settingLoading = false
           switch (this.WSloadingType) {

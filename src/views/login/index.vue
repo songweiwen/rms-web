@@ -23,7 +23,7 @@
             autocomplete="off"
             prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
-        <el-form-item prop="api">
+        <!-- <el-form-item prop="api">
           <el-input
             @input="getApi"
             v-model="form.api"
@@ -32,7 +32,7 @@
             prefix-icon="el-icon-user"
           >
           </el-input>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item  prop="vercode">
           <el-row :gutter="8">
             <el-col :span="15">
@@ -144,14 +144,14 @@ export default {
       // this.uuid = this.$uuid()
       // this.imgCaptcha = 'http://songweiwenceshi.oicp.io:20010/admin/captcha?uuid=' + this.uuid
     },
-    getApi (v) {
-      this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
-      this.$Cookies.set('ws', 'ws://' + this.form.api + ':5330/ws')
-    },
-
+    // getApi (v) {
+    //   this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
+    //   this.$Cookies.set('ws', 'ws://' + this.form.api + ':5330/ws')
+    // },
     onLogin () {
-      this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
-      this.$Cookies.set('ws', 'ws://' + this.form.api + ':5330/ws')
+      var ip = window.location.host
+      this.$Cookies.set('api', 'http://' + ip.substring(0, ip.indexOf(':')) + ':8880')
+      this.$Cookies.set('ws', 'ws://' + ip.substring(0, ip.indexOf(':')) + ':5330/ws')
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           // this.form.uuid = this.uuid
@@ -169,9 +169,8 @@ export default {
                   second: data.second,
                   enable: data.voiceEnable
                 })
-
-                this.$Cookies.set('api', 'http://' + this.form.api + ':8880')
-                this.$Cookies.set('ws', 'ws://' + this.form.api + ':5330/ws')
+                this.$Cookies.set('api', 'http://' + ip.substring(0, ip.indexOf(':')) + ':8880')
+                this.$Cookies.set('ws', 'ws://' + ip.substring(0, ip.indexOf(':')) + ':5330/ws')
 
                 this.$router.push({ path: 'home' })
               }
