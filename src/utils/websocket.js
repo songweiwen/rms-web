@@ -4,9 +4,10 @@ import { Message, MessageBox } from 'element-ui'
 import Vue from 'vue'
 // var url = process.env.VUE_APP_WS_API
 import Cookies from 'js-cookie'
-var url = Cookies.get('ws')
+
 var tt
-var ws
+// var ws
+
 var lockReconnect = false// 避免重复连接
 var clientId = localStorage.getItem('userInfo')// 缓存中取出客户端id
 // var userInfo = localStorage.getItem('vuex')?JSON.parse(localStorage.getItem('vuex')).userInfo.userInfo.userInfo : null
@@ -15,27 +16,29 @@ var userInfo = store.getters.userInfo.userInfo
 // console.log(store.getters.userInfo.userInfo,2222);
 var websocket = {
   Init: function (clientId) {
+    var url = Cookies.get('ws')
+    console.log(url, '131231231232');
     var userInfo = store.getters.userInfo.userInfo.userInfo
     // console.log(store.getters.userInfo,1111);
     // console.log(store.getters.userInfo.userInfo,2222);
     if ('WebSocket' in window) {
       if (clientId) {
-        ws = new WebSocket(url + clientId)
+        Vue.prototype.$WS = new WebSocket(url + clientId)
       }else{
-        ws = new WebSocket(url)
+        Vue.prototype.$WS = new WebSocket(url)
       }
     } else if ('MozWebSocket' in window) {
       if (clientId) {
-        ws = new MozWebSocket(url + clientId)
+        Vue.prototype.$WS = new MozWebSocket(url + clientId)
       }else{
-        ws = new MozWebSocket(url)
+        Vue.prototype.$WS = new MozWebSocket(url)
       }
     } else {
       console.log('您的浏览器不支持 WebSocket!')
       return
     }
 
-    ws.onmessage = function (e) {
+    Vue.prototype.$WS.onmessage = function (e) {
       const redata = JSON.parse(e.data);
       console.log('接收消息:' + e.data)
       heartCheck.start()
@@ -46,7 +49,7 @@ var websocket = {
       // }
     }
 
-    ws.onclose = function () {
+    Vue.prototype.$WS.onclose = function () {
       console.log('连接已关闭')
       Message({
         message: '连接已关闭',
@@ -55,19 +58,19 @@ var websocket = {
       // reconnect(clientId)
     }
 
-    ws.onopen = function () {
+    Vue.prototype.$WS.onopen = function () {
       console.log('连接成功')
       // Message({
       //   message: '连接成功',
       //   type: 'success'
       // })
-      ws.send( JSON.stringify({ commandString: 'LG', userName: userInfo.userName, type: 'prod' }))
+      Vue.prototype.$WS.send( JSON.stringify({ commandString: 'LG', userName: userInfo.userName, type: 'prod' }))
       heartCheck.start()
       // let vm = new Vue();
       // console.log(vm);
     }
 
-    ws.onerror = function (e) {
+    Vue.prototype.$WS.onerror = function (e) {
       console.log('数据传输发生错误')
       Message({
         message: '数据传输发生错误',
@@ -113,21 +116,21 @@ var websocket = {
     //   clearTimeout(overTime)
     // }, 1000*10);
     localStorage.setItem('wsParams', msg)
-    ws.send(msg)
+    Vue.prototype.$WS.send(msg)
   },
   getWebSocket () {
-    return ws
+    return Vue.prototype.$WS
   },
   getStatus () {
     // window.clearTimeout(window.overTime)
     // window.overTime = null
-    if (ws.readyState === 0) {
+    if (Vue.prototype.$WS.readyState === 0) {
       return '未连接'
-    } else if (ws.readyState === 1) {
+    } else if (Vue.prototype.$WS.readyState === 1) {
       return '已连接'
-    } else if (ws.readyState === 2) {
+    } else if (Vue.prototype.$WS.readyState === 2) {
       return '连接正在关闭'
-    } else if (ws.readyState === 3) {
+    } else if (Vue.prototype.$WS.readyState === 3) {
       return '连接已关闭'
     }
   }
@@ -181,10 +184,10 @@ var heartCheck = {
       // onmessage拿到返回的心跳就说明连接正常
       console.log('心跳检测...')
       // "HeartBeat": 0,
-      ws.send(JSON.stringify({"username": userInfo.userName, "commandString": 'HB' }))
+      Vue.prototype.$WS.send(JSON.stringify({"username": userInfo.userName, "commandString": 'HB' }))
       self.serverTimeoutObj = setTimeout(function () {
-        if (ws.readyState !== 1) {
-          ws.close()
+        if (Vue.prototype.$WS.readyState !== 1) {
+          Vue.prototype.$WS.close()
         }
         // createWebSocket();
       }, self.timeout)

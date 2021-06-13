@@ -165,13 +165,15 @@ export default {
         this.$store.commit('SET_userInfo', {})
         localStorage.removeItem('vuex')
         this.$Cookies.remove('access_token')
-        this.$router.push({ path: '/login' })
-
         // 方案一
         this.$Cookies.remove('api')
         this.$Cookies.remove('ws')
         // window.close()
         // 方案一
+        console.log(this.$WS)
+        this.$WS.close()
+
+        this.$router.push({ path: '/login' })
       }).catch(() => {
         // 点击确定的操作(调用接口)
       })

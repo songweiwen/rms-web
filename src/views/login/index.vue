@@ -134,7 +134,7 @@ export default {
     this.$Cookies.remove('access_token')
     if (process.env.NODE_ENV === 'development') {
       this.form.username = 'admin'
-      this.form.password = 'admin1'
+      this.form.password = 'admin'
     }
     console.log(localStorage.getItem('userInfo'))
     console.log(this.$store.getters.userInfo)
