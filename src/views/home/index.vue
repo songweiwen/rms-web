@@ -284,6 +284,9 @@
                     <template v-else-if="dataNear.device.shouguanggonglv===1">
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
                     </template>
+                    <template v-else-if="dataNear.device.shouguanggonglv===255">
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                    </template>
                     <template v-else>
                       <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
                     </template>
@@ -304,6 +307,9 @@
                     </template>
                     <template v-else-if="dataNear.device.faguanggonglv===1">
                       <el-tag class="home-item__tag" type="danger" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                    </template>
+                    <template v-else-if="dataNear.device.faguanggonglv===255">
+                      <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  超时</span>
                     </template>
                     <template v-else>
                       <el-tag class="home-item__tag" type="info" effect="dark"></el-tag><span class="home-tagtext" style="margin-left:30px">  故障</span>
@@ -858,6 +864,56 @@ export default {
             this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
           }
         }
+      } else if (redata.commandString === 'TON' || redata.commandString === 'CSSFAR') {
+        this.treeData.forEach(e => {
+          if (e.deviceId === redata.nearDevice.deviceId) {
+            e = redata.nearDevice
+            this.treeData = [...this.treeData]
+          }
+        })
+
+        this.equipmentData.forEach(e => {
+          if (e.level === 1) {
+            if (e.deviceId === redata.nearDevice.deviceId) {
+              e = redata.nearDevice
+              this.equipmentData = [...this.equipmentData]
+            }
+          }
+        })
+
+        if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
+          this.dataNear.device = redata.nearDevice
+          if (String(this.dataNear.device.deviceTime).length === 13) {
+            this.dataNear.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataNear.device.deviceTime))
+          }
+        }
+      } else if (redata.commandString === 'TOF' || redata.commandString === 'CSSFAR') {
+        // 远端机报警  更新树状图的报警灯泡
+        this.treeData.forEach(e => {
+          e.children.forEach(o => {
+            if (o.deviceId === redata.farDevice.deviceId) {
+              o = redata.farDevice
+              this.treeData = [...this.treeData]
+            }
+          })
+        })
+
+        this.equipmentData.forEach(e => {
+          // if (e.level === 2) {
+          if (e.deviceNearId === redata.farDevice.deviceNearId) {
+            if (e.deviceId === redata.farDevice.deviceId) {
+              e = redata.farDevice
+              this.equipmentData = [...this.equipmentData]
+            }
+          }
+        })
+
+        if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
+          this.dataFar.device = redata.farDevice
+          if (String(this.dataFar.device.deviceTime).length === 13) {
+            this.dataFar.device.deviceTime = formatDate('yyyy-MM-dd hh:mm:ss', new Date(this.dataFar.device.deviceTime))
+          }
+        }
       } else if (redata.commandString === 'WF' || redata.commandString === 'CSSFAR') {
         // 远端机报警  更新树状图的报警灯泡
         this.treeData.forEach(e => {
@@ -1270,6 +1326,8 @@ export default {
           this.dataFar.device.guogonglvgaojing = 99
           this.dataFar.device.shangxingguzhang = 99
           this.dataFar.device.upsgaojing = 99
+
+          this.timeOutAudio()
 
           this.setTimeoutLog(localStorage.getItem('wsParams'))
         }, 1000 * 3)

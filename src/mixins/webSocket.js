@@ -144,6 +144,12 @@ export const ws = {
         this.audioSrc('巡检结束')
       }
     },
+    timeOutAudio () {
+      if (this.audioEnable) {
+        this.audioDom.removeAttribute('loop')
+        this.audioSrc('超时')
+      }
+    },
     audioStop () {
       setTimeout(() => {
         this.audioDom.pause()
