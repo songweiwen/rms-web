@@ -52,7 +52,7 @@
               <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryNear(false)">
                 读取
               </el-button>
-              <template v-if="dataNear.device.deviceLevel===1">>
+              <template v-if="dataNear.device.deviceLevel===1">
                 <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="danger" @click="settingNear(true)">
                   设置
                 </el-button>
@@ -71,7 +71,7 @@
               <el-button :loading="getLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <template v-if="dataNear.device.deviceLevel===1">>
+              <template v-if="dataNear.device.deviceLevel===1">
                 <el-button :loading="settingLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
                   设置
                 </el-button>
