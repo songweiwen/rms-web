@@ -229,7 +229,7 @@
           </div>
           <!-- 近端机第一代 -->
           <template v-if="dataNear.device.deviceLevel===1">
-            <el-card class="home-card m-t-md m-b-md p-b-lg" v-show="homeType===1" v-loading="loading">
+            <el-card class="home-card m-t-md m-b-md" v-show="homeType===1" v-loading="loading">
               <div slot="header" class="clearfix">
                 <div class="page-title">
                   {{dataNear.device.deviceName}}
@@ -365,7 +365,7 @@
           </template>
           <!-- 近端机第二代 -->
           <template v-else-if="dataNear.device.deviceLevel===2">
-            <el-card class="home-card m-t-md m-b-md p-b-lg" v-show="homeType===1" v-loading="loading">
+            <el-card class="home-card m-t-md m-b-md" v-show="homeType===1" v-loading="loading">
               <div slot="header" class="clearfix">
                 <div class="page-title">
                   {{dataNear.device.deviceName}}
@@ -691,7 +691,7 @@
               </div>
             </el-card>
           </template>
-          <el-card class="home-card m-t-md m-b-md p-b-lg" v-show="homeType===2" v-loading="loading">
+          <el-card class="home-card m-t-md m-b-md" v-show="homeType===2" v-loading="loading">
             <div slot="header" class="clearfix">
               <div class="page-title">
                 {{dataFar.device.deviceName}}

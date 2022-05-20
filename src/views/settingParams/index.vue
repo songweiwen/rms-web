@@ -37,7 +37,7 @@
         <!-- <div class="home-right" style="width: 800px;" v-show="!deviceId">
           <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" alt="" srcset="">
         </div> -->
-        <div class="home-right" style="width: 850px; padding-bottom: 40px;" v-show="deviceId">
+        <div class="home-right" :style="'width:' + (dataFar.device.deviceLevel===1 ? 850 : homeType===1 ? 850 : 1100) + 'px;'" style="padding-bottom: 40px;" v-show="deviceId">
           <div class="flex-container" v-show="homeType===1">
             <div class="flex-item m-r-md">
               在线状态：
@@ -48,7 +48,7 @@
               <el-tag v-else-if="dataNear.device.online===2" type="success" effect="dark"> 在线</el-tag>
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</el-tag> -->
             </div>
-            <div class="flex-item text-right">
+            <div class="flex-item text-right" v-show="!loading">
               <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryNear(false)">
                 读取
               </el-button>
@@ -67,15 +67,13 @@
               </el-tag>
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
-            <div class="flex-item text-right">
+            <div class="flex-item text-right" v-show="!loading">
               <el-button :loading="getLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <template v-if="dataNear.device.deviceLevel===1">
-                <el-button :loading="settingLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
-                  设置
-                </el-button>
-              </template>
+              <el-button :loading="settingLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
+                设置
+              </el-button>
             </div>
           </div>
 
@@ -152,7 +150,7 @@
                     0-31（范围值）
                   </el-col>
                 </el-row>
-                <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
+                <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
                 <!-- <el-alert
                   :closable="false"
                   v-show="showShuaijianzhi"
@@ -267,7 +265,7 @@
                   </el-row>
                 </div>
 
-                <el-row type="flex" class="home-item" align="middle">
+                <el-row type="flex" class="home-item home-even" align="middle">
                   <el-col :span="6">
                     版本号
                   </el-col>
@@ -338,26 +336,7 @@
                 </el-col>
               </el-row>
 
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  光模块衰减值
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.shuaijianzhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else>
-                    <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
-                    v-model.number="dataFar.device.shuaijianzhi" placeholder="" @input="shuaijianzhiFar"></el-input>
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  0-31（范围值）
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
+              <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
               <!-- <el-alert
                 :closable="false"
                 v-show="showShuaijianzhiFar"
@@ -365,416 +344,440 @@
                 type="error"
                 effect="dark">
               </el-alert> -->
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataFar.device.deviceLevel===2?'主路':''}}收光功率
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.shouguangzhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else-if="dataFar.device.shouguangzhi>127 && dataFar.device.shouguangzhi < 255">
-                    {{dataFar.device.shouguangzhi-256}}
-                  </template>
-                  <template v-else>
-                    {{dataFar.device.shouguangzhi}}
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  dBm
-                </el-col>
-              </el-row>
+              <el-row class="">
+                <el-col :span="dataFar.device.deviceLevel===2?12:24">
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      光模块衰减值
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.shuaijianzhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                        v-model.number="dataFar.device.shuaijianzhi" placeholder="" @input="shuaijianzhiFar"></el-input>
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      0-31（范围值）
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataFar.device.deviceLevel===2?'主路':''}}收光功率
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.shouguangzhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else-if="dataFar.device.shouguangzhi>127 && dataFar.device.shouguangzhi < 255">
+                        {{dataFar.device.shouguangzhi-256}}
+                      </template>
+                      <template v-else>
+                        {{dataFar.device.shouguangzhi}}
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      dBm
+                    </el-col>
+                  </el-row>
 
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataFar.device.deviceLevel===2?'主路':''}}功放衰减值
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.gongfangshuaijianzhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else>
-                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi" @input="gongfangshuaijianzhiFar"></el-input>
-                    <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  0-31（范围值）
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-              <!-- <el-alert
-                :closable="false"
-                v-show="showGongfangshuaijianzhi"
-                title="上行衰减值不可空"
-                type="error"
-                effect="dark">
-              </el-alert> -->
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataFar.device.deviceLevel===2?'主路':''}}下行反向功率
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.xiaxingfanxiangzhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else-if="dataFar.device.xiaxingfanxiangzhi<0">
-                  -1
-                  </template>
-                  <template v-else>
-                    {{dataFar.device.xiaxingfanxiangzhi}}
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  dBm
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataFar.device.deviceLevel===2?'主路':''}}功放温度
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.gongfangwenduzhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else>
-                    {{dataFar.device.gongfangwenduzhi}}
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  ℃
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataFar.device.deviceLevel===2?'主路':''}}功放ALC值
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.gongfangalczhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else>
-                    {{dataFar.device.gongfangalczhi}}
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  dBm
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                {{dataFar.device.deviceLevel===2?'主路':''}}驻波比
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.zhubobizhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else>
-                    {{dataFar.device.zhubobizhi/10}}
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataFar.device.deviceLevel===2?'主路':''}}下行前向功率
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.xiaxingqianxiangzhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else-if="dataFar.device.xiaxingqianxiangzhi<0">
-                    -1
-                  </template>
-                  <template v-else>
-                    {{dataFar.device.xiaxingqianxiangzhi}}
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  dBm
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataFar.device.deviceLevel===2?'主路':''}}上行衰减值
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.shangxingshuajianzhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else>
-                    <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi" @input="shangxingshuajianzhiFar"></el-input>
-                    <!-- {{dataFar.device.shangxingshuajianzhi}} -->
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  0-31（范围值）
-                </el-col>
-              </el-row>
-              <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-              <!-- <el-alert
-                :closable="false"
-                v-show="showShangxingshuajianzhi"
-                title="上行衰减值不可空"
-                type="error"
-                effect="dark">
-              </el-alert> -->
-              <el-row type="flex" class="home-item" align="middle">
-                <el-col :span="8">
-                  {{dataNear.device.deviceLevel===2?'主路':''}}LNA最大增益
-                </el-col>
-                <el-col :span="8">
-                  <template v-if="dataFar.device.lnazuidazhi===255">
-                    <el-tag type="danger">
-                      超时
-                    </el-tag>
-                  </template>
-                  <template v-else>
-                    {{dataFar.device.lnazuidazhi}}
-                  </template>
-                </el-col>
-                <el-col :span="8">
-                  dB
-                </el-col>
-              </el-row>
-              <!-- 备路 -->
-              <template v-if="dataFar.device.deviceLevel2===2">
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路光模块衰减值
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.shuaijianzhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else>
-                      <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
-                      v-model.number="dataFar.device.shuaijianzhi2" placeholder="" @input="shuaijianzhiFar2"></el-input>
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    0-31（范围值）
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-                <!-- <el-alert
-                  :closable="false"
-                  v-show="showShuaijianzhiFar"
-                  title="光模块衰减值不可空，范围值允许为0-31"
-                  type="error"
-                  effect="dark">
-                </el-alert> -->
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路收光功率
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.shouguangzhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else-if="dataFar.device.shouguangzhi2>127 && dataFar.device.shouguangzhi2 < 255">
-                      {{dataFar.device.shouguangzhi2-256}}
-                    </template>
-                    <template v-else>
-                      {{dataFar.device.shouguangzhi2}}
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    dBm
-                  </el-col>
-                </el-row>
-
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路功放衰减值
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.gongfangshuaijianzhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else>
-                      <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi2" @input="gongfangshuaijianzhiFar2"></el-input>
-                      <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    0-31（范围值）
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-                <!-- <el-alert
-                  :closable="false"
-                  v-show="showGongfangshuaijianzhi"
-                  title="上行衰减值不可空"
-                  type="error"
-                  effect="dark">
-                </el-alert> -->
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路下行反向功率
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.xiaxingfanxiangzhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else-if="dataFar.device.xiaxingfanxiangzhi2<0">
-                    -1
-                    </template>
-                    <template v-else>
-                      {{dataFar.device.xiaxingfanxiangzhi2}}
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    dBm
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路功放温度
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.gongfangwenduzhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else>
-                      {{dataFar.device.gongfangwenduzhi2}}
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    ℃
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路功放ALC值
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.gongfangalczhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else>
-                      {{dataFar.device.gongfangalczhi2}}
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    dBm
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路驻波比
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.zhubobizhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else>
-                      {{dataFar.device.zhubobizhi2/10}}
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路下行前向功率
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.xiaxingqianxiangzhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else-if="dataFar.device.xiaxingqianxiangzhi2<0">
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataFar.device.deviceLevel===2?'主路':''}}功放衰减值
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.gongfangshuaijianzhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi" @input="gongfangshuaijianzhiFar"></el-input>
+                        <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      0-31（范围值）
+                    </el-col>
+                  </el-row>
+                  <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
+                  <!-- <el-alert
+                    :closable="false"
+                    v-show="showGongfangshuaijianzhi"
+                    title="上行衰减值不可空"
+                    type="error"
+                    effect="dark">
+                  </el-alert> -->
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataFar.device.deviceLevel===2?'主路':''}}下行反向功率
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.xiaxingfanxiangzhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else-if="dataFar.device.xiaxingfanxiangzhi<0">
                       -1
-                    </template>
-                    <template v-else>
-                      {{dataFar.device.xiaxingqianxiangzhi2}}
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    dBm
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路上行衰减值
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.shangxingshuajianzhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else>
-                      <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi2" @input="shangxingshuajianzhiFar2"></el-input>
-                      <!-- {{dataFar.device.shangxingshuajianzhi}} -->
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    0-31（范围值）
-                  </el-col>
-                </el-row>
-                <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row>
-                <!-- <el-alert
-                  :closable="false"
-                  v-show="showShangxingshuajianzhi"
-                  title="上行衰减值不可空"
-                  type="error"
-                  effect="dark">
-                </el-alert> -->
-                <el-row type="flex" class="home-item" align="middle">
-                  <el-col :span="8">
-                    备路LNA最大增益
-                  </el-col>
-                  <el-col :span="8">
-                    <template v-if="dataFar.device.lnazuidazhi2===255">
-                      <el-tag type="danger">
-                        超时
-                      </el-tag>
-                    </template>
-                    <template v-else>
-                      {{dataFar.device.lnazuidazhi2}}
-                    </template>
-                  </el-col>
-                  <el-col :span="8">
-                    dB
-                  </el-col>
-                </el-row>
-              </template>
+                      </template>
+                      <template v-else>
+                        {{dataFar.device.xiaxingfanxiangzhi}}
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      dBm
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataFar.device.deviceLevel===2?'主路':''}}功放温度
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.gongfangwenduzhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        {{dataFar.device.gongfangwenduzhi}}
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      ℃
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataFar.device.deviceLevel===2?'主路':''}}功放ALC值
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.gongfangalczhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        {{dataFar.device.gongfangalczhi}}
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      dBm
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                    {{dataFar.device.deviceLevel===2?'主路':''}}驻波比
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.zhubobizhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        {{dataFar.device.zhubobizhi/10}}
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataFar.device.deviceLevel===2?'主路':''}}下行前向功率
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.xiaxingqianxiangzhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else-if="dataFar.device.xiaxingqianxiangzhi<0">
+                        -1
+                      </template>
+                      <template v-else>
+                        {{dataFar.device.xiaxingqianxiangzhi}}
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      dBm
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataFar.device.deviceLevel===2?'主路':''}}上行衰减值
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.shangxingshuajianzhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi" @input="shangxingshuajianzhiFar"></el-input>
+                        <!-- {{dataFar.device.shangxingshuajianzhi}} -->
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      0-31（范围值）
+                    </el-col>
+                  </el-row>
+                  <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
+                  <!-- <el-alert
+                    :closable="false"
+                    v-show="showShangxingshuajianzhi"
+                    title="上行衰减值不可空"
+                    type="error"
+                    effect="dark">
+                  </el-alert> -->
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="8">
+                      {{dataNear.device.deviceLevel===2?'主路':''}}LNA最大增益
+                    </el-col>
+                    <el-col :span="8">
+                      <template v-if="dataFar.device.lnazuidazhi===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        {{dataFar.device.lnazuidazhi}}
+                      </template>
+                    </el-col>
+                    <el-col :span="8">
+                      dB
+                    </el-col>
+                  </el-row>
+                </el-col>
+                <el-col :span="dataFar.device.deviceLevel===2?12:24">
+                  <!-- 备路 -->
+                  <template v-if="dataFar.device.deviceLevel===2">
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路光模块衰减值
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.shuaijianzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                          v-model.number="dataFar.device.shuaijianzhi2" placeholder="" @input="shuaijianzhiFar2"></el-input>
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        0-31（范围值）
+                      </el-col>
+                    </el-row>
+                    <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
+                    <!-- <el-alert
+                      :closable="false"
+                      v-show="showShuaijianzhiFar"
+                      title="光模块衰减值不可空，范围值允许为0-31"
+                      type="error"
+                      effect="dark">
+                    </el-alert> -->
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路收光功率
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.shouguangzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else-if="dataFar.device.shouguangzhi2>127 && dataFar.device.shouguangzhi2 < 255">
+                          {{dataFar.device.shouguangzhi2-256}}
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.shouguangzhi2}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        dBm
+                      </el-col>
+                    </el-row>
 
-              <el-row type="flex" class="home-item" align="middle">
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路功放衰减值
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.gongfangshuaijianzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          <el-input class="home-item__input" size="small" v-model.number="dataFar.device.gongfangshuaijianzhi2" @input="gongfangshuaijianzhiFar2"></el-input>
+                          <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        0-31（范围值）
+                      </el-col>
+                    </el-row>
+                    <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
+                    <!-- <el-alert
+                      :closable="false"
+                      v-show="showGongfangshuaijianzhi"
+                      title="上行衰减值不可空"
+                      type="error"
+                      effect="dark">
+                    </el-alert> -->
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路下行反向功率
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.xiaxingfanxiangzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else-if="dataFar.device.xiaxingfanxiangzhi2<0">
+                        -1
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.xiaxingfanxiangzhi2}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        dBm
+                      </el-col>
+                    </el-row>
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路功放温度
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.gongfangwenduzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.gongfangwenduzhi2}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        ℃
+                      </el-col>
+                    </el-row>
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路功放ALC值
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.gongfangalczhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.gongfangalczhi2}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        dBm
+                      </el-col>
+                    </el-row>
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路驻波比
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.zhubobizhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.zhubobizhi2/10}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                      </el-col>
+                    </el-row>
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路下行前向功率
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.xiaxingqianxiangzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else-if="dataFar.device.xiaxingqianxiangzhi2<0">
+                          -1
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.xiaxingqianxiangzhi2}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        dBm
+                      </el-col>
+                    </el-row>
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路上行衰减值
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.shangxingshuajianzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          <el-input class="home-item__input" size="small" v-model.number="dataFar.device.shangxingshuajianzhi2" @input="shangxingshuajianzhiFar2"></el-input>
+                          <!-- {{dataFar.device.shangxingshuajianzhi}} -->
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        0-31（范围值）
+                      </el-col>
+                    </el-row>
+                    <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
+                    <!-- <el-alert
+                      :closable="false"
+                      v-show="showShangxingshuajianzhi"
+                      title="上行衰减值不可空"
+                      type="error"
+                      effect="dark">
+                    </el-alert> -->
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        备路LNA最大增益
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.lnazuidazhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.lnazuidazhi2}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        dB
+                      </el-col>
+                    </el-row>
+                  </template>
+                </el-col>
+              </el-row>
+              <el-row type="flex" class="home-item home-even" align="middle">
                 <el-col :span="8">
                   版本号
                 </el-col>

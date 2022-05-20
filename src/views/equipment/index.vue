@@ -247,6 +247,29 @@
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="addFormFar.deviceDescribe" placeholder="请输入描述"></el-input>
         </el-form-item>
+        <el-form-item label="远端机版本" prop="deviceDescribe" label-width="120px">
+          <el-select v-model="addFormFar.deviceLevel" placeholder="请选择近端机" @change="addFarSelectChange">
+            <el-option
+              label="第一代"
+              :value="1">
+            </el-option>
+            <el-option
+              label="第二代"
+              :value="2">
+            </el-option>
+          </el-select>
+          <div class="text-danger fs-12">此项选择后不可更改</div>
+        </el-form-item>
+        <el-form-item v-if="addFormFar.deviceLevel===2" class="two" label="归属于另一台近端机" prop="deviceNear2Id" label-width="120px">
+          <el-select v-model="addFormFar.deviceNear2Id" placeholder="请选择归属于另一台近端机" style="width: 100%;">
+            <el-option
+              v-for="item in treeData"
+              :key="item.deviceId"
+              :label="item.deviceName"
+              :value="item.deviceId">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="resetForm('addRuleFormFar')">取 消</el-button>
@@ -277,6 +300,17 @@
         </el-form-item>
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="editFormFar.deviceDescribe" placeholder="请输入描述"></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="editFormFar.deviceLevel===2" class="two" label="归属于另一台近端机" prop="deviceNear2Id" label-width="120px">
+          <el-select v-model="editFormFar.deviceNear2Id" placeholder="请选择归属于另一台近端机" style="width: 100%;">
+            <el-option
+              v-for="item in treeData"
+              :key="item.deviceId"
+              :label="item.deviceName"
+              :value="item.deviceId">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -350,6 +384,9 @@ export default {
         ],
         deviceNearId: [
           { required: true, message: '请选择近端机', trigger: 'change' }
+        ],
+        deviceNear2Id: [
+          { required: true, message: '请选择另一台近端机', trigger: 'change' }
         ]
       },
       editRules: {
@@ -363,6 +400,9 @@ export default {
         ],
         deviceNearId: [
           { required: true, message: '请选择近端机', trigger: 'change' }
+        ],
+        deviceNear2Id: [
+          { required: true, message: '请选择另一台近端机', trigger: 'change' }
         ]
       },
       addVisible: false,
@@ -381,7 +421,9 @@ export default {
         deviceName: '',
         deviceNearId: '',
         deviceAddress: '',
-        deviceDescribe: ''
+        deviceDescribe: '',
+        deviceLevel: 1,
+        deviceNear2Id: ''
       },
       editVisible: false,
       editVisibleFar: false,
@@ -398,7 +440,9 @@ export default {
         deviceName: '',
         deviceNearId: '',
         deviceAddress: '',
-        deviceDescribe: ''
+        deviceDescribe: '',
+        deviceLevel: '',
+        deviceNear2Id: ''
       }
     }
   },
@@ -422,6 +466,7 @@ export default {
     getTree () {
       this.treeData = []
       getTree().then(res => {
+        this.treeData = []
         console.log(res)
         const treeData = res.data
         treeData.forEach(e => {
@@ -607,7 +652,8 @@ export default {
             deviceName: this.editFormFar.deviceName,
             deviceNearId: this.editFormFar.deviceNearId,
             deviceAddress: this.editFormFar.deviceAddress,
-            deviceDescribe: this.editFormFar.deviceDescribe
+            deviceDescribe: this.editFormFar.deviceDescribe,
+            deviceNear2Id: this.editFormFar.deviceNear2Id
           }).then(res => {
             const data = res.data
             console.log(data)
@@ -631,6 +677,11 @@ export default {
       this.addVisibleFar = false
       this.editVisibleFar = false
       this.$refs[formName].resetFields()
+    },
+    addFarSelectChange (v) {
+      if (v === 1) {
+        this.addFormFar.deviceNear2Id = ''
+      }
     }
   }
   // beforeRouteLeave (to, form, next) {
@@ -639,3 +690,10 @@ export default {
   // }
 }
 </script>
+<style lang="less">
+  .two {
+    .el-form-item__label {
+      line-height: initial;
+    }
+  }
+</style>
