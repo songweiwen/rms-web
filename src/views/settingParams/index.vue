@@ -68,10 +68,10 @@
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</el-tag>
             </div> -->
             <div class="flex-item text-right" v-show="!loading">
-              <el-button :loading="getLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
+              <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <el-button :loading="settingLoading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
+              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
                 设置
               </el-button>
             </div>
@@ -247,16 +247,16 @@
                       {{index+1}}号收光功率
                     </el-col>
                     <el-col :span="6">
-                      <template v-if="dataNear.device['shouguanggonglv' + (index===0?'':index+1)]===255">
+                      <template v-if="dataNear.device['shouguangzhi' + (index===0?'':index+1)]===255">
                         <el-tag type="danger">
                           超时
                         </el-tag>
                       </template>
-                      <template v-else-if="dataNear.device['shouguanggonglv' + (index===0?'':index+1)]>127 && dataNear.device['shouguanggonglv' + (index===0?'':index+1)] < 255">
-                        {{dataNear.device['shouguanggonglv' + (index===0?'':index+1)]-256}}
+                      <template v-else-if="dataNear.device['shouguangzhi' + (index===0?'':index+1)]>127 && dataNear.device['shouguangzhi' + (index===0?'':index+1)] < 255">
+                        {{dataNear.device['shouguangzhi' + (index===0?'':index+1)]-256}}
                       </template>
                       <template v-else>
-                        {{dataNear.device['shouguanggonglv' + (index===0?'':index+1)]}}
+                        {{dataNear.device['shouguangzhi' + (index===0?'':index+1)]}}
                       </template>
                     </el-col>
                     <el-col :span="6">
@@ -886,6 +886,7 @@ export default {
           this.treeData.push({
             deviceName: e.near.deviceName,
             deviceId: e.near.deviceId,
+            deviceLevel: e.near.deviceLevel,
             id: e.near.id,
             deviceAddress: e.near.deviceAddress,
             level: 1,
@@ -938,7 +939,8 @@ export default {
       this.$webSocket.Send({
         commandString: 'RN',
         nearDevice: {
-          deviceId: this.deviceId
+          deviceId: this.deviceId,
+          deviceLevel: this.dataNear.device.deviceLevel
         }
       })
 
@@ -957,7 +959,8 @@ export default {
         commandString: 'RF',
         farDevice: {
           deviceId: this.deviceId,
-          deviceNearId: this.deviceIdNear // 父级近端机
+          deviceNearId: this.deviceIdNear, // 父级近端机
+          deviceLevel: this.dataFar.device.deviceLevel
         }
       })
       this.onZeroFar()
@@ -971,7 +974,8 @@ export default {
       this.$webSocket.Send({
         commandString: 'RNV',
         nearDevice: {
-          deviceId: this.deviceId
+          deviceId: this.deviceId,
+          deviceLevel: this.dataNear.device.deviceLevel
         }
       })
     },
@@ -984,7 +988,8 @@ export default {
         commandString: 'RFV',
         farDevice: {
           deviceId: this.deviceId,
-          deviceNearId: this.deviceIdNear // 父级近端机
+          deviceNearId: this.deviceIdNear, // 父级近端机
+          deviceLevel: this.dataFar.device.deviceLevel
         }
       })
     },
@@ -1085,7 +1090,7 @@ export default {
 
       this.$webSocket.Send({
         commandString: 'SN',
-        parames: this.dataNearWS.device,
+        nearDevice: this.dataNearWS.device,
         reserved: index + 1
       })
       this.settingLoading = true
@@ -1318,6 +1323,7 @@ export default {
             e.treeIndex = i
             e.online = data.online
             e.shanshuo = data.shanshuo
+            e.deviceLevel = data.deviceLevel
           }
         })
         this.treeData = treeData
@@ -1350,7 +1356,7 @@ export default {
       this.WSloadingText = ''
       this.$nextTick(() => {
         if (this.initTree) {
-          this.$refs.treeDom.$el.children[0].className = 'el-tree-node is-expanded'
+          //this.$refs.treeDom.$el.children[0].className = 'el-tree-node is-expanded'
           this.initTree = false
         }
       })
