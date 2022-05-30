@@ -345,7 +345,7 @@
                 effect="dark">
               </el-alert> -->
               <el-row class="">
-                <el-col :span="dataFar.device.deviceLevel===2?12:24">
+                <el-col :span="dataFar.device.deviceLevel===2?24:24">
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
                       {{dataFar.device.deviceLevel===2?'1号':''}}光模块衰减值
@@ -386,6 +386,58 @@
                       dBm
                     </el-col>
                   </el-row>
+
+                  <!-- 备路 -->
+                  <template v-if="dataFar.device.deviceLevel===2">
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        2号光模块衰减值
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.shuaijianzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else>
+                          <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                          v-model.number="dataFar.device.shuaijianzhi2" placeholder="" @input="shuaijianzhiFar2"></el-input>
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        0-31（范围值）
+                      </el-col>
+                    </el-row>
+                    <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
+                    <!-- <el-alert
+                      :closable="false"
+                      v-show="showShuaijianzhiFar"
+                      title="光模块衰减值不可空，范围值允许为0-31"
+                      type="error"
+                      effect="dark">
+                    </el-alert> -->
+                    <el-row type="flex" class="home-item" align="middle">
+                      <el-col :span="8">
+                        2号光模块收光功率
+                      </el-col>
+                      <el-col :span="8">
+                        <template v-if="dataFar.device.shouguangzhi2===255">
+                          <el-tag type="danger">
+                            超时
+                          </el-tag>
+                        </template>
+                        <template v-else-if="dataFar.device.shouguangzhi2>127 && dataFar.device.shouguangzhi2 < 255">
+                          {{dataFar.device.shouguangzhi2-256}}
+                        </template>
+                        <template v-else>
+                          {{dataFar.device.shouguangzhi2}}
+                        </template>
+                      </el-col>
+                      <el-col :span="8">
+                        dBm
+                      </el-col>
+                    </el-row>
+                  </template>
 
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
@@ -554,59 +606,6 @@
                       dB
                     </el-col>
                   </el-row>
-                </el-col>
-                <el-col :span="dataFar.device.deviceLevel===2?12:24">
-                  <!-- 备路 -->
-                  <template v-if="dataFar.device.deviceLevel===2">
-                    <el-row type="flex" class="home-item" align="middle">
-                      <el-col :span="8">
-                        2号光模块衰减值
-                      </el-col>
-                      <el-col :span="8">
-                        <template v-if="dataFar.device.shuaijianzhi2===255">
-                          <el-tag type="danger">
-                            超时
-                          </el-tag>
-                        </template>
-                        <template v-else>
-                          <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
-                          v-model.number="dataFar.device.shuaijianzhi2" placeholder="" @input="shuaijianzhiFar2"></el-input>
-                        </template>
-                      </el-col>
-                      <el-col :span="8">
-                        0-31（范围值）
-                      </el-col>
-                    </el-row>
-                    <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
-                    <!-- <el-alert
-                      :closable="false"
-                      v-show="showShuaijianzhiFar"
-                      title="光模块衰减值不可空，范围值允许为0-31"
-                      type="error"
-                      effect="dark">
-                    </el-alert> -->
-                    <el-row type="flex" class="home-item" align="middle">
-                      <el-col :span="8">
-                        2号光模块收光功率
-                      </el-col>
-                      <el-col :span="8">
-                        <template v-if="dataFar.device.shouguangzhi2===255">
-                          <el-tag type="danger">
-                            超时
-                          </el-tag>
-                        </template>
-                        <template v-else-if="dataFar.device.shouguangzhi2>127 && dataFar.device.shouguangzhi2 < 255">
-                          {{dataFar.device.shouguangzhi2-256}}
-                        </template>
-                        <template v-else>
-                          {{dataFar.device.shouguangzhi2}}
-                        </template>
-                      </el-col>
-                      <el-col :span="8">
-                        dBm
-                      </el-col>
-                    </el-row>
-                  </template>
                 </el-col>
               </el-row>
               <el-row type="flex" class="home-item home-even" align="middle">
