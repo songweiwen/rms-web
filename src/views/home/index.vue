@@ -14,7 +14,8 @@
           :default-expand-all="true"
           :data="treeData"
           :props="defaultProps"
-          @node-click="handleNodeClick">
+          @node-click="handleNodeClick"
+          @check-change="handleNodeClick1">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <i v-if="data.level===1" class="iconfont icon-yuanduanji"></i>
@@ -735,7 +736,7 @@
 
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  发光状态
+                  {{dataFar.device.deviceLevel===2?'1号光模块':''}}发光状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -756,7 +757,7 @@
               </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  收光状态
+                  {{dataFar.device.deviceLevel===2?'1号光模块':''}}收光状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
@@ -775,6 +776,51 @@
                   </div>
                 </el-col>
               </el-row>
+
+              <template v-if="dataFar.device.deviceLevel===2">
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    {{dataFar.device.deviceLevel===2?'2号光模块':''}}发光状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.faguanggaojing2===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataFar.device.faguanggaojing2===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    {{dataFar.device.deviceLevel===2?'2号光模块':''}}收光状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.shouguanggaojing2===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataFar.device.shouguanggaojing2===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+              </template>
 
               <el-row class="home-class">
                 <el-col :span="dataFar.device.deviceLevel===2?12:24">
@@ -802,7 +848,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="dataFar.device.deviceLevel===2?14:12">
-                      {{dataFar.device.deviceLevel===2?'主路':''}}功放状态-驻波比告警
+                      {{dataFar.device.deviceLevel===2?'':''}}功放状态-驻波比告警
                     </el-col>
                     <el-col :span="dataFar.device.deviceLevel===2?10:12">
                       <div v-show="WSloading">
@@ -823,7 +869,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="dataFar.device.deviceLevel===2?14:12">
-                      {{dataFar.device.deviceLevel===2?'主路':''}}功放状态-过温告警
+                      {{dataFar.device.deviceLevel===2?'':''}}功放状态-过温告警
                     </el-col>
                     <el-col :span="dataFar.device.deviceLevel===2?10:12">
                       <div v-show="WSloading">
@@ -844,7 +890,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="dataFar.device.deviceLevel===2?14:12">
-                      {{dataFar.device.deviceLevel===2?'主路':''}}功放状态-过功率告警
+                      {{dataFar.device.deviceLevel===2?'':''}}功放状态-过功率告警
                     </el-col>
                     <el-col :span="dataFar.device.deviceLevel===2?10:12">
                       <div v-show="WSloading">
@@ -865,7 +911,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="dataFar.device.deviceLevel===2?14:12">
-                      {{dataFar.device.deviceLevel===2?'主路':''}}上行故障
+                      {{dataFar.device.deviceLevel===2?'':''}}上行故障
                     </el-col>
                     <el-col :span="dataFar.device.deviceLevel===2?10:12">
                       <div v-show="WSloading">
@@ -909,90 +955,6 @@
                         </div>
                       </el-col>
                     </el-row>
-                    <el-row type="flex" class="home-item" align="middle">
-                      <el-col :span="14">
-                        备路功放状态-驻波比告警
-                      </el-col>
-                      <el-col :span="10">
-                        <div v-show="WSloading">
-                          <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
-                        </div>
-                        <div v-show="!WSloading">
-                          <template v-if="dataFar.device.zhubobigaojing2===0">
-                            <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
-                          </template>
-                          <template v-else-if="dataFar.device.zhubobigaojing2===1">
-                            <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
-                          </template>
-                          <template v-else>
-                            <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
-                          </template>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row type="flex" class="home-item" align="middle">
-                      <el-col :span="14">
-                        备路功放状态-过温告警
-                      </el-col>
-                      <el-col :span="10">
-                        <div v-show="WSloading">
-                          <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
-                        </div>
-                        <div v-show="!WSloading">
-                          <template v-if="dataFar.device.guowengaojing2===0">
-                            <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
-                          </template>
-                          <template v-else-if="dataFar.device.guowengaojing2===1">
-                            <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
-                          </template>
-                          <template v-else>
-                            <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
-                          </template>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row type="flex" class="home-item" align="middle">
-                      <el-col :span="14">
-                        备路功放状态-过功率告警
-                      </el-col>
-                      <el-col :span="10">
-                        <div v-show="WSloading">
-                          <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
-                        </div>
-                        <div v-show="!WSloading">
-                          <template v-if="dataFar.device.guogonglvgaojing2===0">
-                            <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
-                          </template>
-                          <template v-else-if="dataFar.device.guogonglvgaojing2===1">
-                            <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
-                          </template>
-                          <template v-else>
-                            <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
-                          </template>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row type="flex" class="home-item" align="middle">
-                      <el-col :span="14">
-                        备路上行故障
-                      </el-col>
-                      <el-col :span="10">
-                        <div v-show="WSloading">
-                          <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
-                        </div>
-                        <div v-show="!WSloading">
-                          <template v-if="dataFar.device.shangxingguzhang2===0">
-                            <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
-                          </template>
-                          <template v-else-if="dataFar.device.shangxingguzhang2===1">
-                            <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
-                          </template>
-                          <template v-else>
-                            <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
-                          </template>
-                        </div>
-                      </el-col>
-                    </el-row>
                   </el-col>
                 </template>
               </el-row>
@@ -1023,21 +985,117 @@
               </el-row>
               <template v-if="dataFar.device.deviceLevel===2">
                 <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    电源套数
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.shuangludianyuan===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  单套电源</span>
+                      </template>
+                      <template v-else-if="dataFar.device.shuangludianyuan===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  双套电源</span>
+                      </template>
+                      <template v-else-if="dataFar.device.shuangludianyuan===2">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    功放套数
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.gongfangtaoshu===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  单套功放</span>
+                      </template>
+                      <template v-else-if="dataFar.device.gongfangtaoshu===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  双套功放</span>
+                      </template>
+                      <template v-else-if="dataFar.device.gongfangtaoshu===2">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    主路功放电源状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.gongfangdianyuan1===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataFar.device.gongfangdianyuan1===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataFar.device.gongfangdianyuan1===2">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    备路功放电源状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.gongfangdianyuan2===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataFar.device.gongfangdianyuan2===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataFar.device.gongfangdianyuan2===2">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
-                  双路电源状态
+                  主路电源状态
                 </el-col>
                 <el-col :span="12">
                   <div v-show="WSloading">
                     <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
                   </div>
                   <div v-show="!WSloading">
-                    <template v-if="dataFar.device.shuangludianyuan===0">
+                    <template v-if="dataFar.device.zhuludianyuanzhuangtai===0">
                       <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
                     </template>
-                    <template v-else-if="dataFar.device.shuangludianyuan===1">
+                    <template v-else-if="dataFar.device.zhuludianyuanzhuangtai===1">
                       <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                     </template>
-                    <template v-else-if="dataFar.device.shuangludianyuan===2">
+                    <template v-else-if="dataFar.device.zhuludianyuanzhuangtai===2">
                       <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                     </template>
                     <template v-else>
@@ -1046,6 +1104,30 @@
                   </div>
                 </el-col>
               </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    备路电源状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.beiludianyuanzhuangtai===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataFar.device.beiludianyuanzhuangtai===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataFar.device.beiludianyuanzhuangtai===2">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
               </template>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
@@ -1301,7 +1383,8 @@ export default {
         commandString: 'CF',
         farDevice: {
           deviceId: this.deviceId,
-          deviceNearId: this.deviceNearId // 父级近端机
+          deviceNearId: this.deviceNearId, // 父级近端机
+          deviceLevel: this.dataFar.device.deviceLevel
         }
       })
     },
@@ -1547,11 +1630,23 @@ export default {
         }
       }
     },
-    handleNodeClick (data) {
+    handleNodeClick1 (data, a, b) {
+      console.log(data, a, b)
+    },
+    handleNodeClick (data, a, b) {
+      console.log(a, b);
+      console.log(b.$el.className);
+      b.$el.className = 'el-tree-node is-expanded'
       this.WSloadingState = 0
       this.WSloading = false
       this.WSloadingText = ''
-      if (data.level === 1) {
+      console.log(data)
+      console.log(Array.isArray(this.$refs.treeDom.$el.children))
+      console.log(this.$refs.treeDom)
+       this.$refs.treeDom.$children.forEach((e, i) => {
+        console.log(e)
+      })
+/*      if (data.level === 1) {
         this.$refs.treeDom.$el.children.forEach((e, i) => {
           if (data.treeIndex !== i) {
             e.className = 'el-tree-node is-expanded'
@@ -1567,7 +1662,7 @@ export default {
             // e.className = 'el-tree-node is-expanded'
           }
         })
-      }
+      } */
       this.homeType = data.level || 2
       console.log(data)
       this.id = data.id
@@ -1800,6 +1895,9 @@ export default {
           this.dataFar.device.guogonglvgaojing = 99
           this.dataFar.device.shangxingguzhang = 99
           this.dataFar.device.upsgaojing = 99
+          this.dataFar.device.shouguanggaojing2 = 99
+          this.dataFar.device.faguanggaojing2 = 99
+          this.dataFar.device.guzhanggaojing2 = 99
 
           this.timeOutAudio()
 
