@@ -8,14 +8,15 @@
         <div class="home-left">
           <div class="home-tree" v-show="WSloading"></div>
           <el-tree
-          ref="treeDom"
-          :expand-on-click-node="false"
-          :highlight-current="true"
-          :default-expand-all="true"
-          :data="treeData"
-          :props="defaultProps"
-          @node-click="handleNodeClick"
-          @check-change="handleNodeClick1">
+            ref="treeDom"
+            :expand-on-click-node="false"
+            :default-expand-all="true"
+            :data="treeData"
+            :props="defaultProps"
+            :current-node-key="treeActive"
+            highlight-current
+            @node-click="handleNodeClick"
+            @check-change="handleNodeClick1">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <i v-if="data.level===1" class="iconfont icon-yuanduanji"></i>
@@ -81,7 +82,12 @@
           <!-- <div class="viewimg-left" @mousewheel.prevent="rollImg">
             <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20170521%2F8b45d8c26664406ebf5c2df273086bc8_th.jpg&refer=http%3A%2F%2Fimg.mp.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618925314&t=0a42ba8e7a4ac7c39c60f459916c4f69" class="viewimg-img" ref="imgDiv" @mousedown="move" />
           </div> -->
-          <div id="equipment">
+          <div id="equipment" :style="{width: homeWH[0] + 'px', height: homeWH[1] + 'px'}">
+          <div style="position: absolute; bottom: 0; right: 100px">
+            <el-button type="primary" v-for="(item, index) in homeWHArr" :key="index" @click="setWH(item)">
+              {{item.title}}
+            </el-button>
+          </div>
           <span v-if="userInfo.userName==='admin'" style="position: absolute; bottom: 0;" >
           拖拽开关：
           </span>
@@ -1226,6 +1232,21 @@ export default {
   mixins: [ws],
   data () {
     return {
+      homeWH: [1000, 800],
+      homeWHArr: [{
+        w: 1000,
+        h: 800,
+        title: '正常'
+      }, {
+        w: 1400,
+        h: 1000,
+        title: '大'
+      }, {
+        w: 800,
+        h: 600,
+        title: '小'
+      }],
+      treeActive: [],
       reserved: '',
       reservedShow: true,
       isHome: true,
@@ -1332,21 +1353,20 @@ export default {
     },
     goTree (item) {
       console.log(item)
-      this.handleNodeClick(item)
       if (item.level === 1) {
         this.$refs.treeDom.$el.children[item.treeIndex].className = 'el-tree-node is-expanded is-current is-focusable'
       } else if (item.level === 2) {
         console.log(this.$refs.treeDom.$el.children)
         // el-tree-node__children
-        // this.$refs.treeDom.$el.children[item.treeIndex].className = 'el-tree-node is-expanded is-current is-focusable'
-        this.$refs.treeDom.$el.children[item.treeIndex].children[1].children[item.treeChildrenIndex].className = 'el-tree-node is-expanded is-current is-focusable'
+        this.$refs.treeDom.$el.children[item.treeIndex].children[1].children[item.treeChildrenIndex].className = 'el-tree-node is-expanded is-current is-focusable  tree-active'
       }
+      this.treeData = JSON.parse(JSON.stringify(this.treeData))
+      this.handleNodeClick(item)
     },
     getTree () {
       getTree().then(res => {
         this.treeData = []
         this.equipmentData = []
-        console.log(res)
         const treeData = res.data
         treeData.forEach((e, i) => {
           this.treeData.push({
@@ -1376,7 +1396,6 @@ export default {
           })
 
           e.far.forEach((o, j) => {
-            console.log(o)
             this.equipmentData.push({
               deviceName: o.deviceName,
               deviceId: o.deviceId,
@@ -1438,7 +1457,6 @@ export default {
       // this.overTimeClear()
       // this.$webSocket.getStatus()
       const redata = JSON.parse(e.data)
-      console.log(redata, 9999)
       this.websocketonMessageAll(redata)
 
       // 近端机报警  更新树状图的报警灯泡
@@ -1675,47 +1693,44 @@ export default {
       }
     },
     handleNodeClick1 (data, a, b) {
-      console.log(data, a, b)
     },
     handleNodeClick (data, a, b) {
-      console.log(a, b);
-      console.log(b.$el.className);
-      b.$el.className = 'el-tree-node is-expanded'
+      // this.getTree()
+      console.log(data, a, b);
+      // b.$el.className = 'el-tree-node is-expanded is-active'
       this.WSloadingState = 0
       this.WSloading = false
       this.WSloadingText = ''
-      console.log(data)
-      console.log(Array.isArray(this.$refs.treeDom.$el.children))
-      console.log(this.$refs.treeDom)
-       this.$refs.treeDom.$children.forEach((e, i) => {
-        console.log(e)
-      })
-/*      if (data.level === 1) {
+      // console.log(data)
+      // console.log(Array.isArray(this.$refs.treeDom.$el.children))
+      // console.log(this.$refs.treeDom)
+      //  this.$refs.treeDom.$children.forEach((e, i) => {
+      //   // console.log(e)
+      // })
+      console.log(this.$refs.treeDom.$el.children);
+      if (data.level === 1) {
         this.$refs.treeDom.$el.children.forEach((e, i) => {
+          console.log(e);
           if (data.treeIndex !== i) {
             e.className = 'el-tree-node is-expanded'
           }
         })
       } else if (data.level === 2) {
-        console.log(data)
-        console.log(this.$refs.treeDom.$el.children[data.treeIndex])
+        // console.log(this.$refs.treeDom.$el.children[data.treeIndex])
         this.$refs.treeDom.$el.children[data.treeIndex].children[1].children.forEach((e, i) => {
           if (data.treeChildrenIndex !== i) {
-            console.log(e)
             e.className = 'el-tree-node'
             // e.className = 'el-tree-node is-expanded'
           }
         })
-      } */
+      }
       this.homeType = data.level || 2
-      console.log(data)
       this.id = data.id
       this.deviceId = data.deviceId
       this.loading = true
       this.WSloadingState = 0
       this.WSloadingText = ''
 
-      this.getTree()
       if (this.homeType === 1) {
         this.deviceIdNear = null
         this.deviceNearId = null
@@ -1723,7 +1738,6 @@ export default {
           id: this.id
         }).then(res => {
           const data = res.data
-          console.log(data)
           this.dataNear = data
           this.treeData.forEach(e => {
             if (e.deviceId === data.deviceId) {
@@ -1740,11 +1754,11 @@ export default {
           id: this.id
         }).then(res => {
           const data = res.data
-          console.log(data)
           this.dataFar = data
           this.loading = false
         })
       }
+      // this.getTree()
     },
     clearOverTime () {
       clearTimeout(this.overTime)
@@ -1788,24 +1802,20 @@ export default {
       return false
     },
     onDragging (item) {
-      console.log(this.$refs.popover)
       this.$refs.popover.forEach(e => {
         e.doClose()
       })
       // this.$refs.popover.doClose()
       // document.body.click()
       this.equipmentActive = item
-      console.log(item)
     },
     onDragstop (left, top) {
-      console.log(left, top)
       if (this.equipmentActive.level === 1) {
         updateMoveNear({
           x: left,
           y: top,
           id: this.equipmentActive.id
         }).then(res => {
-          console.log(res)
           this.$message({
             type: 'success',
             message: '设置成功!'
@@ -1817,7 +1827,6 @@ export default {
           y: top,
           id: this.equipmentActive.id
         }).then(res => {
-          console.log(res)
           this.$message({
             type: 'success',
             message: '设置成功!'
@@ -1826,17 +1835,13 @@ export default {
       }
     },
     getRefLineParams (params) {
-      console.log(111)
-      console.log(params)
     },
     dragClose () {
       this.dragVisible = false
       this.dragBool = 0
     },
     dragSubmit () {
-      console.log(this.$store.getters.userInfo)
       const pw = this.userInfo.userPassword
-      console.log(pw)
       if (pw === this.editForm.userPassword) {
         this.dragVisible = false
         this.dragBool = 1
@@ -1855,7 +1860,6 @@ export default {
       workoutNear({
         id: this.id
       }).then(res => {
-        console.log(res)
         // this.$message({
         //   type: 'success',
         //   message: '核销成功!'
@@ -1886,7 +1890,6 @@ export default {
       workoutFar({
         id: this.id
       }).then(res => {
-        console.log(res)
         // this.$message({
         //   type: 'success',
         //   message: '核销成功!'
@@ -1900,6 +1903,12 @@ export default {
           this.dataFar.device.shanshuo = 0
         }
       })
+    },
+    setWH(arr){
+      this.homeWH = [
+        arr.w,
+        arr.h
+      ]
     }
   },
   watch: {
@@ -1956,6 +1965,12 @@ export default {
   // }
 }
 </script>
+
+<style lang="less">
+   .tree-active {
+     background: red;
+   }
+</style>
 
 <style lang="less" scoped>
   .custom-tree-node {
