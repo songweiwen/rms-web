@@ -718,6 +718,7 @@ export default {
             deviceName: e.near.deviceName,
             deviceId: e.near.deviceId,
             deviceLevel: e.near.deviceLevel,
+            deviceProtocol: e.near.deviceProtocol,
             id: e.near.id,
             deviceAddress: e.near.deviceAddress,
             level: 1,
@@ -771,7 +772,8 @@ export default {
         commandString: 'RN',
         nearDevice: {
           deviceId: this.deviceId,
-          deviceLevel: this.dataNear.device.deviceLevel
+          deviceLevel: this.dataNear.device.deviceLevel,
+          deviceProtocol: this.dataNear.device.deviceProtocol
         }
       })
 
@@ -806,7 +808,8 @@ export default {
         commandString: 'RNV',
         nearDevice: {
           deviceId: this.deviceId,
-          deviceLevel: this.dataNear.device.deviceLevel
+          deviceLevel: this.dataNear.device.deviceLevel,
+          deviceProtocol: this.dataNear.device.deviceProtocol
         }
       })
     },
@@ -1155,6 +1158,7 @@ export default {
             e.online = data.online
             e.shanshuo = data.shanshuo
             e.deviceLevel = data.deviceLevel
+            e.deviceProtocol = data.deviceProtocol
           }
         })
         this.treeData = treeData

@@ -188,6 +188,20 @@
           <!-- <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input> -->
           <div class="text-danger fs-12">此项选择后不可更改</div>
         </el-form-item>
+        <el-form-item label="指定协议版本" prop="deviceDescribe" label-width="120px">
+          <el-select v-model="addForm.deviceProtocol" placeholder="请选择协议">
+            <el-option
+              label="第一代"
+              :value="1">
+            </el-option>
+            <el-option
+              label="第二代"
+              :value="2">
+            </el-option>
+          </el-select>
+          <!-- <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input> -->
+          <div class="text-danger fs-12">此项选择后不可更改</div>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="resetForm('addRuleForm')">取 消</el-button>
@@ -414,7 +428,8 @@ export default {
         port: '',
         deviceAddress: '',
         deviceDescribe: '',
-        deviceLevel: 1
+        deviceLevel: 1,
+        deviceProtocol: 1
       },
       addFormFar: {
         deviceId: '',
