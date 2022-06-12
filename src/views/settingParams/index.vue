@@ -616,7 +616,7 @@
                   {{dataFar.device.deviceVersion}}
                 </el-col>
                 <el-col :span="8">
-                  <el-button type="primary" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" size="small" @click="onVersionFar" :loading="versionLoading">
+                  <el-button type="primary" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" size="small" @click="onVersionFar(dataNear.device.deviceId)" :loading="versionLoading">
                     读取版本号
                   </el-button>
                 </el-col>
@@ -780,7 +780,7 @@ export default {
       this.getLoading = true
       this.onZeroNear()
     },
-    onQueryFar (bool) { // 远端机读取
+    onQueryFar (bool, int) { // 远端机读取
       // this.settingBool = bool || true
       // if (!this.settingBool) {
       this.WSloadingType = '读取'
@@ -791,9 +791,11 @@ export default {
       this.$webSocket.Send({
         commandString: 'RF',
         farDevice: {
-          deviceId: this.deviceId,
-          deviceNearId: this.deviceIdNear, // 父级近端机
-          deviceLevel: this.dataFar.device.deviceLevel
+          deviceId: this.dataFar.device.deviceId,
+          // deviceNearId: this.deviceId, // 父级近端机
+          deviceNearId: this.dataFar.device.deviceLevel === 1 ? this.dataFar.device.deviceNearId : this.deviceId,
+          deviceLevel: this.dataFar.device.deviceLevel,
+          deviceNear2Id: this.dataFar.device.deviceNear2Id
         }
       })
       this.onZeroFar()
@@ -813,7 +815,7 @@ export default {
         }
       })
     },
-    onVersionFar () { // 远端机 版本
+    onVersionFar (int) { // 远端机 版本
       this.versionLoading = true
       this.WSloadingType = '读取版本'
       this.WSloadingState = 0
@@ -821,9 +823,10 @@ export default {
       this.$webSocket.Send({
         commandString: 'RFV',
         farDevice: {
-          deviceId: this.deviceId,
-          deviceNearId: this.deviceIdNear, // 父级近端机
-          deviceLevel: this.dataFar.device.deviceLevel
+          deviceId: this.dataFar.device.deviceId,
+          deviceNearId: this.dataFar.device.deviceLevel === 1 ? this.dataFar.device.deviceNearId : this.deviceId, // 父级近端机
+          deviceLevel: this.dataFar.device.deviceLevel,
+          deviceNear2Id: this.dataFar.device.deviceNear2Id
         }
       })
     },
@@ -1185,7 +1188,8 @@ export default {
         }
       }
     },
-    handleNodeClick (data) {
+    handleNodeClick (data, e) {
+      console.log(e);
       this.WSloadingState = 0
       this.WSloading = false
       this.WSloadingText = ''
@@ -1203,6 +1207,7 @@ export default {
       this.getTree()
       if (this.homeType === 1) {
         this.deviceIdNear = null
+        this.deviceNearId = null
         getDetailNear({
           id: this.id
         }).then(res => {
@@ -1213,7 +1218,9 @@ export default {
           this.loading = false
         })
       } else if (this.homeType === 2) {
+        // this.deviceIdNear = data.deviceNearId
         this.deviceIdNear = data.deviceNearId
+        this.deviceNearId = data.deviceNearId
         getDetailFar({
           id: this.id
         }).then(res => {

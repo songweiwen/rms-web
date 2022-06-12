@@ -15,8 +15,7 @@
             :props="defaultProps"
             :current-node-key="treeActive"
             highlight-current
-            @node-click="handleNodeClick"
-            @check-change="handleNodeClick1">
+            @node-click="handleNodeClick">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <i v-if="data.level===1" class="iconfont icon-yuanduanji"></i>
@@ -55,7 +54,6 @@
           <el-button type="primary" @click="onShanshuoFar">远端机闪烁</el-button>
         <el-button type="primary" @click="onShanshuoNearClose">近端机闪烁关闭</el-button>
           <el-button type="primary" @click="onShanshuoFarClose">远端机闪烁关闭</el-button> -->
-
         </div>
         <div class="home-right" style="width: 100%;" v-show="!deviceId">
            <div class="flex-container">
@@ -1433,7 +1431,8 @@ export default {
         commandString: 'CN',
         nearDevice: {
           deviceId: this.deviceId,
-          deviceLevel: this.dataNear.device.deviceLevel
+          deviceLevel: this.dataNear.device.deviceLevel,
+          deviceProtocol: this.dataNear.device.deviceProtocol
         }
       })
     },
@@ -1445,9 +1444,10 @@ export default {
       this.$webSocket.Send({
         commandString: 'CF',
         farDevice: {
-          deviceId: this.deviceId,
-          deviceNearId: this.deviceNearId, // 父级近端机
-          deviceLevel: this.dataFar.device.deviceLevel
+          deviceId: this.dataFar.device.deviceId,
+          deviceNearId: this.dataFar.device.deviceLevel === 1 ? this.dataFar.device.deviceNearId : this.deviceId, // 父级近端机
+          deviceLevel: this.dataFar.device.deviceLevel,
+          deviceNear2Id: this.dataFar.device.deviceNear2Id
         }
       })
     },
@@ -1692,38 +1692,10 @@ export default {
         }
       }
     },
-    handleNodeClick1 (data, a, b) {
-    },
-    handleNodeClick (data, a, b) {
-      // this.getTree()
-      console.log(data, a, b);
-      // b.$el.className = 'el-tree-node is-expanded is-active'
+    handleNodeClick (data) {
       this.WSloadingState = 0
       this.WSloading = false
       this.WSloadingText = ''
-      // console.log(data)
-      // console.log(Array.isArray(this.$refs.treeDom.$el.children))
-      // console.log(this.$refs.treeDom)
-      //  this.$refs.treeDom.$children.forEach((e, i) => {
-      //   // console.log(e)
-      // })
-      console.log(this.$refs.treeDom.$el.children);
-      if (data.level === 1) {
-        this.$refs.treeDom.$el.children.forEach((e, i) => {
-          console.log(e);
-          if (data.treeIndex !== i) {
-            e.className = 'el-tree-node is-expanded'
-          }
-        })
-      } else if (data.level === 2) {
-        // console.log(this.$refs.treeDom.$el.children[data.treeIndex])
-        this.$refs.treeDom.$el.children[data.treeIndex].children[1].children.forEach((e, i) => {
-          if (data.treeChildrenIndex !== i) {
-            e.className = 'el-tree-node'
-            // e.className = 'el-tree-node is-expanded'
-          }
-        })
-      }
       this.homeType = data.level || 2
       this.id = data.id
       this.deviceId = data.deviceId
