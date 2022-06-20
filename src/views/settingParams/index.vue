@@ -225,7 +225,12 @@
                     <el-col :span="6">
                       <template v-if="dataNear.device['shuaijianzhi' + (index===0?'':index+1)]===255">
                         <el-tag type="danger">
-                          超时
+                          {{dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? '未配置':'超时'}}
+                        </el-tag>
+                      </template>
+                      <template v-if="dataNear.device['shuaijianzhi' + (index===0?'':index+1)]===254">
+                        <el-tag type="danger">
+                          {{dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? '未配置':'未连接'}}
                         </el-tag>
                       </template>
                       <template v-else>
@@ -237,7 +242,7 @@
                       0-31（范围值）
                     </el-col>
                     <el-col :span="6" class="text-center">
-                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" @click="settingNear222('shuaijianzhi', index)" :loading="versionLoading">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingNear222('shuaijianzhi', index)" :loading="versionLoading">
                         设置
                       </el-button>
                     </el-col>
@@ -520,7 +525,7 @@
                       </template>
                     </el-col>
                     <el-col :span="8">
-                      dBm
+                      dB
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -757,6 +762,7 @@ export default {
     },
     onZeroFar () {
       this.dataFar.device.shuaijianzhi = 0
+      this.dataFar.device.shuaijianzhi2 = 0
       this.dataFar.device.gongfangshuaijianzhi = 0
       this.dataFar.device.shangxingshuajianzhi = 0
     },
@@ -907,8 +913,9 @@ export default {
       // this.onZeroNear()
     },
     shuaijianzhiNear222 (paramesName, index) {
-      const paramesNameNew = paramesName + index + 1
-      console.log(1)
+      const paramesNameNew = paramesName + (index + 1)
+      console.log(111111111111111111111111111)
+      console.log(paramesNameNew)
       if (this.dataNear.device[paramesNameNew] > 31) {
         this.dataNear.device[paramesNameNew] = 31
       } else if (this.dataNear.device[paramesNameNew] < 0) {
@@ -1106,7 +1113,7 @@ export default {
         //   type: 'success'
         // })
         this.versionLoading = false
-        this.WSloadingText = '版本号更新成功'
+        this.WSloadingText = '版本读取成功'
       } else if (redata.commandString === 'SRFV') { // 远端机 版本
         if (this.dataFar.device.deviceId === redata.farDevice.deviceId) {
           this.dataFar.device = redata.farDevice
@@ -1116,7 +1123,7 @@ export default {
         //   type: 'success'
         // })
         this.versionLoading = false
-        this.WSloadingText = '版本号更新成功'
+        this.WSloadingText = '版本读取成功'
       } else if (redata.commandString === 'SSN') { // 近端机 设置
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
