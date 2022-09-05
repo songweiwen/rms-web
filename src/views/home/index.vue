@@ -52,7 +52,7 @@
           </el-tree>
           <!-- <el-button type="primary" @click="onShanshuoNear">近端机闪烁</el-button>
           <el-button type="primary" @click="onShanshuoFar">远端机闪烁</el-button>
-        <el-button type="primary" @click="onShanshuoNearClose">近端机闪烁关闭</el-button>
+          <el-button type="primary" @click="onShanshuoNearClose">近端机闪烁关闭</el-button>
           <el-button type="primary" @click="onShanshuoFarClose">远端机闪烁关闭</el-button> -->
         </div>
         <div class="home-right" style="width: 100%;" v-show="!deviceId">
@@ -1658,6 +1658,7 @@ export default {
         //     this.treeData = [...this.treeData]
         //   }
         // })
+        console.log('上下线的过程中经过了这段代码')
         const treeData = JSON.parse(JSON.stringify(this.treeData))
         treeData.forEach((e, i) => {
           const data = redata.nearDevice
@@ -1673,6 +1674,12 @@ export default {
           }
         })
         this.treeData = treeData
+        this.equipmentData.forEach(e => {
+          if (e.deviceId === redata.nearDevice.deviceId) {
+            e = redata.nearDevice
+            this.equipmentData = [...this.equipmentData]
+          }
+        })
         if (this.dataNear.device.deviceId === redata.nearDevice.deviceId) {
           this.dataNear.device = redata.nearDevice
           if (String(this.dataNear.device.deviceTime).length === 13) {
