@@ -413,7 +413,7 @@
                 </el-row>
                 <el-row type="flex" class="home-item" align="middle">
                   <el-col :span="12">
-                    1号光模块收光功率状态
+                    1号光模块主收光功率状态
                   </el-col>
                   <el-col :span="12">
                     <div v-show="WSloading">
@@ -467,7 +467,34 @@
                 </el-row>
                 <el-row type="flex" class="home-item" align="middle">
                   <el-col :span="12">
-                    2号光模块收光功率状态
+                    1号光模块从收光功率状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataNear.device.shouguanggonglvcong===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong===255">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong===254">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    2号光模块主收光功率状态
                   </el-col>
                   <el-col :span="12">
                     <div v-show="WSloading">
@@ -521,7 +548,34 @@
                 </el-row>
                 <el-row type="flex" class="home-item" align="middle">
                   <el-col :span="12">
-                    3号光模块收光功率状态
+                    2号光模块从收光功率状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataNear.device.shouguanggonglvcong2===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong2===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong2===255">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong2===254">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    3号光模块主收光功率状态
                   </el-col>
                   <el-col :span="12">
                     <div v-show="WSloading">
@@ -575,7 +629,34 @@
                 </el-row>
                 <el-row type="flex" class="home-item" align="middle">
                   <el-col :span="12">
-                    4号光模块收光功率状态
+                    3号光模块从收光功率状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataNear.device.shouguanggonglvcong3===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong3===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong3===255">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong3===254">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    4号光模块主收光功率状态
                   </el-col>
                   <el-col :span="12">
                     <div v-show="WSloading">
@@ -620,6 +701,33 @@
                       </template>
                       <template v-else-if="dataNear.device.faguanggonglv4===254">
                       <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    4号光模块从收光功率状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataNear.device.shouguanggonglvcong4===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong4===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong4===255">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                      <template v-else-if="dataNear.device.shouguanggonglvcong4===254">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
                         <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>

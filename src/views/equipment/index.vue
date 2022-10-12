@@ -76,7 +76,6 @@
               </div>
             </div>
           </div>
-
         </el-tab-pane>
         <el-tab-pane label="远端机设备">
           <div class="table">

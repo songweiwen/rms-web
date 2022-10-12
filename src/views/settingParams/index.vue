@@ -249,7 +249,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="6">
-                      {{index+1}}号收光功率
+                      {{index+1}}号光模块收光功率
                     </el-col>
                     <el-col :span="6">
                       <template v-if="dataNear.device['shouguangzhi' + (index===0?'':index+1)]===255">
@@ -262,6 +262,56 @@
                       </template>
                       <template v-else>
                         {{dataNear.device['shouguangzhi' + (index===0?'':index+1)]}}
+                      </template>
+                    </el-col>
+                    <el-col :span="6">
+                      dBm
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="6">
+                      {{index+1}}号光模块从衰减值
+                    </el-col>
+                    <el-col :span="6">
+                      <template v-if="dataNear.device['shuaijianzhicong' + (index===0?'':index+1)]===255">
+                        <el-tag type="danger">
+                          {{dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? '未配置':'超时'}}
+                        </el-tag>
+                      </template>
+                      <template v-if="dataNear.device['shuaijianzhicong' + (index===0?'':index+1)]===254">
+                        <el-tag type="danger">
+                          {{dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? '未配置':'未连接'}}
+                        </el-tag>
+                      </template>
+                      <template v-else>
+                        <el-input class="home-item__input" :maxlength="2" :min="0" :max="31" size="small"
+                                  v-model.number="dataNear.device['shuaijianzhicong' + (index===0?'':index+1)]" placeholder="" @input="shuaijianzhiNear222('shuaijianzhicong', index)"></el-input>
+                      </template>
+                    </el-col>
+                    <el-col :span="6">
+                      0-31（范围值）
+                    </el-col>
+                    <el-col :span="6" class="text-center">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingNear222('shuaijianzhi', index)" :loading="versionLoading">
+                        设置
+                      </el-button>
+                    </el-col>
+                  </el-row>
+                  <el-row type="flex" class="home-item" align="middle">
+                    <el-col :span="6">
+                      {{index+1}}号光模块从收光功率
+                    </el-col>
+                    <el-col :span="6">
+                      <template v-if="dataNear.device['shouguangzhicong' + (index===0?'':index+1)]===255">
+                        <el-tag type="danger">
+                          超时
+                        </el-tag>
+                      </template>
+                      <template v-else-if="dataNear.device['shouguangzhicong' + (index===0?'':index+1)]>127 && dataNear.device['shouguangzhicong' + (index===0?'':index+1)] < 255">
+                        {{dataNear.device['shouguangzhicong' + (index===0?'':index+1)]-256}}
+                      </template>
+                      <template v-else>
+                        {{dataNear.device['shouguangzhicong' + (index===0?'':index+1)]}}
                       </template>
                     </el-col>
                     <el-col :span="6">
@@ -935,7 +985,8 @@ export default {
       this.$webSocket.Send({
         commandString: 'SN',
         nearDevice: this.dataNearWS.device,
-        reserved: index + 1
+        reserved: index + 1,
+        replenish: paramesName === 'shuaijianzhi' ? '1' : '0'
       })
       this.settingLoading = true
     },
