@@ -194,8 +194,8 @@
               </marquee-text>
             </div> -->
           </div>
-          <div class="flex-container" v-show="homeType===1">
-            <div class="flex-item m-r-md p-t-md">
+          <div class="flex-container p-t-md" v-show="homeType===1">
+            <div class="flex-item m-r-md" style="width: 300px;">
               在线状态：
               <el-tag v-if="dataNear.device.online===1" type="success" effect="dark">
                 在线
@@ -205,7 +205,10 @@
               <!-- <el-tag v-else type="info" effect="dark"> 未知</span> -->
               <!-- <el-tag v-else-if="dataNear.online==='故障'" type="danger" effect="dark">故障</span> -->
             </div>
-            <div class="flex-item text-right">
+            <div class="text-right" style="width: 100%;">
+              <el-button type="primay" @click="openUp">
+                升级设备
+              </el-button>
               <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryNear">
                 手动检测
               </el-button>
@@ -223,7 +226,10 @@
               </span>
               <el-tag v-else-if="dataFar.device.online===0" type="info" effect="dark"> 离线</span>
             </div> -->
-            <div class="flex-item text-right">
+            <div class="text-right" style="width: 100%;">
+              <el-button type="primay" @click="openUp">
+                升级设备
+              </el-button>
               <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar">
                 手动检测
               </el-button>
@@ -1328,11 +1334,33 @@
         <el-button type="primary" @click="dragSubmit">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="升级设备" :visible.sync="uploadVisible" align="center" :closeOnClickModal="false" :show-close="false">
+      <!-- action="application/bid" -->
+      <el-upload
+        action="aa"
+        :on-change="changeFile"
+        @before-upload="beforeUpload"
+        class="upload-demo"
+        :auto-upload="false"
+        drag
+        :limit="1">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传.bin文件</div>
+      </el-upload>
+      <el-progress :percentage="50"></el-progress>
+      <el-progress :percentage="100" status="success"></el-progress>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="cancelUpload()">取 消</el-button>
+        <el-button size="small" type="primary" @click="addSubmitForm('addRuleForm')">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { formatDate } from '@/utils/utils'
+import { createData } from '@/utils/typeBuffer'
 import { ws } from '@/mixins/webSocket'
 import { getTree } from '@/api/get'
 import { getDetailFar, getDetailNear, updateMoveNear, updateMoveFar, workoutNear, workoutFar } from '@/api/home'
@@ -1342,6 +1370,7 @@ export default {
   mixins: [ws],
   data () {
     return {
+      uploadVisible: false,
       homeWH: [1000, 800],
       homeWHArr: [{
         w: 1000,
@@ -1433,6 +1462,38 @@ export default {
     }
   },
   methods: {
+    openUp () {
+      this.$webSocket.Send({
+        commandString: 'UPLOAD',
+        deviceType: this.homeType,
+        nearDevice: {
+          deviceId: this.deviceId,
+          deviceLevel: this.dataNear.device.deviceLevel,
+          deviceProtocol: this.dataNear.device.deviceProtocol
+        }
+      })
+      console.log(this.$webSocket.getWebSocket().onmessage)
+      // this.uploadVisible = true
+    },
+    changeFile (file, list) {
+      console.log(file, list)
+      createData(file.raw)
+    },
+    beforeUpload (file) {
+      console.log(file)
+    },
+    cancelUpload () {
+      this.$webSocket.Send({
+        commandString: 'CANCELUPLOAD',
+        deviceType: this.homeType,
+        nearDevice: {
+          deviceId: this.deviceId,
+          deviceLevel: this.dataNear.device.deviceLevel,
+          deviceProtocol: this.dataNear.device.deviceProtocol
+        }
+      })
+      this.uploadVisible = false
+    },
     onShanshuoNear () { // 闪烁
       const data = {}
       data.nearDevice = this.equipmentData[0]
@@ -1809,7 +1870,14 @@ export default {
           this.xunjianEnd()
           this.xunjianDisabled = false
         }
+      } else if(redata.commandString === 'SUPLOAD') {
+        if (redata.reserved === 'YES') {
+          this.uploadVisible = true
+        } else {
+          this.$message.error('设备处于升级过程中')
+        }
       }
+      console.log(redata.commandString === 'SUPLOAD')
     },
     handleNodeClick (data) {
       this.WSloadingState = 0
