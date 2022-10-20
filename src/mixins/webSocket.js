@@ -18,13 +18,10 @@ export const ws = {
     //     this.$webSocket.getWebSocket().onmessage = this.websocketonMessage
     //   }, 1000)
     // })
-    console.log(this.$store.getters)
     this.audioForTime = this.$store.getters.audioSetting.second
     this.audioEnable = this.$store.getters.audioSetting.enable === 1
     this.$nextTick(() => {
-      console.log(document.getElementById('audio'))
       this.audioDom = document.getElementById('audio')
-      console.log(this.audioDom.children)
       // this.audioDom.children[0].setAttribute('src', 'audio/参数读取成功.wav')
       // this.audioDom.children[1].setAttribute('src', 'audio/参数读取成功.mp3')
     })
@@ -169,7 +166,6 @@ export const ws = {
     //   this.websocketonMessageAll(redata)
     // },
     websocketonMessageAll (redata) {
-      console.log('jiesdsfsdfsdf')
       if (redata.code === 500) {
         this.$message.error(redata.msg)
       }

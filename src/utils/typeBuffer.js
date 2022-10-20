@@ -39,6 +39,7 @@ export const createData = function (file){
             modelArray.push(model);
         }
     });
+    return modelArray // 返回到页面 这里
     console.log(modelArray);
 }
 

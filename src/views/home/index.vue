@@ -743,20 +743,20 @@
                 </el-row>
                 <el-row type="flex" class="home-item" align="middle">
                   <el-col :span="12">
-                    UPS状态
+                    蓄电池欠压状态
                   </el-col>
                   <el-col :span="12">
                     <div v-show="WSloading">
                       <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
                     </div>
                     <div v-show="!WSloading">
-                      <template v-if="dataNear.device.upsgaojing===0">
+                      <template v-if="dataNear.device.xudianchiqiandianya===0">
                         <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
                       </template>
-                      <template v-else-if="dataNear.device.upsgaojing===1" >
+                      <template v-else-if="dataNear.device.xudianchiqiandianya===1" >
                         <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                       </template>
-                      <template v-else-if="dataNear.device.upsgaojing===2">
+                      <template v-else-if="dataNear.device.xudianchiqiandianya===2">
                         <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
@@ -1337,8 +1337,10 @@
     <el-dialog title="升级设备" :visible.sync="uploadVisible" align="center" :closeOnClickModal="false" :show-close="false">
       <!-- action="application/bid" -->
       <el-upload
+        :file-list="modelFile"
         action="aa"
         :on-change="changeFile"
+        :on-remove="removeFile"
         @before-upload="beforeUpload"
         class="upload-demo"
         :auto-upload="false"
@@ -1351,8 +1353,8 @@
       <el-progress :percentage="50"></el-progress>
       <el-progress :percentage="100" status="success"></el-progress>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="cancelUpload()">取 消</el-button>
-        <el-button size="small" type="primary" @click="addSubmitForm('addRuleForm')">确 定</el-button>
+        <el-button :disabled="modelArrayLoadding" size="small" @click="cancelUpload()">取 消</el-button>
+        <el-button :disabled="modelArrayLoadding" size="small" type="primary" @click="uploadSubmitForm()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -1371,6 +1373,12 @@ export default {
   data () {
     return {
       uploadVisible: false,
+      modelFile: [],
+      modelArray: [],
+      modelArrayLength: 0,
+      modelArrayActive: 0,
+      modelArrayTimer: null,
+      modelArrayLoadding: false,
       homeWH: [1000, 800],
       homeWHArr: [{
         w: 1000,
@@ -1463,36 +1471,112 @@ export default {
   },
   methods: {
     openUp () {
-      this.$webSocket.Send({
-        commandString: 'UPLOAD',
-        deviceType: this.homeType,
-        nearDevice: {
-          deviceId: this.deviceId,
-          deviceLevel: this.dataNear.device.deviceLevel,
-          deviceProtocol: this.dataNear.device.deviceProtocol
-        }
-      })
-      console.log(this.$webSocket.getWebSocket().onmessage)
+      if (this.homeType === 1) {
+        this.$webSocket.Send({
+          commandString: 'UPLOAD',
+          deviceType: this.homeType,
+          nearDevice: {
+            deviceId: this.deviceId,
+            deviceLevel: this.dataNear.device.deviceLevel,
+            deviceProtocol: this.dataNear.device.deviceProtocol
+          }
+        })
+      } else {
+        this.$webSocket.Send({
+          commandString: 'UPLOAD',
+          deviceType: this.homeType,
+          farDevice: {
+            deviceId: this.deviceId,
+            deviceLevel: this.dataNear.device.deviceLevel,
+            deviceProtocol: this.dataNear.device.deviceProtocol
+          }
+        })
+      }
       // this.uploadVisible = true
     },
     changeFile (file, list) {
-      console.log(file, list)
-      createData(file.raw)
+      this.modelArray = []
+      this.modelArray = createData(file.raw)
+      this.modelArrayLength = this.modelArray.length
+      this.modelArrayActive = 0
+    },
+    removeFile (file, list) {
+      if (list.length === 0) {
+        this.modelArray = []
+      }
     },
     beforeUpload (file) {
-      console.log(file)
+    },
+    uploadSubmitForm () {
+      if (this.modelArray.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请上传.bin文件!'
+        })
+      } else {
+        console.log('第一包')
+        this.modelArrayActive = 0
+        this.modelArrayLoadding = true
+        this.uploadWS()
+      }
+    },
+    uploadWS () {
+      this.modelArrayTimer = setTimeout(() => {
+        this.$message({
+          type: 'error',
+          message: '上传超时!'
+        })
+        this.modelArrayActive = 0
+        this.modelArrayLoadding = false
+      }, 5000)
+      if (this.homeType === 1) {
+        this.$webSocket.Send({
+          commandString: 'SENDPACKET',
+          deviceType: this.homeType,
+          nearDevice: {
+            deviceId: this.deviceId,
+            deviceLevel: this.dataNear.device.deviceLevel,
+            deviceProtocol: this.dataNear.device.deviceProtocol
+          },
+          packetIndex: this.modelArray[this.modelArrayActive].encodeLength,
+          reserved: this.modelArray[this.modelArrayActive].encodeData
+        })
+      } else {
+        this.$webSocket.Send({
+          commandString: 'SENDPACKET',
+          deviceType: this.homeType,
+          farDevice: {
+            deviceId: this.deviceId,
+            deviceLevel: this.dataNear.device.deviceLevel,
+            deviceProtocol: this.dataNear.device.deviceProtocol
+          },
+          packetIndex: this.modelArray[this.modelArrayActive].encodeLength,
+          reserved: this.modelArray[this.modelArrayActive].encodeData
+        })
+      }
     },
     cancelUpload () {
-      this.$webSocket.Send({
-        commandString: 'CANCELUPLOAD',
-        deviceType: this.homeType,
-        nearDevice: {
-          deviceId: this.deviceId,
-          deviceLevel: this.dataNear.device.deviceLevel,
-          deviceProtocol: this.dataNear.device.deviceProtocol
-        }
-      })
-      this.uploadVisible = false
+      if (this.homeType === 1) {
+        this.$webSocket.Send({
+          commandString: 'CANCELUPLOAD',
+          deviceType: this.homeType,
+          nearDevice: {
+            deviceId: this.deviceId,
+            deviceLevel: this.dataNear.device.deviceLevel,
+            deviceProtocol: this.dataNear.device.deviceProtocol
+          }
+        })
+      } else {
+        this.$webSocket.Send({
+          commandString: 'CANCELUPLOAD',
+          deviceType: this.homeType,
+          farDevice: {
+            deviceId: this.deviceId,
+            deviceLevel: this.dataNear.device.deviceLevel,
+            deviceProtocol: this.dataNear.device.deviceProtocol
+          }
+        })
+      }
     },
     onShanshuoNear () { // 闪烁
       const data = {}
@@ -1876,6 +1960,42 @@ export default {
         } else {
           this.$message.error('设备处于升级过程中')
         }
+      } else if(redata.commandString === 'SCANCELUPLOAD') {
+        console.log('关闭')
+        this.uploadVisible = false
+      } else if(redata.commandString === 'SSENDPACKET') {
+        clearTimeout(this.modelArrayTimer)
+        this.modelArrayTimer = null
+        if (redata.reserved === 'go') {
+          this.modelArrayActive += 1
+          this.uploadWS()
+          console.log('继续发送')
+        } else if (redata.reserved === 'no') {
+          this.uploadWS()
+          console.log('重发上一包')
+        } else if (redata.reserved === 'success') {
+          console.log('完成 弹窗处理 清空数组 关闭上传窗口')
+          this.$message({
+            type: 'error',
+            message: '升级成功!'
+          })
+          this.modelFile = []
+          this.modelArray = []
+          this.modelArrayActive = 0
+          this.modelArrayLoadding = false
+          this.uploadVisible = false
+        } else if (redata.reserved === 'error') {
+          console.log('失败 弹窗处理')
+          this.$message({
+            type: 'error',
+            message: '升级失败!'
+          })
+          this.modelFile = []
+          this.modelArray = []
+          this.modelArrayActive = 0
+          this.modelArrayLoadding = false
+          this.uploadVisible = false
+        }
       }
       console.log(redata.commandString === 'SUPLOAD')
     },
@@ -2096,6 +2216,7 @@ export default {
           this.dataNear.device.shouguanggonglv = 99
           this.dataNear.device.faguanggonglv = 99
           this.dataNear.device.upsgaojing = 99
+          this.dataNear.device.xudianchiqiandianya = 99
 
           // 远端机
           // this.dataFar.device.online = 0

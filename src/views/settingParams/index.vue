@@ -319,8 +319,40 @@
                     </el-col>
                   </el-row>
                 </div>
-
                 <el-row type="flex" class="home-item home-even" align="middle">
+                  <el-col :span="6">
+                    电源电压
+                  </el-col>
+                  <el-col :span="6">
+                    {{dataNear.device.dianyuandianyazhengshu}}.{{dataNear.device.dianyuandianyaxiaoshu}}
+                  </el-col>
+                  <el-col :span="6">
+                    V
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="6">
+                    电源电流
+                  </el-col>
+                  <el-col :span="6">
+                    {{dataNear.device.dianyuandianliuzhengshu}}.{{dataNear.device.dianyuandianliuxiaoshu}}
+                  </el-col>
+                  <el-col :span="6">
+                    A
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item home-even" align="middle">
+                  <el-col :span="6">
+                    蓄电池电压
+                  </el-col>
+                  <el-col :span="6">
+                    {{dataNear.device.xudianchidianyazhengshu}}.{{dataNear.device.xudianchidianyaxiaoshu}}
+                  </el-col>
+                  <el-col :span="6">
+                    V
+                  </el-col>
+                </el-row>
+                <el-row type="flex" class="home-item" align="middle">
                   <el-col :span="6">
                     版本号
                   </el-col>
@@ -809,6 +841,7 @@ export default {
     },
     onZeroNear () {
       this.dataNear.device.shuaijianzhi = 0
+      this.dataNear.device.shuaijianzhicong = 0
     },
     onZeroFar () {
       this.dataFar.device.shuaijianzhi = 0
