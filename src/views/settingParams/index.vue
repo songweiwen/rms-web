@@ -882,7 +882,7 @@ export default {
         farDevice: {
           deviceId: this.dataFar.device.deviceId,
           // deviceNearId: this.deviceId, // 父级近端机
-          deviceNearId: this.dataFar.device.deviceLevel === 1 ? this.dataFar.device.deviceNearId : this.deviceId,
+          deviceNearId: this.dataFar.device.deviceNearId,
           deviceLevel: this.dataFar.device.deviceLevel,
           deviceNear2Id: this.dataFar.device.deviceNear2Id
         }
