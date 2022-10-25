@@ -13,9 +13,9 @@
             :default-expand-all="true"
             :data="treeData"
             :props="defaultProps"
-            :current-node-key="treeActive"
             highlight-current
             @node-click="handleNodeClick">
+            <!-- :current-node-key="treeActive" -->
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <i v-if="data.level===1" class="iconfont icon-yuanduanji"></i>
@@ -209,7 +209,7 @@
               <el-button type="primay" @click="openUp">
                 升级设备
               </el-button>
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryNear">
+              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="cancelUpload">
                 手动检测
               </el-button>
               <el-button type="danger" :disabled ="dataNear.device.shanshuo === 0" @click="onWorkoutNear">
@@ -1457,8 +1457,9 @@
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">只能上传.bin文件</div>
       </el-upload>
-      <el-progress :percentage="50"></el-progress>
-      <el-progress :percentage="100" status="success"></el-progress>
+      <div class="">
+        <el-progress :percentage="uploadLoadTotal" :status="uploadLoadType"></el-progress>
+      </div>
       <div slot="footer" class="dialog-footer">
         <el-button :disabled="modelArrayLoadding" size="small" @click="cancelUpload()">取 消</el-button>
         <el-button :disabled="modelArrayLoadding" size="small" type="primary" @click="uploadSubmitForm()">确 定</el-button>
@@ -1484,6 +1485,8 @@ export default {
       modelArray: [],
       modelArrayLength: 0,
       modelArrayActive: 0,
+      uploadLoadTotal: 0,
+      uploadLoadType: null,
       modelArrayTimer: null,
       modelArrayLoadding: false,
       homeWH: [1000, 800],
@@ -1606,6 +1609,11 @@ export default {
       this.modelArray = createData(file.raw)
       this.modelArrayLength = this.modelArray.length
       this.modelArrayActive = 0
+      this.uploadLoadTotal = 0
+    },
+    uploadStatus () {
+      console.log(this.uploadLoadTotal)
+      this.uploadLoadTotal = Math.floor(this.modelArray.length <= 0 ? 0 : (Math.round(this.modelArrayActive / this.modelArray.length * 10000) / 100.00))
     },
     removeFile (file, list) {
       if (list.length === 0) {
@@ -1615,6 +1623,7 @@ export default {
     beforeUpload (file) {
     },
     uploadSubmitForm () {
+      if (this.modelArrayLoadding) return false
       if (this.modelArray.length === 0) {
         this.$message({
           type: 'warning',
@@ -2077,13 +2086,15 @@ export default {
           this.modelArrayActive += 1
           this.uploadWS()
           console.log('继续发送')
+          this.uploadStatus()
         } else if (redata.reserved === 'no') {
           this.uploadWS()
           console.log('重发上一包')
+          this.uploadStatus()
         } else if (redata.reserved === 'success') {
           console.log('完成 弹窗处理 清空数组 关闭上传窗口')
           this.$message({
-            type: 'error',
+            type: 'sccuess',
             message: '升级成功!'
           })
           this.modelFile = []
@@ -2091,16 +2102,14 @@ export default {
           this.modelArrayActive = 0
           this.modelArrayLoadding = false
           this.uploadVisible = false
+          this.uploadLoadType = 'success'
+          this.uploadStatus()
         } else if (redata.reserved === 'error') {
           console.log('失败 弹窗处理')
           this.$message({
             type: 'error',
             message: '升级失败!'
           })
-          this.modelFile = []
-          this.modelArray = []
-          this.modelArrayActive = 0
-          this.modelArrayLoadding = false
           this.uploadVisible = false
         }
       }
@@ -2298,6 +2307,14 @@ export default {
     }
   },
   watch: {
+    uploadVisible (val) {
+      this.modelFile = []
+      this.modelArray = []
+      this.modelArrayActive = 0
+      this.modelArrayLoadding = false
+      this.uploadLoadTotal = 0
+      this.uploadLoadType = null
+    },
     dragBool (val) {
       if (val === 1) {
         this.dragVisible = true
