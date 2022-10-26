@@ -71,9 +71,6 @@
               <el-button :loading="getLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryFar(false)">
                 读取
               </el-button>
-              <el-button :loading="settingLoading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="danger" @click="settingFar(true)">
-                设置
-              </el-button>
             </div>
           </div>
 
@@ -292,7 +289,7 @@
                       0-31（范围值）
                     </el-col>
                     <el-col :span="6" class="text-center">
-                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingNear222('shuaijianzhi', index)" :loading="versionLoading">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingNear222('shuaijianzhicong', index)" :loading="versionLoading">
                         设置
                       </el-button>
                     </el-col>
@@ -448,8 +445,13 @@
                         v-model.number="dataFar.device.shuaijianzhi" placeholder="" @input="shuaijianzhiFar"></el-input>
                       </template>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="6">
                       0-31（范围值）
+                    </el-col>
+                    <el-col :span="2" class="text-center">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shuaijianzhi', index)" :loading="versionLoading">
+                        设置
+                      </el-button>
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -491,8 +493,13 @@
                           v-model.number="dataFar.device.shuaijianzhi2" placeholder="" @input="shuaijianzhiFar2"></el-input>
                         </template>
                       </el-col>
-                      <el-col :span="8">
+                      <el-col :span="6">
                         0-31（范围值）
+                      </el-col>
+                      <el-col :span="2" class="text-center">
+                        <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shuaijianzhi2', index)" :loading="versionLoading">
+                          设置
+                        </el-button>
                       </el-col>
                     </el-row>
                     <!-- <el-row type="flex" class="home-item" align="middle" style="height: 0;"></el-row> -->
@@ -545,8 +552,13 @@
                         <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
                       </template>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="6">
                       0-31（范围值）
+                    </el-col>
+                    <el-col :span="2" class="text-center">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('gongfangshuaijianzhi', index)" :loading="versionLoading">
+                        设置
+                      </el-button>
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -671,8 +683,13 @@
                         <!-- {{dataFar.device.shangxingshuajianzhi}} -->
                       </template>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="6">
                       0-31（范围值）
+                    </el-col>
+                    <el-col :span="2" class="text-center">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shangxingshuajianzhi', index)" :loading="versionLoading">
+                        设置
+                      </el-button>
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -713,8 +730,13 @@
                         <!-- {{dataFar.device.gongfangshuaijianzhi}} -->
                       </template>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="6">
                       0-31（范围值）
+                    </el-col>
+                    <el-col :span="2" class="text-center">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('gongfangshuaijianzhi2', index)" :loading="versionLoading">
+                        设置
+                      </el-button>
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -839,8 +861,13 @@
                         <!-- {{dataFar.device.shangxingshuajianzhi}} -->
                       </template>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="6">
                       0-31（范围值）
+                    </el-col>
+                    <el-col :span="2" class="text-center">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shangxingshuajianzhi2', index)" :loading="versionLoading">
+                        设置
+                      </el-button>
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -1056,7 +1083,9 @@ export default {
       this.dataFar.device.shuaijianzhi = 0
       this.dataFar.device.shuaijianzhi2 = 0
       this.dataFar.device.gongfangshuaijianzhi = 0
+      this.dataFar.device.gongfangshuaijianzhi2 = 0
       this.dataFar.device.shangxingshuajianzhi = 0
+      this.dataFar.device.shangxingshuajianzhi2 = 0
     },
     onQueryNear (bool) { // 近端机读取
       // this.settingBool = bool || true
@@ -1158,6 +1187,10 @@ export default {
         this.dataFar.device.gongfangshuaijianzhi = 31
       } else if (this.dataFar.device.gongfangshuaijianzhi < 0) {
         this.dataFar.device.gongfangshuaijianzhi = 0
+      } else if (this.dataFar.device.gongfangshuaijianzhi2 > 31) {
+        this.dataFar.device.gongfangshuaijianzhi2 = 31
+      } else if (this.dataFar.device.gongfangshuaijianzhi2 < 0) {
+        this.dataFar.device.gongfangshuaijianzhi2 = 0
       }
     },
     gongfangshuaijianzhiFar2 () {
@@ -1174,6 +1207,10 @@ export default {
         this.dataFar.device.shangxingshuajianzhi = 31
       } else if (this.dataFar.device.shangxingshuajianzhi < 0) {
         this.dataFar.device.shangxingshuajianzhi = 0
+      } else if (this.dataFar.device.shangxingshuajianzhi2 > 31) {
+        this.dataFar.device.shangxingshuajianzhi2 = 31
+      } else if (this.dataFar.device.shangxingshuajianzhi2 < 0) {
+        this.dataFar.device.shangxingshuajianzhi2 = 0
       }
     },
     shangxingshuajianzhiFar2 () {
@@ -1185,12 +1222,6 @@ export default {
       }
     },
     settingNear (bool) {
-      // if (this.dataNear.device.shuaijianzhi === '') {
-      //   this.showShuaijianzhi = true
-      // } else if (this.dataNear.device.shuaijianzhi > 31 || this.dataNear.device.shuaijianzhi < 0) {
-      //   this.showShuaijianzhi = true
-      // } else {
-      // this.settingBool = bool
       this.WSloadingType = '设置'
       this.WSloadingState = 0
       this.WSloading = true
@@ -1205,8 +1236,7 @@ export default {
       // this.onZeroNear()
     },
     shuaijianzhiNear222 (paramesName, index) {
-      const paramesNameNew = paramesName + (index + 1)
-      console.log(111111111111111111111111111)
+      const paramesNameNew = paramesName + (index === 0 ? '' : index + 1)
       console.log(paramesNameNew)
       if (this.dataNear.device[paramesNameNew] > 31) {
         this.dataNear.device[paramesNameNew] = 31
@@ -1215,20 +1245,32 @@ export default {
       }
     },
     settingNear222 (paramesName, index) {
-      console.log(paramesName)
+      console.log(paramesName + (index === 0 ? '' : index + 1))
       this.WSloadingType = '设置'
       this.WSloadingState = 0
       this.WSloading = true
       this.WSloadingText = '设置中'
       this.showShuaijianzhi = false
-
-      this.dataNearWS.device[paramesName + index + 1] = this.dataNear.device[paramesName + index + 1]
-
+      this.dataNearWS.device[paramesName + index + 1] = this.dataNear.device[paramesName + (index === 0 ? '' : index + 1)]
       this.$webSocket.Send({
         commandString: 'SN',
         nearDevice: this.dataNearWS.device,
         reserved: index + 1,
-        replenish: paramesName === 'shuaijianzhi' ? '1' : '0'
+        replenish: paramesName === 'shuaijianzhi' ? '1' : '0',
+        code: this.dataNear.device[paramesName + (index === 0 ? '' : index + 1)]
+      })
+      this.settingLoading = true
+    },
+    settingFar222 (paramesName, index) {
+      this.WSloadingType = '设置'
+      this.WSloadingState = 0
+      this.WSloading = true
+      this.WSloadingText = '设置中'
+      this.showShuaijianzhi = false
+      this.$webSocket.Send({ // 序号1：光模块主衰减值、序号2：光模块从衰减值、序号3：功放1下行衰减值、序号4：功放1上行衰减值、序号5：功放2下行衰减值、序号6：功放2上行衰减值、
+        commandString: 'SF',
+        farDevice: this.dataFar.device,
+        reserved: index + 1
       })
       this.settingLoading = true
     },
