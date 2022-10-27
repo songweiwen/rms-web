@@ -209,7 +209,7 @@
               <el-button type="primay" @click="openUp">
                 升级设备
               </el-button>
-              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="cancelUpload">
+              <el-button :loading="WSloading" :disabled ="dataNear.device.online ===0?true:xunjianDisabled" type="primary" @click="onQueryNear">
                 手动检测
               </el-button>
               <el-button type="danger" :disabled ="dataNear.device.shanshuo === 0" @click="onWorkoutNear">
@@ -230,7 +230,7 @@
               <el-button type="primay" @click="openUp">
                 升级设备
               </el-button>
-              <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar">
+              <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="cancelUpload">
                 手动检测
               </el-button>
               <el-button type="danger" :disabled ="dataFar.device.shanshuo === 0" @click="onWorkoutFar">
@@ -1597,6 +1597,7 @@ export default {
           deviceType: this.homeType,
           farDevice: {
             deviceId: this.deviceId,
+            deviceNearId: this.deviceNearId,
             deviceLevel: this.dataNear.device.deviceLevel,
             deviceProtocol: this.dataNear.device.deviceProtocol
           }
@@ -1644,7 +1645,7 @@ export default {
         })
         this.modelArrayActive = 0
         this.modelArrayLoadding = false
-      }, 5000)
+      }, 10000)
       if (this.homeType === 1) {
         this.$webSocket.Send({
           commandString: 'SENDPACKET',
@@ -1664,6 +1665,7 @@ export default {
           farDevice: {
             deviceId: this.deviceId,
             deviceLevel: this.dataNear.device.deviceLevel,
+            deviceNearId: this.dataFar.device.deviceNearId,
             deviceProtocol: this.dataNear.device.deviceProtocol
           },
           packetIndex: this.modelArray[this.modelArrayActive].encodeLength,
@@ -1688,6 +1690,7 @@ export default {
           deviceType: this.homeType,
           farDevice: {
             deviceId: this.deviceId,
+            deviceNearId: this.deviceNearId,
             deviceLevel: this.dataNear.device.deviceLevel,
             deviceProtocol: this.dataNear.device.deviceProtocol
           }
@@ -2080,10 +2083,12 @@ export default {
         console.log('关闭')
         this.uploadVisible = false
       } else if(redata.commandString === 'SSENDPACKET') {
+        console.log('服务器返回的索引是：')
+        console.log(redata.code)
         clearTimeout(this.modelArrayTimer)
         this.modelArrayTimer = null
         if (redata.reserved === 'go') {
-          this.modelArrayActive += 1
+          this.modelArrayActive = redata.code
           this.uploadWS()
           console.log('继续发送')
           this.uploadStatus()

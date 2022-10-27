@@ -449,7 +449,7 @@
                       0-31（范围值）
                     </el-col>
                     <el-col :span="2" class="text-center">
-                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shuaijianzhi', index)" :loading="versionLoading">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shuaijianzhi')" :loading="versionLoading">
                         设置
                       </el-button>
                     </el-col>
@@ -497,7 +497,7 @@
                         0-31（范围值）
                       </el-col>
                       <el-col :span="2" class="text-center">
-                        <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shuaijianzhi2', index)" :loading="versionLoading">
+                        <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shuaijianzhi2')" :loading="versionLoading">
                           设置
                         </el-button>
                       </el-col>
@@ -556,7 +556,7 @@
                       0-31（范围值）
                     </el-col>
                     <el-col :span="2" class="text-center">
-                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('gongfangshuaijianzhi', index)" :loading="versionLoading">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('gongfangshuaijianzhi')" :loading="versionLoading">
                         设置
                       </el-button>
                     </el-col>
@@ -687,7 +687,7 @@
                       0-31（范围值）
                     </el-col>
                     <el-col :span="2" class="text-center">
-                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shangxingshuajianzhi', index)" :loading="versionLoading">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shangxingshuajianzhi')" :loading="versionLoading">
                         设置
                       </el-button>
                     </el-col>
@@ -734,7 +734,7 @@
                       0-31（范围值）
                     </el-col>
                     <el-col :span="2" class="text-center">
-                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('gongfangshuaijianzhi2', index)" :loading="versionLoading">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('gongfangshuaijianzhi2')" :loading="versionLoading">
                         设置
                       </el-button>
                     </el-col>
@@ -865,7 +865,7 @@
                       0-31（范围值）
                     </el-col>
                     <el-col :span="2" class="text-center">
-                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shangxingshuajianzhi2', index)" :loading="versionLoading">
+                      <el-button type="primary" size="small" :disabled ="dataNear.device.online ===0?true:(dataNear.device['deviceLight' + (index ===0?'':index+1) + 'Id'] === 0 ? true:xunjianDisabled)" @click="settingFar222('shangxingshuajianzhi2')" :loading="versionLoading">
                         设置
                       </el-button>
                     </el-col>
@@ -1261,16 +1261,38 @@ export default {
       })
       this.settingLoading = true
     },
-    settingFar222 (paramesName, index) {
+    settingFar222 (paramesName) {
       this.WSloadingType = '设置'
       this.WSloadingState = 0
       this.WSloading = true
       this.WSloadingText = '设置中'
       this.showShuaijianzhi = false
+      var reserved = ''
+      switch (paramesName) {
+        case 'shuaijianzhi':
+          reserved = '01'
+          break
+        case 'shuaijianzhi2':
+          reserved = '02'
+          break
+        case 'gongfangshuaijianzhi':
+          reserved = '03'
+          break
+        case 'shangxingshuajianzhi':
+          reserved = '04'
+          break
+        case 'gongfangshuaijianzhi2':
+          reserved = '05'
+          break
+        case 'shangxingshuajianzhi2':
+          reserved = '06'
+          break
+      }
       this.$webSocket.Send({ // 序号1：光模块主衰减值、序号2：光模块从衰减值、序号3：功放1下行衰减值、序号4：功放1上行衰减值、序号5：功放2下行衰减值、序号6：功放2上行衰减值、
         commandString: 'SF',
         farDevice: this.dataFar.device,
-        reserved: index + 1
+        reserved: reserved,
+        code: this.dataFar.device[paramesName]
       })
       this.settingLoading = true
     },
@@ -1652,5 +1674,8 @@ export default {
       padding: 0;
       border-radius: 50%;
     }
+  }
+  .home-odd {
+    background: #fff;
   }
 </style>
