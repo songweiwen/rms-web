@@ -343,7 +343,7 @@
                     蓄电池电压
                   </el-col>
                   <el-col :span="6">
-                    {{dataNear.device.xudianchidianyazhengshu}}.{{dataNear.device.xudianchidianyaxiaoshu}}
+                    {{dataNear.device.xudianchidianyazhengshu === 255 ? '未接入蓄电池': dataNear.device.xudianchidianyazhengshu + '.' + dataNear.device.xudianchidianyaxiaoshu}}
                   </el-col>
                   <el-col :span="6">
                     V
@@ -534,12 +534,12 @@
                   </template>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      功放1
+                      模拟功放
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      模拟列调一体化单元衰减值
+                      衰减值
                     </el-col>
                     <el-col :span="8">
                       <template v-if="dataFar.device.gongfangshuaijianzhi===255">
@@ -590,11 +590,11 @@
                         </el-tag>
                       </template>
                       <template v-else>
-                        {{dataFar.device.gongfangwenduzhi}}
+                        {{dataFar.device.gongfangdianliuzhi}}
                       </template>
                     </el-col>
                     <el-col :span="8">
-                      ℃
+                      A
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -634,7 +634,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      输入功率电平值
+                      输入功率
                     </el-col>
                     <el-col :span="8">
                       <template v-if="dataFar.device.shurugonglvdianpingzhi===255">
@@ -652,7 +652,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      输出功率电平值
+                      输出功率
                     </el-col>
                     <el-col :span="8">
                       <template v-if="dataFar.device.shuchugonglvdianpingzhi===255">
@@ -712,12 +712,12 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      功放2
+                      数字功放
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      模拟列调一体化单元衰减值
+                      衰减值
                     </el-col>
                     <el-col :span="8">
                       <template v-if="dataFar.device.gongfangshuaijianzhi2===255">
@@ -768,11 +768,11 @@
                         </el-tag>
                       </template>
                       <template v-else>
-                        {{dataFar.device.gongfangwenduzhi2}}
+                        {{dataFar.device.gongfangdianliuzhi2}}
                       </template>
                     </el-col>
                     <el-col :span="8">
-                      ℃
+                      A
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
@@ -812,7 +812,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      输入功率电平值
+                      输入功率
                     </el-col>
                     <el-col :span="8">
                       <template v-if="dataFar.device.shurugonglvdianpingzhi2===255">
@@ -830,7 +830,7 @@
                   </el-row>
                   <el-row type="flex" class="home-item" align="middle">
                     <el-col :span="8">
-                      输出功率电平值
+                      输出功率
                     </el-col>
                     <el-col :span="8">
                       <template v-if="dataFar.device.shuchugonglvdianpingzhi2===255">
@@ -924,7 +924,7 @@
                     蓄电池电压
                   </el-col>
                   <el-col :span="8">
-                    {{dataFar.device.xudianchidianyazhengshu}}.{{dataFar.device.xudianchidianyaxiaoshu}}
+                    {{dataFar.device.xudianchidianyazhengshu === 255 ? '未接入蓄电池' :  dataFar.device.xudianchidianyazhengshu + '.' + dataFar.device.xudianchidianyaxiaoshu}}
                   </el-col>
                   <el-col :span="8">
                     V
@@ -954,7 +954,7 @@
 </template>
 
 <script>
-import { formatDate } from '@/utils/utils'
+import { formatDate, toDecimal2 } from '@/utils/utils'
 import { ws } from '@/mixins/webSocket'
 // import { overTimeInit } from '@/mixins/overTime'
 import { getTree } from '@/api/get'
@@ -1077,12 +1077,34 @@ export default {
     },
     onZeroNear () {
       this.dataNear.device.shuaijianzhi = 0
+      this.dataNear.device.shouguangzhi = 0
+      this.dataNear.device.shouguangzhicong = 0
       this.dataNear.device.shuaijianzhicong = 0
+      this.dataNear.device.shuaijianzhi2 = 0
+      this.dataNear.device.shouguangzhi2 = 0
+      this.dataNear.device.shouguangzhicong2 = 0
+      this.dataNear.device.shuaijianzhicong2 = 0
+      this.dataNear.device.shuaijianzhi3 = 0
+      this.dataNear.device.shouguangzhi3 = 0
+      this.dataNear.device.shouguangzhicong3 = 0
+      this.dataNear.device.shuaijianzhicong3 = 0
+      this.dataNear.device.shuaijianzhi4 = 0
+      this.dataNear.device.shouguangzhi4 = 0
+      this.dataNear.device.shouguangzhicong4 = 0
+      this.dataNear.device.shuaijianzhicong4 = 0
     },
     onZeroFar () {
       this.dataFar.device.shuaijianzhi = 0
       this.dataFar.device.shuaijianzhi2 = 0
+      this.dataFar.device.shouguangzhi = 0
+      this.dataFar.device.shouguangzhicong = 0
+      this.dataFar.device.shouguangzhi2 = 0
+      this.dataFar.device.gongfangwenduzhi = 0
+      this.dataFar.device.gongfangdianliuzhi = 0
       this.dataFar.device.gongfangshuaijianzhi = 0
+      this.dataFar.device.gongfangalczhi = 0
+      this.dataFar.device.shurugonglvdianpingzhi = 0
+      this.dataFar.device.shuchugonglvdianpingzhi = 0
       this.dataFar.device.gongfangshuaijianzhi2 = 0
       this.dataFar.device.shangxingshuajianzhi = 0
       this.dataFar.device.shangxingshuajianzhi2 = 0
@@ -1590,6 +1612,7 @@ export default {
         }).then(res => {
           const data = res.data
           console.log(data)
+          data.device.dianyuandianliuzhengshuNew = data.device.dianyuandianliuzhengshu + toDecimal2(data.device.dianyuandianliuxiaoshu)
           this.dataFar = data
           this.loading = false
         })

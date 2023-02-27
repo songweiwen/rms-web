@@ -173,7 +173,7 @@
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input>
         </el-form-item>
-        <el-form-item label="近端机版本" prop="deviceDescribe" label-width="120px">
+<!--        <el-form-item label="近端机版本" prop="deviceDescribe" label-width="120px">
           <el-select v-model="addForm.deviceLevel" placeholder="请选择近端机">
             <el-option
               label="第一代"
@@ -184,7 +184,7 @@
               :value="2">
             </el-option>
           </el-select>
-          <!-- <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input> -->
+          &lt;!&ndash; <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input> &ndash;&gt;
           <div class="text-danger fs-12">此项选择后不可更改</div>
         </el-form-item>
         <el-form-item label="指定协议版本" prop="deviceDescribe" label-width="120px">
@@ -198,9 +198,9 @@
               :value="2">
             </el-option>
           </el-select>
-          <!-- <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input> -->
+          &lt;!&ndash; <el-input v-model="addForm.deviceDescribe" placeholder="请输入描述"></el-input> &ndash;&gt;
           <div class="text-danger fs-12">此项选择后不可更改</div>
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="resetForm('addRuleForm')">取 消</el-button>
@@ -260,7 +260,7 @@
         <el-form-item label="描述" prop="deviceDescribe" label-width="120px">
           <el-input v-model="addFormFar.deviceDescribe" placeholder="请输入描述"></el-input>
         </el-form-item>
-        <el-form-item label="远端机版本" prop="deviceDescribe" label-width="120px">
+<!--        <el-form-item label="远端机版本" prop="deviceDescribe" label-width="120px">
           <el-select v-model="addFormFar.deviceLevel" placeholder="请选择近端机" @change="addFarSelectChange">
             <el-option
               label="第一代"
@@ -272,7 +272,7 @@
             </el-option>
           </el-select>
           <div class="text-danger fs-12">此项选择后不可更改</div>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item v-if="addFormFar.deviceLevel===2" class="two" label="归属于另一台近端机" prop="deviceNear2Id" label-width="120px">
           <el-select v-model="addFormFar.deviceNear2Id" placeholder="请选择归属于另一台近端机" style="width: 100%;">
             <el-option
@@ -427,8 +427,8 @@ export default {
         port: '',
         deviceAddress: '',
         deviceDescribe: '',
-        deviceLevel: 1,
-        deviceProtocol: 1
+        deviceLevel: 2,
+        deviceProtocol: 2
       },
       addFormFar: {
         deviceId: '',
@@ -436,7 +436,7 @@ export default {
         deviceNearId: '',
         deviceAddress: '',
         deviceDescribe: '',
-        deviceLevel: 1,
+        deviceLevel: 2,
         deviceNear2Id: ''
       },
       editVisible: false,

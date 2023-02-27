@@ -230,7 +230,7 @@
               <el-button type="primay" @click="openUp">
                 升级设备
               </el-button>
-              <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="cancelUpload">
+              <el-button :loading="WSloading" :disabled ="dataFar.device.deviceNearOnline  === 0?true:xunjianDisabled" type="primary" @click="onQueryFar">
                 手动检测
               </el-button>
               <el-button type="danger" :disabled ="dataFar.device.shanshuo === 0" @click="onWorkoutFar">
@@ -466,7 +466,7 @@
                       <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
-                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                       </template>
                     </div>
                   </el-col>
@@ -493,7 +493,7 @@
                         <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
-                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                       </template>
                     </div>
                   </el-col>
@@ -520,7 +520,7 @@
                       <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
-                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                       </template>
                     </div>
                   </el-col>
@@ -574,7 +574,7 @@
                         <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
-                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                       </template>
                     </div>
                   </el-col>
@@ -655,7 +655,7 @@
                         <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
-                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                       </template>
                     </div>
                   </el-col>
@@ -736,7 +736,7 @@
                         <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
                       </template>
                       <template v-else>
-                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
                       </template>
                     </div>
                   </el-col>
@@ -1401,6 +1401,30 @@
                     </el-col>
                   </el-row>
               </template>
+                <el-row type="flex" class="home-item" align="middle">
+                  <el-col :span="12">
+                    门禁状态
+                  </el-col>
+                  <el-col :span="12">
+                    <div v-show="WSloading">
+                      <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="warning" effect="dark"></span>
+                    </div>
+                    <div v-show="!WSloading">
+                      <template v-if="dataFar.device.menjinzhuangtai===0">
+                        <span class="home-item__tag el-tag el-tag--success el-tag--dark" type="success" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  正常</span>
+                      </template>
+                      <template v-else-if="dataFar.device.menjinzhuangtai===1">
+                        <span class="home-item__tag el-tag el-tag--danger el-tag--dark" type="danger" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  故障</span>
+                      </template>
+                      <template v-else-if="dataFar.device.menjinzhuangtai===2">
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  未连接</span>
+                      </template>
+                      <template v-else>
+                        <span class="home-item__tag el-tag el-tag--info el-tag--dark" type="info" effect="dark"></span><span class="home-tagtext" style="margin-left:30px">  超时</span>
+                      </template>
+                    </div>
+                  </el-col>
+                </el-row>
               <el-row type="flex" class="home-item" align="middle">
                 <el-col :span="12">
                   更新时间
@@ -1739,6 +1763,8 @@ export default {
     },
     getTree () {
       getTree().then(res => {
+        console.log('查看树')
+        console.log(res)
         this.treeData = []
         this.equipmentData = []
         const treeData = res.data
@@ -2137,6 +2163,7 @@ export default {
         getDetailNear({
           id: this.id
         }).then(res => {
+          console.log(res)
           const data = res.data
           this.dataNear = data
           this.treeData.forEach(e => {
