@@ -86,10 +86,10 @@ var websocket = {
     }
     if (process.env.NODE_ENV === "development") {
       // alert("开发环境");
-      params.type= 'test1' 
+      params.type= 'test1'
     }else {
       // alert("生产环境");
-      params.type= 'prod' 
+      params.type= 'prod'
     }
     const msg = JSON.stringify(Object.assign(params, data))
     console.log('发送消息：' + msg)
@@ -116,6 +116,7 @@ var websocket = {
     //   clearTimeout(overTime)
     // }, 1000*10);
     localStorage.setItem('wsParams', msg)
+    console.log(msg)
     Vue.prototype.$WS.send(msg)
   },
   getWebSocket () {

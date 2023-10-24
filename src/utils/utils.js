@@ -3,6 +3,26 @@ export const time = (x) => {
   return x + 1
 }
 
+export const toDecimal2 = function (x) {
+  console.log(123)
+  var f = parseFloat(x)
+  if (isNaN(f)) {
+    return false
+  }
+  f = Math.round(x * 100) / 100
+  var s = f.toString()
+  var rs = s.indexOf('.')
+  if (rs < 0) {
+    rs = s.length
+    s += '.'
+  }
+  while (s.length <= rs + 2) {
+    s += '0'
+  }
+  console.log('toDecimal2', s / 10)
+  return Number(s / 10)
+}
+
 /**
  * @param format
  * @param currDate
